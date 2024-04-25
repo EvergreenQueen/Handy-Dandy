@@ -275,6 +275,8 @@ MonoBehaviour:
   speed: 10
   grav: -9.81
   floatingDistance: 1.5
+  camSensX: 1
+  camSensY: 0.5
 --- !u!1001 &64504690
 PrefabInstance:
   m_ObjectHideFlags: 0
