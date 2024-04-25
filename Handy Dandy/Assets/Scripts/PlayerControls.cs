@@ -67,7 +67,8 @@ public class PlayerControls : MonoBehaviour
     private void Move(){  
         Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
         // Debug.Log(rawInput);
-        Vector3 input = new Vector3(rawInput.x, 0, rawInput.y);
+        // Vector3 input = new Vector3(rawInput.x, 0, rawInput.y);
+        Vector3 input = transform.forward*rawInput.y + transform.right*rawInput.x;
         
         rb.velocity = input * speed;
 
