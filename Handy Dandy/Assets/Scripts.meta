@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Handy Dandy/Assets/SimpleLowPolyNature/Scenes/DemoNight.unity.meta
+guid: e8f0bfabf09c4b745b91961fd33a2f4b
+========
 guid: 8365e29c6f8f24441bd0d840685bebc2
 folderAsset: yes
+>>>>>>>> main:Handy Dandy/Assets/Scripts.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

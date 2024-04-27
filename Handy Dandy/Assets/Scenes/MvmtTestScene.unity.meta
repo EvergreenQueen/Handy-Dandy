@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Handy Dandy/Assets/SimpleLowPolyNature/Scenes/DemoDay.unity.meta
+guid: 626c51ae80da30842b7930806ccf145c
+========
 guid: 77f01abb075e7964ab84d47f28ecb4b1
+>>>>>>>> main:Handy Dandy/Assets/Scenes/MvmtTestScene.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
