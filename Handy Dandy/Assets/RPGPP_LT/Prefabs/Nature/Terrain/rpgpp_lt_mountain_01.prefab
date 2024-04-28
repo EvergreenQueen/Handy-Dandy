@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4099890921740684}
   - component: {fileID: 33732981895488272}
   - component: {fileID: 23991852965333892}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: rpgpp_lt_mountain_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

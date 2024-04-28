@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4943765590059028}
   - component: {fileID: 33969442268109768}
   - component: {fileID: 23797300038975642}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: rpgpp_lt_terrain_sand_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
