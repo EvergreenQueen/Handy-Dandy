@@ -30,6 +30,8 @@ public class PlayerControls : MonoBehaviour
         pc = new PlayerActionControls();
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
+        pc.Movement.Click.Enable();
+        pc.Movement.Click.performed += _ => PickUp();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -144,4 +146,27 @@ public class PlayerControls : MonoBehaviour
 
 
     }
+
+    private void PickUp() {
+        Transform t = cam.GetComponent<Transform>();
+        Vector3 pos = t.position;
+        Vector3 dir = t.TransformDirection(Vector3.forward);
+        RaycastHit hit;
+
+        // 8: anything more than 8 tiles away is out of range (don't care)
+        // 7: layer 7, items
+        bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 8, 7);
+
+        if(!lookingAtObject)
+        {
+            Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
+            return; // ha ha
+        } 
+        Debug.Log("We picked up an object!!!");
+        string objName = hit.collider.gameObject.name; // name of the object we hit
+
+        // pick up an item, i guess???
+
+    }
 }
+
