@@ -20,7 +20,9 @@ public class PlayerControls : MonoBehaviour
     PlayerActionControls pc;
     Rigidbody rb;
     Camera cam;
-    
+
+    int itemLayerMask = 1 << 7; // huh.
+    GameObject leftHand = null, rightHand = null; // what either hand is carrying
     //Variables
     LayerMask isGround;
     float currentCamRotation = 0.0f;
@@ -31,6 +33,8 @@ public class PlayerControls : MonoBehaviour
         pc = new PlayerActionControls();
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
+        pc.Movement.Click.Enable();
+        pc.Movement.Click.performed += _ => PickUp();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -170,4 +174,27 @@ public class PlayerControls : MonoBehaviour
 
 
     }
+
+    private void PickUp() {
+        Transform t = cam.GetComponent<Transform>();
+        Vector3 pos = t.position;
+        Vector3 dir = t.TransformDirection(Vector3.forward);
+        RaycastHit hit;
+
+        // origin, direction, where to put the raycast, distance to cast, layer
+        bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
+        Debug.DrawRay(pos, dir, Color.red, 10);
+
+        if(!lookingAtObject)
+        {
+            Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
+            return; // ha ha
+        } 
+        Debug.Log("We picked up an object!!!");
+        leftHand = hit.collider.gameObject; // set the object being held
+
+        // pick up an item, i guess???
+
+    }
 }
+
