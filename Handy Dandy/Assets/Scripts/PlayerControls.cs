@@ -10,7 +10,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float floatingDistance = 1.5f;
     [SerializeField] float camSensX = 1.0f;
     [SerializeField] float camSensY = 1.0f;
-    // [SerializeField] float camDegLimit = 90.0f;
+    [SerializeField] float camDegLimit = 90.0f;
+    [SerializeField] float roomForError = 1.0f;
     [SerializeField] float timeScale = 1.0f;
 
     
@@ -19,10 +20,10 @@ public class PlayerControls : MonoBehaviour
     PlayerActionControls pc;
     Rigidbody rb;
     Camera cam;
-
+    
     //Variables
     LayerMask isGround;
-
+    float currentCamRotation = 0.0f;
 
     void Awake()
     {   
@@ -95,16 +96,36 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void moveCamera(){
-        Vector2 rawInput = pc.Movement.LookAround.ReadValue<Vector2>();
+        Vector2 rawInput = pc.Movement.LookAround.ReadValue<Vector2>(); //Moving up is pos, down is negative
+        Debug.Log(rawInput);
+        float verticalChange = -rawInput.y * camSensY;
 
         //Translating x direction to PLAYER y rotation
         transform.Rotate(0.0f, rawInput.x * camSensX, 0.0f, Space.Self);
 
         //Translating y direction to camera x rotation
-        cam.transform.Rotate(-rawInput.y * camSensY, 0.0f, 0.0f, Space.Self);
+        currentCamRotation += verticalChange;
+        Debug.Log("currentRotation: " + currentCamRotation);
+        if(currentCamRotation > camDegLimit + roomForError){
+            Debug.Log("too high");
+            verticalChange = camDegLimit - (currentCamRotation-verticalChange);
+            cam.transform.Rotate(verticalChange, 0.0f, 0.0f, Space.Self);
+            currentCamRotation = camDegLimit;
+
+        }else if(currentCamRotation < -camDegLimit - roomForError){
+            Debug.Log("too low");
+            verticalChange = -camDegLimit - (currentCamRotation-verticalChange);
+            cam.transform.Rotate(verticalChange, 0.0f, 0.0f, Space.Self); 
+            currentCamRotation = -camDegLimit;
+        }else{
+            cam.transform.Rotate(verticalChange, 0.0f, 0.0f, Space.Self);    
+        }
+        
 
 
-        float currentPitch = cam.transform.localEulerAngles.x;
+
+
+        // float currentPitch = cam.transform.localEulerAngles.x;
         // Debug.Log("Current Pitch: " + currentPitch);
         //For some reason 0/360 is the beginning angle which makes sense but it's also b/t -180 — +180??? on the documentation???
 
@@ -120,27 +141,32 @@ public class PlayerControls : MonoBehaviour
         //Dot the player "forward" and the camera forward. If it's negative, then it's too far.
         //Then, check if cam forward dot with Player up is postivie or negative, and adjust accordingly.
         
-        if(Vector3.Dot(cam.transform.forward,  transform.forward) < 0){ //If turnaround
-            Quaternion temp;
-            Vector3 rotation;
 
-            if(Vector3.Dot(cam.transform.forward, transform.up) >= 0){ //If too high
-                Debug.Log("Too High");
-                temp = Quaternion.FromToRotation(cam.transform.forward, transform.up);
-                rotation = temp.eulerAngles;
-                cam.transform.Rotate(new Vector3(rotation.x, 0.0f, 0.0f));
-                Debug.Log("Adjusting with: " + rotation.x);
-            }else{ //If too low
-                Debug.Log("Too low");
-                temp = Quaternion.FromToRotation(cam.transform.forward, -transform.up);
-                rotation = temp.eulerAngles;
-                cam.transform.Rotate(new Vector3(rotation.x, 0.0f, 0.0f));
-                Debug.Log("Adjusting with: " + rotation.x);
-            }
+        // Debug.DrawRay(cam.transform.position, cam.transform.forward, Color.red);
+        // if(Vector3.Dot(cam.transform.forward, transform.forward) < 0){ //If turnaround
+        //     Quaternion temp;
+        //     Vector3 rotation;
 
+        //     if(Vector3.Dot(cam.transform.forward, transform.up) > 0){ //If too high
+        //         Debug.Log("Too High");
+        //         temp = Quaternion.FromToRotation(cam.transform.forward, transform.up);
+        //         rotation = temp.eulerAngles;
+        //         // cam.transform.Rotate(new Vector3(rotation.x, 0.0f, 0.0f));
+        //         // transform.LookAt(transform.up);
+                
+        //         Debug.Log("Adjusting with: " + rotation);
+        //     }else{ //If too low
+        //         Debug.Log("Too low");
+        //         temp = Quaternion.FromToRotation(cam.transform.forward, -transform.up);
+        //         rotation = temp.eulerAngles;
+        //         // cam.transform.Rotate(new Vector3(rotation.x, 0.0f, 0.0f));
+        //         // transform.LookAt(-transform.up);
+        //         Debug.Log("Adjusting with: " + rotation);
+        //     }
 
-
-        }
+            
+        //     Debug.DrawRay(cam.transform.position, Quaternion.AngleAxis(rotation.x, cam.transform.right)*cam.transform.forward, Color.yellow);
+        // }
 
 
     }
