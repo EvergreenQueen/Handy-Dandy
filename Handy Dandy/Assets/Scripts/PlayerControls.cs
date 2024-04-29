@@ -67,6 +67,11 @@ public class PlayerControls : MonoBehaviour
         {
             ui.Idle();
         }
+        else
+        {
+            ui.Hold();
+            // spawn the stupid 3d item for the stupid hold ui
+        }
 
 
         // print("wtff");
@@ -201,14 +206,10 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
             return; // ha ha
         } 
-        Debug.Log("We picked up an object!!!");
         leftHand = hit.collider.gameObject; // set the object being held
+        Debug.Log("We picked up " + leftHand.name);
 
         // pick up an item, i guess???
 
     }
-
-    // private void setLooking(bool b) {
-    //     if(lookingAtObject == b)
-    // }
 }
