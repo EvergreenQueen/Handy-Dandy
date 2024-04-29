@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour
                 break;
             case State.Hold:
                 handsRenderer.sprite = baseHands[2];
+                break;
             default:
                 break;
         }

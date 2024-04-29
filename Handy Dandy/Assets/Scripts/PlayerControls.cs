@@ -13,14 +13,16 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float camDegLimit = 90.0f;
     [SerializeField] float roomForError = 1.0f;
     [SerializeField] float timeScale = 1.0f;
-
     
 
     //Objects
     PlayerActionControls pc;
     Rigidbody rb;
     Camera cam;
+    [SerializeField] UIManager ui;
 
+    bool lookingAtObject = false;    
+    RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
     GameObject leftHand = null, rightHand = null; // what either hand is carrying
     //Variables
@@ -50,6 +52,23 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Transform t = cam.GetComponent<Transform>();
+        Vector3 pos = t.position;       
+        Vector3 dir = t.TransformDirection(Vector3.forward);
+
+        // origin, direction, where to put the raycast, distance to cast, layer
+        lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
+        Debug.DrawRay(pos, dir, Color.red, 10);
+
+        if(lookingAtObject && leftHand == null) {
+            ui.Point();
+        }
+        else if(leftHand == null)
+        {
+            ui.Idle();
+        }
+
+
         // print("wtff");
         // Debug.Log("Doges this dogert");
         
@@ -176,15 +195,7 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void PickUp() {
-        Transform t = cam.GetComponent<Transform>();
-        Vector3 pos = t.position;
-        Vector3 dir = t.TransformDirection(Vector3.forward);
-        RaycastHit hit;
-
-        // origin, direction, where to put the raycast, distance to cast, layer
-        bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
-        Debug.DrawRay(pos, dir, Color.red, 10);
-
+        
         if(!lookingAtObject)
         {
             Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
@@ -196,5 +207,8 @@ public class PlayerControls : MonoBehaviour
         // pick up an item, i guess???
 
     }
-}
 
+    // private void setLooking(bool b) {
+    //     if(lookingAtObject == b)
+    // }
+}
