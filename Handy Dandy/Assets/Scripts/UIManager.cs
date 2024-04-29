@@ -10,10 +10,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image handsRenderer;
 
     [Header("SpriteLists")]
-    [SerializeField] List<Sprite> baseHands; //#0 is Idle, #1 is point;
+    [SerializeField] List<Sprite> baseHands; //#0 is Idle, #1 is point, #2 is hold;
 
     //Other vars
-    enum State{Idle, Point};
+    enum State{Idle, Point, Hold};
     State curState;
 
     void Awake(){
@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
         ChangeHands(State.Idle);
     }
 
+    public void Hold(){
+        ChangeHands(State.Hold);
+    }
+
     //Private:
     void ChangeHands(State incoming){
         //In case we need other logic before changing hands
@@ -40,6 +44,8 @@ public class UIManager : MonoBehaviour
             case State.Point:
                 handsRenderer.sprite = baseHands[1];
                 break;
+            case State.Hold:
+                handsRenderer.sprite = baseHands[2];
             default:
                 break;
         }
