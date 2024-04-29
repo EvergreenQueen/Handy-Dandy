@@ -10,6 +10,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float floatingDistance = 1.5f;
     [SerializeField] float camSensX = 1.0f;
     [SerializeField] float camSensY = 1.0f;
+    // [SerializeField] float camDegLimit = 90.0f;
+    [SerializeField] float timeScale = 1.0f;
 
     
 
@@ -17,6 +19,9 @@ public class PlayerControls : MonoBehaviour
     PlayerActionControls pc;
     Rigidbody rb;
     Camera cam;
+
+    int itemLayerMask = 1 << 7; // huh.
+    GameObject leftHand = null, rightHand = null; // what either hand is carrying
 
     //Variables
     LayerMask isGround;
@@ -28,6 +33,8 @@ public class PlayerControls : MonoBehaviour
         pc = new PlayerActionControls();
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
+        pc.Movement.Click.Enable();
+        pc.Movement.Click.performed += _ => PickUp();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -57,6 +64,7 @@ public class PlayerControls : MonoBehaviour
         //Movement and ground distance
         Move();
         checkGroundDist();
+        Time.timeScale = timeScale;
         
 
         //Camera Looking with Mouse:
@@ -93,14 +101,75 @@ public class PlayerControls : MonoBehaviour
 
     private void moveCamera(){
         Vector2 rawInput = pc.Movement.LookAround.ReadValue<Vector2>();
-        Debug.Log(rawInput);
-
 
         //Translating x direction to PLAYER y rotation
         transform.Rotate(0.0f, rawInput.x * camSensX, 0.0f, Space.Self);
 
-        //Translating y direction to camera z rotation
+        //Translating y direction to camera x rotation
         cam.transform.Rotate(-rawInput.y * camSensY, 0.0f, 0.0f, Space.Self);
+
+
+        float currentPitch = cam.transform.localEulerAngles.x;
+        // Debug.Log("Current Pitch: " + currentPitch);
+        //For some reason 0/360 is the beginning angle which makes sense but it's also b/t -180 — +180??? on the documentation???
+
+        //Checking head pitch angle (see pitch, yaw, roll)
+        // if(currentPitch > camDegLimit && currentPitch < 180.0f){
+        //     Debug.Log("Too high");
+        //     // cam.transform.Rotate(-(currentPitch - camDegLimit), 0.0f, 0.0f, Space.Self);
+        // }else if(currentPitch > 180.0f && currentPitch < 360.0f - camDegLimit){
+        //     Debug.Log("too Low");
+        //     // cam.transform.Rotate( (360.0f - camDegLimit) -currentPitch, 0.0f, 0.0f, Space.Self);
+        // }
+
+        //Dot the player "forward" and the camera forward. If it's negative, then it's too far.
+        //Then, check if cam forward dot with Player up is postivie or negative, and adjust accordingly.
+        
+        if(Vector3.Dot(cam.transform.forward,  transform.forward) < 0){ //If turnaround
+            Quaternion temp;
+            Vector3 rotation;
+
+            if(Vector3.Dot(cam.transform.forward, transform.up) >= 0){ //If too high
+                Debug.Log("Too High");
+                temp = Quaternion.FromToRotation(cam.transform.forward, transform.up);
+                rotation = temp.eulerAngles;
+                cam.transform.Rotate(new Vector3(rotation.x, 0.0f, 0.0f));
+                Debug.Log("Adjusting with: " + rotation.x);
+            }else{ //If too low
+                Debug.Log("Too low");
+                temp = Quaternion.FromToRotation(cam.transform.forward, -transform.up);
+                rotation = temp.eulerAngles;
+                cam.transform.Rotate(new Vector3(rotation.x, 0.0f, 0.0f));
+                Debug.Log("Adjusting with: " + rotation.x);
+            }
+
+
+
+        }
+
+
+    }
+
+    private void PickUp() {
+        Transform t = cam.GetComponent<Transform>();
+        Vector3 pos = t.position;
+        Vector3 dir = t.TransformDirection(Vector3.forward);
+        RaycastHit hit;
+
+        // origin, direction, where to put the raycast, distance to cast, layer
+        bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
+        Debug.DrawRay(pos, dir, Color.red, 10);
+
+        if(!lookingAtObject)
+        {
+            Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
+            return; // ha ha
+        } 
+        Debug.Log("We picked up an object!!!");
+        leftHand = hit.collider.gameObject; // set the object being held
+
+        // pick up an item, i guess???
 
     }
 }
+
