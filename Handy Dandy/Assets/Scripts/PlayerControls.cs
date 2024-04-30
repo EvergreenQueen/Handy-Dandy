@@ -15,15 +15,16 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float timeScale = 1.0f;
     [SerializeField] float sprintMult = 1.0f;
 
-    
-
     //Objects
     PlayerActionControls pc;
     Rigidbody rb;
     Camera cam;
+    [SerializeField] UIManager ui;
 
+    bool lookingAtObject = false;    
+    RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
-    GameObject leftHand = null, rightHand = null; // what either hand is carrying
+    GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
     float currentCamRotation = 0.0f;
@@ -35,10 +36,15 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.Enable();
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
-        pc.Movement.Click.Enable();
+        // pc.Movement.Click.Enable();
         pc.Movement.Click.performed += _ => PickUp();
         pc.Movement.Sprint.performed += _ => Sprint(true);
         pc.Movement.Sprint.canceled += _ => Sprint(false);
+        pc.Movement.LClick.Enable();
+        pc.Movement.RClick.Enable();
+
+        pc.Movement.LClick.performed += _ => PickUp();
+        pc.Movement.RClick.performed += _ => Drop();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -48,12 +54,53 @@ public class PlayerControls : MonoBehaviour
         Debug.Log(LayerMask.NameToLayer("Ground"));
         // isGround;
 
+        leftHand = rightHand = null;
+
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        Transform t = cam.GetComponent<Transform>();
+        Vector3 pos = t.position;
+        Vector3 dir = t.TransformDirection(Vector3.forward);
+
+        // origin, direction, where to put the raycast, distance to cast, layer
+        lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
+        Debug.DrawRay(pos, dir, Color.red, 10);
+
+        if(leftHand == null) {
+            Debug.Log("leftHand empty");
+            ui.Drop();
+            if(lookingAtObject) {
+                ui.Point();
+            }
+            else {
+                ui.Idle();
+            }
+        }
+        else {
+            ui.Hold();
+            if(leftHand.name == "Apple") {
+                ui.HoldApple();
+            }
+        }
+
+        // if(lookingAtObject && leftHand == null) {
+        //     ui.Point();
+        // }
+        // else if(leftHand == null)
+        // {
+        //     ui.Idle();
+        // }
+        // else
+        // {
+        //     ui.Hold();
+        //     // spawn the stupid 3d item for the stupid hold ui
+        // }
+
+
         // print("wtff");
         // Debug.Log("Doges this dogert");
         
@@ -134,22 +181,14 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void PickUp() {
-        Transform t = cam.GetComponent<Transform>();
-        Vector3 pos = t.position;
-        Vector3 dir = t.TransformDirection(Vector3.forward);
-        RaycastHit hit;
-
-        // origin, direction, where to put the raycast, distance to cast, layer
-        bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
-        Debug.DrawRay(pos, dir, Color.red, 10);
-
+        
         if(!lookingAtObject)
         {
             Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
             return; // ha ha
         } 
-        Debug.Log("We picked up an object!!!");
         leftHand = hit.collider.gameObject; // set the object being held
+        Debug.Log("We picked up " + leftHand.name);
 
         // pick up an item, i guess???
 
@@ -163,5 +202,7 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    private void Drop() {
+        
+    }
 }
-
