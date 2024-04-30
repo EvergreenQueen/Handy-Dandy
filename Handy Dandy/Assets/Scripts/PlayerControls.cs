@@ -24,7 +24,7 @@ public class PlayerControls : MonoBehaviour
     bool lookingAtObject = false;    
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
-    GameObject leftHand = null, rightHand = null; // what either hand is carrying
+    GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
     float currentCamRotation = 0.0f;
@@ -36,8 +36,9 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
         pc.Movement.LClick.Enable();
-        pc.Movement.LClick.performed += _ => PickUp();
         pc.Movement.RClick.Enable();
+
+        pc.Movement.LClick.performed += _ => PickUp();
         pc.Movement.RClick.performed += _ => Drop();
 
         rb = gameObject.GetComponent<Rigidbody>();
@@ -48,6 +49,8 @@ public class PlayerControls : MonoBehaviour
         Debug.Log(LayerMask.NameToLayer("Ground"));
         // isGround;
 
+        leftHand = rightHand = null;
+
     }
 
 
@@ -55,25 +58,42 @@ public class PlayerControls : MonoBehaviour
     void Update()
     {
         Transform t = cam.GetComponent<Transform>();
-        Vector3 pos = t.position;       
+        Vector3 pos = t.position;
         Vector3 dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
-        if(lookingAtObject && leftHand == null) {
-            ui.Point();
+        if(leftHand == null) {
+            Debug.Log("leftHand empty");
+            ui.Drop();
+            if(lookingAtObject) {
+                ui.Point();
+            }
+            else {
+                ui.Idle();
+            }
         }
-        else if(leftHand == null)
-        {
-            ui.Idle();
-        }
-        else
-        {
+        else {
             ui.Hold();
-            // spawn the stupid 3d item for the stupid hold ui
+            if(leftHand.name == "Apple") {
+                ui.HoldApple();
+            }
         }
+
+        // if(lookingAtObject && leftHand == null) {
+        //     ui.Point();
+        // }
+        // else if(leftHand == null)
+        // {
+        //     ui.Idle();
+        // }
+        // else
+        // {
+        //     ui.Hold();
+        //     // spawn the stupid 3d item for the stupid hold ui
+        // }
 
 
         // print("wtff");
