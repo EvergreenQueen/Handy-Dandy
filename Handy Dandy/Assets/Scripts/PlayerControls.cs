@@ -37,9 +37,11 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
         // pc.Movement.Click.Enable();
-        pc.Movement.Click.performed += _ => PickUp();
+        // pc.Movement.Click.performed += _ => PickUp();
         pc.Movement.Sprint.performed += _ => Sprint(true);
         pc.Movement.Sprint.canceled += _ => Sprint(false);
+
+
         pc.Movement.LClick.Enable();
         pc.Movement.RClick.Enable();
 
@@ -203,6 +205,7 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void Drop() {
-        
+        leftHand = null;
+        ui.Idle();  
     }
 }
