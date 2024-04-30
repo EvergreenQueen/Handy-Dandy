@@ -46,9 +46,18 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Click"",
+                    ""name"": ""LClick"",
                     ""type"": ""Button"",
                     ""id"": ""cdf95831-f0a9-409a-99e0-662de137eaf9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""7981cd02-07ab-4f04-80f8-c87eb1662788"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -129,7 +138,18 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Click"",
+                    ""action"": ""LClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf64d4c1-b947-43ff-8f05-9f1e4f6338e9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -148,7 +168,8 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_WASD = m_Movement.FindAction("WASD", throwIfNotFound: true);
         m_Movement_LookAround = m_Movement.FindAction("LookAround", throwIfNotFound: true);
-        m_Movement_Click = m_Movement.FindAction("Click", throwIfNotFound: true);
+        m_Movement_LClick = m_Movement.FindAction("LClick", throwIfNotFound: true);
+        m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -212,14 +233,16 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_Movement_WASD;
     private readonly InputAction m_Movement_LookAround;
-    private readonly InputAction m_Movement_Click;
+    private readonly InputAction m_Movement_LClick;
+    private readonly InputAction m_Movement_RClick;
     public struct MovementActions
     {
         private @PlayerActionControls m_Wrapper;
         public MovementActions(@PlayerActionControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @WASD => m_Wrapper.m_Movement_WASD;
         public InputAction @LookAround => m_Wrapper.m_Movement_LookAround;
-        public InputAction @Click => m_Wrapper.m_Movement_Click;
+        public InputAction @LClick => m_Wrapper.m_Movement_LClick;
+        public InputAction @RClick => m_Wrapper.m_Movement_RClick;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -235,9 +258,12 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @LookAround.started += instance.OnLookAround;
             @LookAround.performed += instance.OnLookAround;
             @LookAround.canceled += instance.OnLookAround;
-            @Click.started += instance.OnClick;
-            @Click.performed += instance.OnClick;
-            @Click.canceled += instance.OnClick;
+            @LClick.started += instance.OnLClick;
+            @LClick.performed += instance.OnLClick;
+            @LClick.canceled += instance.OnLClick;
+            @RClick.started += instance.OnRClick;
+            @RClick.performed += instance.OnRClick;
+            @RClick.canceled += instance.OnRClick;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -248,9 +274,12 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @LookAround.started -= instance.OnLookAround;
             @LookAround.performed -= instance.OnLookAround;
             @LookAround.canceled -= instance.OnLookAround;
-            @Click.started -= instance.OnClick;
-            @Click.performed -= instance.OnClick;
-            @Click.canceled -= instance.OnClick;
+            @LClick.started -= instance.OnLClick;
+            @LClick.performed -= instance.OnLClick;
+            @LClick.canceled -= instance.OnLClick;
+            @RClick.started -= instance.OnRClick;
+            @RClick.performed -= instance.OnRClick;
+            @RClick.canceled -= instance.OnRClick;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -281,6 +310,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
     {
         void OnWASD(InputAction.CallbackContext context);
         void OnLookAround(InputAction.CallbackContext context);
-        void OnClick(InputAction.CallbackContext context);
+        void OnLClick(InputAction.CallbackContext context);
+        void OnRClick(InputAction.CallbackContext context);
     }
 }

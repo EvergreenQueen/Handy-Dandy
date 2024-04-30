@@ -35,8 +35,10 @@ public class PlayerControls : MonoBehaviour
         pc = new PlayerActionControls();
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
-        pc.Movement.Click.Enable();
-        pc.Movement.Click.performed += _ => PickUp();
+        pc.Movement.LClick.Enable();
+        pc.Movement.LClick.performed += _ => PickUp();
+        pc.Movement.RClick.Enable();
+        pc.Movement.RClick.performed += _ => Drop();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -211,5 +213,9 @@ public class PlayerControls : MonoBehaviour
 
         // pick up an item, i guess???
 
+    }
+
+    private void Drop() {
+        
     }
 }
