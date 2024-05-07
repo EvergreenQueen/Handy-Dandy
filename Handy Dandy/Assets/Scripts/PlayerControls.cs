@@ -190,6 +190,8 @@ public class PlayerControls : MonoBehaviour
             return; // ha ha
         } 
         leftHand = hit.collider.gameObject; // set the object being held
+        // Destroy(hit.collider.gameObject);
+        leftHand.SetActive(false);
         Debug.Log("We picked up " + leftHand.name);
 
         // pick up an item, i guess???
@@ -205,6 +207,9 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void Drop() {
+        leftHand.SetActive(true);
+        Transform t1 = cam.GetComponent<Transform>();
+        leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
         leftHand = null;
         ui.Idle();  
     }
