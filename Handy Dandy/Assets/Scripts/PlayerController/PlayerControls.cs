@@ -22,10 +22,14 @@ public class PlayerControls : MonoBehaviour
     Rigidbody rb;
     CapsuleCollider capsuleCollider;
     Camera cam;
+    [SerializeField] UIManager ui;
 
+    bool lookingAtObject = false;    
+    RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
     GameObject leftHand = null, rightHand = null; // what either hand is carrying
 
+    GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
     float currentCamRotation = 0.0f;
@@ -41,11 +45,18 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.WASD.Enable();
         pc.Movement.WASD.canceled += _ => Stop();
         pc.Movement.LookAround.Enable();
-        pc.Movement.Click.Enable();
-        pc.Movement.Click.performed += _ => PickUp();
+        // pc.Movement.Click.Enable();
+        // pc.Movement.Click.performed += _ => PickUp();
         pc.Movement.Sprint.performed += _ => Sprint(true);
         pc.Movement.Sprint.canceled += _ => Sprint(false);
         pc.Movement.Jump.performed += _ => Jump();
+
+
+        pc.Movement.LClick.Enable();
+        pc.Movement.RClick.Enable();
+
+        pc.Movement.LClick.performed += _ => PickUp();
+        pc.Movement.RClick.performed += _ => Drop();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -54,6 +65,11 @@ public class PlayerControls : MonoBehaviour
 
         isGround = 1 <<  LayerMask.NameToLayer("Ground");
         
+        Debug.Log(LayerMask.NameToLayer("Ground"));
+        // isGround;
+
+        leftHand = rightHand = null;
+
     }
 
     // Update is called once per frame
@@ -71,6 +87,49 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("Not Grounded");
 
         }
+        Transform t = cam.GetComponent<Transform>();
+        Vector3 pos = t.position;
+        Vector3 dir = t.TransformDirection(Vector3.forward);
+
+        // origin, direction, where to put the raycast, distance to cast, layer
+        lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
+        Debug.DrawRay(pos, dir, Color.red, 10);
+
+        if(leftHand == null) {
+            Debug.Log("leftHand empty");
+            ui.Drop();
+            if(lookingAtObject) {
+                ui.Point();
+            }
+            else {
+                ui.Idle();
+            }
+        }
+        else {
+            ui.Hold();
+            if(leftHand.name == "Apple") {
+                ui.HoldApple();
+            }
+        }
+
+        // if(lookingAtObject && leftHand == null) {
+        //     ui.Point();
+        // }
+        // else if(leftHand == null)
+        // {
+        //     ui.Idle();
+        // }
+        // else
+        // {
+        //     ui.Hold();
+        //     // spawn the stupid 3d item for the stupid hold ui
+        // }
+
+
+        // print("wtff");
+        // Debug.Log("Doges this dogert");
+        
+        // checkGroundDist();
     }
 
     void FixedUpdate()
@@ -160,6 +219,7 @@ public class PlayerControls : MonoBehaviour
         bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
         //Debug.DrawRay(pos, dir, Color.red, 10);
 
+        
         if(!lookingAtObject)
         {
             //Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
@@ -167,6 +227,9 @@ public class PlayerControls : MonoBehaviour
         } 
         //Debug.Log("We picked up an object!!!");
         leftHand = hit.collider.gameObject; // set the object being held
+        // Destroy(hit.collider.gameObject);
+        leftHand.SetActive(false);
+        Debug.Log("We picked up " + leftHand.name);
 
         // pick up an item, i guess???
 
@@ -187,5 +250,12 @@ public class PlayerControls : MonoBehaviour
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
     }
+    
+    private void Drop() {
+        leftHand.SetActive(true);
+        Transform t1 = cam.GetComponent<Transform>();
+        leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+        leftHand = null;
+        ui.Idle();  
+    }
 }
-
