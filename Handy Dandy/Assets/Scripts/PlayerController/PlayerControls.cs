@@ -16,7 +16,6 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float timeScale = 1.0f;
     [SerializeField] float sprintMult = 1.0f;
     [SerializeField] float jumpPower = 5.0f;
-    [SerializeField] float maxSlopeAngle = 60f;
 
     //Objects
     PlayerActionControls pc;
@@ -78,7 +77,12 @@ public class PlayerControls : MonoBehaviour
     {
 
         //Vector3 gravity = new Vector3(0, grav, 0);
-        
+
+        if (!isGrounded)
+        {
+            rb.AddForce(Physics.gravity * grav, ForceMode.Acceleration);
+        }
+
         //Movement and ground distance
         Move();
         //checkGroundDist();
@@ -97,7 +101,7 @@ public class PlayerControls : MonoBehaviour
             Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, isGround);
             Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
             input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
-            rb.velocity += Vector3.ClampMagnitude(input.normalized * speed, speed);
+            rb.transform.position += input.normalized * speed;
         }
     }
 
