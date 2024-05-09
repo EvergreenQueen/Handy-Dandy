@@ -3290,7 +3290,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9156375337366780381, guid: 2880dcea063ad6647894f0c7d8541898, type: 3}
       propertyPath: m_Name
-      value: QuestGuy1
+      value: AppleKid
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
