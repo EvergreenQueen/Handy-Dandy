@@ -67,6 +67,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1121147343487467084, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7043047021879090984}
+    - targetCorrespondingSourceObject: {fileID: 1121147343487467084, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7632926627536472554}
   m_SourcePrefab: {fileID: 100100000, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
 --- !u!1 &3191348478482445832 stripped
 GameObject:
@@ -123,3 +126,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3191348478482445832}
   m_Mesh: {fileID: 4300016, guid: 3f4d2118f6a772542a1635ef5bfa6982, type: 3}
+--- !u!114 &-7632926627536472554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3191348478482445832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba46325fc6ea97149a48264d29538c3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Apple
+  tags: 03000000
+  description: The pride of Apple Orchard Valley.

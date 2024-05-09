@@ -4367,6 +4367,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4070702225171862584, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
+      propertyPath: sprintMult
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4070702225171862584, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
       propertyPath: overCorrection
       value: 1
       objectReference: {fileID: 0}
