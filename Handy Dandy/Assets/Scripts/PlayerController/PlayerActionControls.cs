@@ -76,9 +76,15 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""name"": ""LClick"",
                     ""type"": ""Button"",
                     ""id"": ""3beebd90-10c9-42bb-b844-77fa0b9ec5da"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
-                    ""id"": ""78006872-b4d1-42c2-8b69-9e9952dd1c7b"",
+                    ""id"": ""1d750c7e-5c11-460b-af42-8a56199f7ea1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -193,7 +199,12 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LClick"",
-                    ""id"": ""3e4982aa-a879-4bc1-b586-2ed1d0ca382c"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""822ebca4-c0e8-4b87-85f6-101a447fc91b"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
