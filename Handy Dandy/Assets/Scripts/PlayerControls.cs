@@ -21,13 +21,21 @@ public class PlayerControls : MonoBehaviour
     Camera cam;
     [SerializeField] UIManager ui;
 
+    Transform t;
+    Vector3 pos;
+    Vector3 dir;
+
     bool lookingAtObject = false;    
+    bool lookingAtNPC = false;
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
+    int NPCLayerMask = 1 << 8; //npc npc npc
     GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
     float currentCamRotation = 0.0f;
+
+
 
     void Awake()
     {   
@@ -36,6 +44,7 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.Enable();
         pc.Movement.WASD.Enable();
         pc.Movement.LookAround.Enable();
+        pc.Movement.E.Enable(); //enabling E for character interaction?
         // pc.Movement.Click.Enable();
         // pc.Movement.Click.performed += _ => PickUp();
         pc.Movement.Sprint.performed += _ => Sprint(true);
@@ -57,20 +66,19 @@ public class PlayerControls : MonoBehaviour
         // isGround;
 
         leftHand = rightHand = null;
-
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        Transform t = cam.GetComponent<Transform>();
-        Vector3 pos = t.position;
-        Vector3 dir = t.TransformDirection(Vector3.forward);
+        t = cam.GetComponent<Transform>();
+        pos = t.position;
+        dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
-        Debug.DrawRay(pos, dir, Color.red, 10);
+        //Debug.DrawRay(pos, dir, Color.red, 10);
 
         if(leftHand == null) {
             Debug.Log("leftHand empty");
@@ -102,6 +110,7 @@ public class PlayerControls : MonoBehaviour
         //     // spawn the stupid 3d item for the stupid hold ui
         // }
 
+        lookingAtNPC = Physics.Raycast(pos, dir, out hit, 1000, NPCLayerMask);
 
         // print("wtff");
         // Debug.Log("Doges this dogert");
@@ -123,6 +132,16 @@ public class PlayerControls : MonoBehaviour
         //Camera Looking with Mouse:
         moveCamera();
         
+    }
+
+    private void OnTriggerStay(Collider target) {
+
+        //getting ready to Interact with the NPC
+        if(target.tag == "NPC") {
+            if (lookingAtNPC) {
+                Debug.DrawRay(pos, dir, Color.blue, 10);
+            }
+        }
     }
 
     private void Move(){  
@@ -195,6 +214,11 @@ public class PlayerControls : MonoBehaviour
         Debug.Log("We picked up " + leftHand.name);
 
         // pick up an item, i guess???
+
+    }
+
+    //come on and interact with that hot NPC with E
+    private void InteractionWithNPC() {
 
     }
 
