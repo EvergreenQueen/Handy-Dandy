@@ -11,19 +11,25 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] float duration;
     [SerializeField] float delay;
 
-    void OnTriggerEnter()
+    void OnCollisionEnter()
     {
         if(easeType == LeanTweenType.animationCurve)
         {
-            LeanTween.moveY(tweening_Object, distance, duration).setLoopPingPong().setEase(curve);
+            LeanTween.moveLocalY(tweening_Object, distance, duration).setDelay(delay).setLoopPingPong().setEase(curve);
         }
         else
         {
-            LeanTween.moveY(tweening_Object, distance, duration).setDelay(delay).setLoopPingPong().setEase(easeType);
+            LeanTween.moveLocalY(tweening_Object, distance, duration).setDelay(delay).setLoopPingPong().setEase(easeType);
         }
     }
 
-    private void OnTriggerExit()
+    void OnCollisionExit()
+    {
+        LeanTween.cancel(tweening_Object);
+        tweening_Object.gameObject.transform.localPosition = Vector3.zero;
+    }
+
+    private void OnDisable()
     {
         LeanTween.cancel(tweening_Object);
         tweening_Object.gameObject.transform.localPosition = Vector3.zero;

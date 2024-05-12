@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,7 +8,7 @@ public class PlayerControls : MonoBehaviour
 {
     [Header("Variables")]
     [SerializeField] float speed = 1.0f;
-    [SerializeField] float grav = -9.81f;
+    [SerializeField] float grav = 1;
     [SerializeField] float groundCheckDistance = .3f;
     [SerializeField] float camSensX = 1.0f;
     [SerializeField] float camSensY = 1.0f;
@@ -16,7 +17,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float timeScale = 1.0f;
     [SerializeField] float sprintMult = 1.0f;
     [SerializeField] float jumpPower = 5.0f;
-    [SerializeField] float maxSlopeAngle = 60f;
+    [SerializeField] static int inventorySize = 10;
 
     //Objects
     PlayerActionControls pc;
@@ -36,6 +37,11 @@ public class PlayerControls : MonoBehaviour
     float slopeAngle;
     float playerheight;
     RaycastHit slopeHit;
+    Stack rightHandInventory = new Stack(inventorySize);
+    Stack leftHandInventory = new Stack(inventorySize);
+    int currentInventoryCapacity = 5;
+    int amountOfItemsHeld = 0;
+    string appleRegex = @"Apple.*";
 
     void Awake()
     {   
@@ -61,8 +67,10 @@ public class PlayerControls : MonoBehaviour
         cam = GetComponentInChildren<Camera>();
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         playerheight = capsuleCollider.height;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
         isGround = 1 <<  LayerMask.NameToLayer("Ground");
+        
         Debug.Log(LayerMask.NameToLayer("Ground"));
         // isGround;
 
@@ -73,6 +81,15 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // playerheight / 2 = bottom of capsule since transform is at exact center
+        if (Physics.Raycast(transform.position, Vector3.down, (playerheight / 2) + groundCheckDistance))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
         Transform t = cam.GetComponent<Transform>();
         Vector3 pos = t.position;
         Vector3 dir = t.TransformDirection(Vector3.forward);
@@ -82,7 +99,7 @@ public class PlayerControls : MonoBehaviour
         Debug.DrawRay(pos, dir, Color.red, 10);
 
         if(leftHand == null) {
-            Debug.Log("leftHand empty");
+            // Debug.Log("leftHand empty");
             ui.Drop();
             if(lookingAtObject) {
                 ui.Point();
@@ -93,7 +110,7 @@ public class PlayerControls : MonoBehaviour
         }
         else {
             ui.Hold();
-            if(leftHand.name == "Apple") {
+            if(Regex.Match(leftHand.name, appleRegex).Success){
                 ui.HoldApple();
             }
         }
@@ -116,25 +133,18 @@ public class PlayerControls : MonoBehaviour
         // Debug.Log("Doges this dogert");
         
         // checkGroundDist();
-        // playerheight / 2 = bottom of capsule since transform is at exact center
-        if (Physics.Raycast(transform.position, Vector3.down, (playerheight / 2) + groundCheckDistance))
-        {
-            isGrounded = true;
-            Debug.Log("Grounded");
-        }
-        else
-        {
-            isGrounded = false;
-            Debug.Log("Not Grounded");
-
-        }
     }
 
     void FixedUpdate()
     {
 
         //Vector3 gravity = new Vector3(0, grav, 0);
-        
+
+        if (!isGrounded)
+        {
+            rb.AddForce(Physics.gravity * grav, ForceMode.Acceleration);
+        }
+
         //Movement and ground distance
         Move();
         //checkGroundDist();
@@ -153,7 +163,7 @@ public class PlayerControls : MonoBehaviour
             Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, isGround);
             Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
             input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
-            rb.velocity += Vector3.ClampMagnitude(input.normalized * speed, speed);
+            rb.transform.position += input.normalized * speed;
         }
     }
 
@@ -197,25 +207,42 @@ public class PlayerControls : MonoBehaviour
         }else{
             cam.transform.Rotate(verticalChange, 0.0f, 0.0f, Space.Self);    
         }
-        
-
-
     }
 
     private void PickUp() {
-        
-        if(!lookingAtObject)
+        if (amountOfItemsHeld < currentInventoryCapacity)
         {
-            //Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
-            return; // ha ha
-        } 
-        leftHand = hit.collider.gameObject; // set the object being held
-        // Destroy(hit.collider.gameObject);
-        leftHand.SetActive(false);
-        Debug.Log("We picked up " + leftHand.name);
+            Transform t = cam.GetComponent<Transform>();
+            Vector3 pos = t.position;
+            Vector3 dir = t.TransformDirection(Vector3.forward);
+            RaycastHit hit;
 
-        // pick up an item, i guess???
+            // origin, direction, where to put the raycast, distance to cast, layer
+            bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
+            //Debug.DrawRay(pos, dir, Color.red, 10);
 
+
+            if (!lookingAtObject)
+            {
+                //Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
+                return; // ha ha
+            }
+            //Debug.Log("We picked up an object!!!");
+            amountOfItemsHeld++;
+            if (amountOfItemsHeld > 1)
+            {
+                leftHandInventory.Push(leftHand);
+            }
+            leftHand = hit.collider.gameObject; // set the object being held
+                                                // Destroy(hit.collider.gameObject);
+            leftHand.SetActive(false);
+            Debug.Log("We picked up " + leftHand.name);
+            // pick up an item, i guess???
+        }
+        else
+        {
+            Debug.Log("Can't pick up anymore items!");
+        }
     }
 
     void Sprint(bool b){
@@ -226,18 +253,32 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    private void Drop() {
-        leftHand.SetActive(true);
-        Transform t1 = cam.GetComponent<Transform>();
-        leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-        leftHand = null;
-        ui.Idle();  
-    }
     void Jump()
     {
         if (isGrounded)
         {
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        }
+    }
+    
+    private void Drop() {
+        if (amountOfItemsHeld > 0)
+        {
+            Transform t1 = cam.GetComponent<Transform>();
+            leftHand.SetActive(true);
+            leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+            Debug.Log("We dropped " + leftHand.name);
+            if (amountOfItemsHeld == 1)
+            {
+                leftHand = null;
+                ui.Idle();
+                amountOfItemsHeld--;
+            }
+            else if (amountOfItemsHeld > 1)
+            {
+                leftHand = (GameObject)leftHandInventory.Pop();
+                amountOfItemsHeld--;
+            }
         }
     }
 }
