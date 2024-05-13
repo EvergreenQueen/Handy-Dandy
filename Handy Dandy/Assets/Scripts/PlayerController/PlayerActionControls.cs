@@ -89,6 +89,15 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchHand"",
+                    ""type"": ""Button"",
+                    ""id"": ""f331f97a-2c40-431e-b93a-f3e4e9bcc34f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""action"": ""RClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aac05451-2974-492c-afad-ba02bffbc2b1"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchHand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -233,6 +253,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
         m_Movement_LClick = m_Movement.FindAction("LClick", throwIfNotFound: true);
         m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
+        m_Movement_SwitchHand = m_Movement.FindAction("SwitchHand", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -301,6 +322,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Jump;
     private readonly InputAction m_Movement_LClick;
     private readonly InputAction m_Movement_RClick;
+    private readonly InputAction m_Movement_SwitchHand;
     public struct MovementActions
     {
         private @PlayerActionControls m_Wrapper;
@@ -312,6 +334,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Movement_Jump;
         public InputAction @LClick => m_Wrapper.m_Movement_LClick;
         public InputAction @RClick => m_Wrapper.m_Movement_RClick;
+        public InputAction @SwitchHand => m_Wrapper.m_Movement_SwitchHand;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -342,6 +365,9 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @RClick.started += instance.OnRClick;
             @RClick.performed += instance.OnRClick;
             @RClick.canceled += instance.OnRClick;
+            @SwitchHand.started += instance.OnSwitchHand;
+            @SwitchHand.performed += instance.OnSwitchHand;
+            @SwitchHand.canceled += instance.OnSwitchHand;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -367,6 +393,9 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @RClick.started -= instance.OnRClick;
             @RClick.performed -= instance.OnRClick;
             @RClick.canceled -= instance.OnRClick;
+            @SwitchHand.started -= instance.OnSwitchHand;
+            @SwitchHand.performed -= instance.OnSwitchHand;
+            @SwitchHand.canceled -= instance.OnSwitchHand;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -402,5 +431,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnLClick(InputAction.CallbackContext context);
         void OnRClick(InputAction.CallbackContext context);
+        void OnSwitchHand(InputAction.CallbackContext context);
     }
 }
