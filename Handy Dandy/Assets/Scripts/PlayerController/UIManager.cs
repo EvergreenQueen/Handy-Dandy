@@ -25,16 +25,16 @@ public class UIManager : MonoBehaviour
 
     //Other vars
     enum State{Idle, Point, Hold};
-    enum Item{None, Apple};
+    // enum Item{None, Apple};
 
     State currStateLeft;
     State currStateRight;
-    Item itemLeft;
-    Item itemRight;
+    // Item itemLeft;
+    // Item itemRight;
 
     void Awake(){
         currStateLeft = currStateRight = State.Idle; //First one!
-        itemLeft = itemRight = Item.None;
+        // itemLeft = itemRight = Item.None;
     }
 
     //public methods:
@@ -88,18 +88,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Drop(PlayerControls.hand h){ HoldItem(h, Item.None); }
-    public void HoldApple(PlayerControls.hand h){ HoldItem(h, Item.Apple); }
+    public void Drop(PlayerControls.hand h){ HoldItem(h, GlobalVars.PickableItems.None); }
+    // public void HoldApple(PlayerControls.hand h){ HoldItem(h, Item.Apple); }
 
-    void HoldItem(PlayerControls.hand h, Item item){
+    public void HoldItem(PlayerControls.hand h, GlobalVars.PickableItems itemType){
         // i thought enums were stand-ins for numbers? maybe we could do it without switch case?
         if(h == PlayerControls.hand.Left)
         {
-            switch(item){
-                case Item.None:
+            switch(itemType){
+                case GlobalVars.PickableItems.None:
                     itemRendererLeft.sprite = baseItems[0];
                     break;
-                case Item.Apple:
+                case GlobalVars.PickableItems.Apple:
                     itemRendererLeft.sprite = baseItems[1];
                     break;
                 default:
@@ -108,11 +108,11 @@ public class UIManager : MonoBehaviour
         }
         else if(h == PlayerControls.hand.Right)
         {
-            switch(item){
-                case Item.None:
+            switch(itemType){
+                case GlobalVars.PickableItems.None:
                     itemRendererRight.sprite = baseItems[0];
                     break;
-                case Item.Apple:
+                case GlobalVars.PickableItems.Apple:
                     itemRendererRight.sprite = baseItems[1];
                     break;
                 default:
