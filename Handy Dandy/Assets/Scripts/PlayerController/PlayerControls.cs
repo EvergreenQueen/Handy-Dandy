@@ -105,7 +105,7 @@ public class PlayerControls : MonoBehaviour
 
         if(leftHand == null) { ui.Idle(hand.Left); ui.Drop(hand.Left); }
         if(rightHand == null) { ui.Idle(hand.Right); ui.Drop(hand.Right); }
-        if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // long code lmfao
+        if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // If controlling hand is empty...
         {
             // if the controlling hand is empty
             if(lookingAtObject) {
@@ -115,42 +115,21 @@ public class PlayerControls : MonoBehaviour
                 ui.Idle(controllingHand);
             }
         }
-        else
+        else //Else if holding something
         {
-            ui.Hold(controllingHand);
+            ui.Hold(controllingHand); //Changes to holding.
 
             if(controllingHand == hand.Left)
             {
-                if(Regex.Match(leftHand.name, appleRegex).Success){
-                    ui.HoldApple(controllingHand);
-                }
+                ui.HoldItem(controllingHand, leftHand.GetComponent<ItemIdentification>().itemType);
             }
             else if(controllingHand == hand.Right)
             {
-                if(Regex.Match(rightHand.name, appleRegex).Success){
-                    ui.HoldApple(controllingHand);
-                }
+                ui.HoldItem(controllingHand, rightHand.GetComponent<ItemIdentification>().itemType);
             }
         }
 
-        // if(lookingAtObject && leftHand == null) {
-        //     ui.Point();
-        // }
-        // else if(leftHand == null)
-        // {
-        //     ui.Idle();
-        // }
-        // else
-        // {
-        //     ui.Hold();
-        //     // spawn the stupid 3d item for the stupid hold ui
-        // }
-
-
-        // print("wtff");
-        // Debug.Log("Doges this dogert");
-        
-        // checkGroundDist();
+       
     }
 
     void FixedUpdate()

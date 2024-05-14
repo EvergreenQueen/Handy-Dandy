@@ -8,4 +8,6 @@ public class ItemIdentification : MonoBehaviour
     [SerializeField] string name;
     [SerializeField] ListOfPossibleTags[] tags;
     [SerializeField] string description;
+
+    public GlobalVars.PickableItems itemType;
 }
