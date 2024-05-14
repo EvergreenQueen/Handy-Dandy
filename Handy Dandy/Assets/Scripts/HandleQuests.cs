@@ -8,15 +8,15 @@ public static class HandleQuests
     public static InMemoryVariableStorage varStore;
     public static DialogueRunner dialogueRunner;
     public static YarnProject charaDialogue;
-    public static GameObject player;
+    public static PlayerControls player;
     public static int currQuest = 0;
-    public static int[] completedQuests;
+    public static List<int> completedQuests = new List<int>();
     public static bool questCompleted = false;
     public static bool alreadyCompleted = false;
 
     [YarnCommand("switch_project")]
     public static void SwitchProject(){
-        Debug.Log("Changed project"); //this works
+        Debug.Log("Changed project to: "+charaDialogue); //this works
         dialogueRunner.SetProject(charaDialogue);
     }
 
@@ -31,7 +31,7 @@ public static class HandleQuests
     public static void CheckQuestCompletion(){
         if(CheckIfQuestComplete(currQuest)){
             questCompleted = true;
-            completedQuests.Push(currQuest);
+            completedQuests.Add(currQuest);
         }
     }
 
@@ -42,7 +42,7 @@ public static class HandleQuests
 
     [YarnCommand("see_if_already_completed")]
     public static void SeeIfAlreadyCompleted(int whatQuest){
-        for(int i = 0; i < completedQuests.Length; ++i){
+        for(int i = 0; i < completedQuests.Count; ++i){
             if(completedQuests[i] == whatQuest){
                 alreadyCompleted = true;
             }

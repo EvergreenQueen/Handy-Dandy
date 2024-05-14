@@ -81,6 +81,7 @@ public class PlayerControls : MonoBehaviour
 
         leftHand = rightHand = null;
 
+        HandleQuests.player = this;
     }
 
     // Update is called once per frame

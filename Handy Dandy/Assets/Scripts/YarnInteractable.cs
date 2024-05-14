@@ -6,7 +6,7 @@ using Yarn.Unity;
 public class YarnInteractable : MonoBehaviour {
     // internal properties exposed to editor
     [SerializeField] private string conversationStartNode;
-
+    [SerializeField] public YarnProject yarnProject;
     public static YarnInteractable Instance {get; private set;}
 
     // internal properties not exposed to editor
@@ -39,6 +39,11 @@ public class YarnInteractable : MonoBehaviour {
             defaultIndicatorIntensity = lightIndicatorObject.intensity;
             lightIndicatorObject.intensity = 0;
         }
+
+        // now trying this function to pass in everything to HandleQuests
+        HandleQuests.dialogueRunner = dialogueRunner;
+        HandleQuests.varStore = dialogueRunner.GetComponent<InMemoryVariableStorage>();
+        HandleQuests.charaDialogue = yarnProject;
     }
 
     public void StartNPCDialogue(string whoTalkingTo) {
