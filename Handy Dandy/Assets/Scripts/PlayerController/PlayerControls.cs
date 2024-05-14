@@ -29,6 +29,10 @@ public class PlayerControls : MonoBehaviour
     bool lookingAtObject = false;    
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
+
+    public enum hand{Left, Right};
+    hand controllingHand = hand.Left;
+
     GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
@@ -62,6 +66,7 @@ public class PlayerControls : MonoBehaviour
 
         pc.Movement.LClick.performed += _ => PickUp();
         pc.Movement.RClick.performed += _ => Drop();
+        pc.Movement.SwitchHand.performed += _ => SwitchHand();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -98,20 +103,33 @@ public class PlayerControls : MonoBehaviour
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
-        if(leftHand == null) {
-            // Debug.Log("leftHand empty");
-            ui.Drop();
+        if(leftHand == null) { ui.Idle(hand.Left); ui.Drop(hand.Left); }
+        if(rightHand == null) { ui.Idle(hand.Right); ui.Drop(hand.Right); }
+        if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // long code lmfao
+        {
+            // if the controlling hand is empty
             if(lookingAtObject) {
-                ui.Point();
+                ui.Point(controllingHand);
             }
             else {
-                ui.Idle();
+                ui.Idle(controllingHand);
             }
         }
-        else {
-            ui.Hold();
-            if(Regex.Match(leftHand.name, appleRegex).Success){
-                ui.HoldApple();
+        else
+        {
+            ui.Hold(controllingHand);
+
+            if(controllingHand == hand.Left)
+            {
+                if(Regex.Match(leftHand.name, appleRegex).Success){
+                    ui.HoldApple(controllingHand);
+                }
+            }
+            else if(controllingHand == hand.Right)
+            {
+                if(Regex.Match(rightHand.name, appleRegex).Success){
+                    ui.HoldApple(controllingHand);
+                }
             }
         }
 
@@ -231,12 +249,24 @@ public class PlayerControls : MonoBehaviour
             amountOfItemsHeld++;
             if (amountOfItemsHeld > 1)
             {
-                leftHandInventory.Push(leftHand);
+                if(controllingHand == hand.Left) leftHandInventory.Push(leftHand);
+                else if(controllingHand == hand.Right) rightHandInventory.Push(rightHand);
             }
-            leftHand = hit.collider.gameObject; // set the object being held
-                                                // Destroy(hit.collider.gameObject);
-            leftHand.SetActive(false);
-            Debug.Log("We picked up " + leftHand.name);
+
+            if(controllingHand == hand.Left)
+            {
+                leftHand = hit.collider.gameObject; // set the object being held
+                                                    // Destroy(hit.collider.gameObject);
+                leftHand.SetActive(false);
+                Debug.Log("We picked up " + leftHand.name);
+            }
+            else if(controllingHand == hand.Right)
+            {
+                rightHand = hit.collider.gameObject; // set the object being held
+                                                    // Destroy(hit.collider.gameObject);
+                rightHand.SetActive(false);
+                Debug.Log("We picked up " + rightHand.name);
+            }
             // pick up an item, i guess???
         }
         else
@@ -270,15 +300,32 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("We dropped " + leftHand.name);
             if (amountOfItemsHeld == 1)
             {
-                leftHand = null;
-                ui.Idle();
+                if(controllingHand == hand.Left) { leftHand = null; }
+                else if(controllingHand == hand.Right) { rightHand = null; }
+
+                ui.Idle(controllingHand); // dont know if needed since UI changes in update() but imma leave this here -ruth
                 amountOfItemsHeld--;
             }
             else if (amountOfItemsHeld > 1)
             {
-                leftHand = (GameObject)leftHandInventory.Pop();
+                if(controllingHand == hand.Left) { leftHand = (GameObject)leftHandInventory.Pop(); }
+                else if(controllingHand == hand.Right) { rightHand = (GameObject)rightHandInventory.Pop(); }
+
                 amountOfItemsHeld--;
             }
+        }
+    }
+
+    private void SwitchHand() {
+        if(controllingHand == hand.Left)
+        {
+            controllingHand = hand.Right;
+            Debug.Log("now controlling right hand");
+        }
+        else if(controllingHand == hand.Right) 
+        { 
+            controllingHand = hand.Left;
+            Debug.Log("now controlling left hand");
         }
     }
 }
