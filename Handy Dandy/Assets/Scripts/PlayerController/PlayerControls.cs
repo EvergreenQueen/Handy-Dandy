@@ -38,6 +38,7 @@ public class PlayerControls : MonoBehaviour
     LayerMask isGround;
     float currentCamRotation = 0.0f;
     bool isGrounded = false;
+    bool soundIsPlaying = false;
     float slopeAngle;
     float playerheight;
     RaycastHit slopeHit;
@@ -45,6 +46,8 @@ public class PlayerControls : MonoBehaviour
     Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
+    AudioSource audioSource;
+    AudioManager audioManager;
     string appleRegex = @"Apple.*";
 
     void Awake()
@@ -70,8 +73,11 @@ public class PlayerControls : MonoBehaviour
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
-        capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
         playerheight = capsuleCollider.height;
+        audioSource = GetComponentInChildren<AudioSource>();
+        audioManager = GetComponentInChildren<AudioManager>();
+        audioSource.clip = audioManager.sounds[0];
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
         isGround = 1 <<  LayerMask.NameToLayer("Ground");
@@ -182,7 +188,18 @@ public class PlayerControls : MonoBehaviour
             Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
             input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
             rb.transform.position += input.normalized * speed;
+            Debug.Log(audioSource.clip.name);
+            if (!input.Equals(Vector3.zero) && !soundIsPlaying)
+            {
+                audioSource.Play();
+                soundIsPlaying = true;
+            }
         }
+        else if (soundIsPlaying)
+        {
+            soundIsPlaying = false; audioSource.Stop();
+        }
+        
     }
 
     void Stop()
@@ -288,8 +305,13 @@ public class PlayerControls : MonoBehaviour
     void Sprint(bool b){
         if(b){
             speed *= sprintMult;
-        }else{
+            audioSource.clip = audioManager.sounds[1];
+            audioSource.Play();
+        }
+        else{
             speed = speed/sprintMult;
+            audioSource.clip = audioManager.sounds[0];
+            audioSource.Play();
         }
     }
 
