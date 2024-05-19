@@ -29,6 +29,10 @@ public class PlayerControls : MonoBehaviour
     bool lookingAtObject = false;    
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
+
+    public enum hand{Left, Right};
+    hand controllingHand = hand.Left;
+
     GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
@@ -39,8 +43,8 @@ public class PlayerControls : MonoBehaviour
     RaycastHit slopeHit;
     Stack rightHandInventory = new Stack(inventorySize);
     Stack leftHandInventory = new Stack(inventorySize);
-    int currentInventoryCapacity = 5;
-    int amountOfItemsHeld = 0;
+    int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
+    int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     string appleRegex = @"Apple.*";
 
     void Awake()
@@ -62,6 +66,7 @@ public class PlayerControls : MonoBehaviour
 
         pc.Movement.LClick.performed += _ => PickUp();
         pc.Movement.RClick.performed += _ => Drop();
+        pc.Movement.SwitchHand.performed += _ => SwitchHand();
 
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
@@ -98,20 +103,33 @@ public class PlayerControls : MonoBehaviour
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
-        if(leftHand == null) {
-            // Debug.Log("leftHand empty");
-            ui.Drop();
+        if(leftHand == null) { ui.Idle(hand.Left); ui.Drop(hand.Left); }
+        if(rightHand == null) { ui.Idle(hand.Right); ui.Drop(hand.Right); }
+        if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // long code lmfao
+        {
+            // if the controlling hand is empty
             if(lookingAtObject) {
-                ui.Point();
+                ui.Point(controllingHand);
             }
             else {
-                ui.Idle();
+                ui.Idle(controllingHand);
             }
         }
-        else {
-            ui.Hold();
-            if(Regex.Match(leftHand.name, appleRegex).Success){
-                ui.HoldApple();
+        else
+        {
+            ui.Hold(controllingHand);
+
+            if(controllingHand == hand.Left)
+            {
+                if(Regex.Match(leftHand.name, appleRegex).Success){
+                    ui.HoldApple(controllingHand);
+                }
+            }
+            else if(controllingHand == hand.Right)
+            {
+                if(Regex.Match(rightHand.name, appleRegex).Success){
+                    ui.HoldApple(controllingHand);
+                }
             }
         }
 
@@ -210,38 +228,60 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void PickUp() {
-        if (amountOfItemsHeld < currentInventoryCapacity)
+        if (!lookingAtObject)
         {
-            Transform t = cam.GetComponent<Transform>();
-            Vector3 pos = t.position;
-            Vector3 dir = t.TransformDirection(Vector3.forward);
-            RaycastHit hit;
-
-            // origin, direction, where to put the raycast, distance to cast, layer
-            bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
-            //Debug.DrawRay(pos, dir, Color.red, 10);
-
-
-            if (!lookingAtObject)
-            {
-                //Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
-                return; // ha ha
-            }
-            //Debug.Log("We picked up an object!!!");
-            amountOfItemsHeld++;
-            if (amountOfItemsHeld > 1)
-            {
-                leftHandInventory.Push(leftHand);
-            }
-            leftHand = hit.collider.gameObject; // set the object being held
-                                                // Destroy(hit.collider.gameObject);
-            leftHand.SetActive(false);
-            Debug.Log("We picked up " + leftHand.name);
-            // pick up an item, i guess???
+            //Debug.Log("Pressed left click (pick up), not looking at/close enough to object");
+            return; // ha ha
         }
-        else
+        
+        if(controllingHand == hand.Left)
         {
-            Debug.Log("Can't pick up anymore items!");
+            if(amountOfItemsHeldLeft < currentInventoryCapacityLeft)
+            {
+                Transform t = cam.GetComponent<Transform>();
+                Vector3 pos = t.position;
+                Vector3 dir = t.TransformDirection(Vector3.forward);
+                RaycastHit hit;
+
+                // origin, direction, where to put the raycast, distance to cast, layer
+                bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
+                //Debug.DrawRay(pos, dir, Color.red, 10);
+
+                amountOfItemsHeldLeft++;
+                if (amountOfItemsHeldLeft > 1)
+                {
+                    leftHandInventory.Push(leftHand);
+                }
+
+                leftHand = hit.collider.gameObject; // set the object being held
+                                                    // Destroy(hit.collider.gameObject);
+                leftHand.SetActive(false);
+                Debug.Log("We picked up " + leftHand.name);
+            }
+            else
+            {
+                Debug.Log("Can't pick up anymore items!");
+            }
+        }
+        else if(controllingHand == hand.Right)
+        {
+            if(amountOfItemsHeldRight < currentInventoryCapacityRight)
+            {
+                amountOfItemsHeldRight++;
+                if (amountOfItemsHeldRight > 1)
+                {
+                    rightHandInventory.Push(rightHand);
+                }
+
+                rightHand = hit.collider.gameObject; // set the object being held
+                                                    // Destroy(hit.collider.gameObject);
+                rightHand.SetActive(false);
+                Debug.Log("We picked up " + rightHand.name);
+            }
+            else
+            {
+                Debug.Log("Can't pick up anymore items!");
+            }
         }
     }
 
@@ -262,23 +302,62 @@ public class PlayerControls : MonoBehaviour
     }
     
     private void Drop() {
-        if (amountOfItemsHeld > 0)
+        if(controllingHand == hand.Left)
         {
-            Transform t1 = cam.GetComponent<Transform>();
-            leftHand.SetActive(true);
-            leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-            Debug.Log("We dropped " + leftHand.name);
-            if (amountOfItemsHeld == 1)
+            if(amountOfItemsHeldLeft > 0)
             {
-                leftHand = null;
-                ui.Idle();
-                amountOfItemsHeld--;
+                Transform t1 = cam.GetComponent<Transform>();
+                leftHand.SetActive(true);
+                leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                Debug.Log("We dropped " + leftHand.name);
+
+                if (amountOfItemsHeldLeft == 1)
+                {
+                    leftHand = null;
+                    ui.Idle(controllingHand);
+                    amountOfItemsHeldLeft--;
+                }
+                else if (amountOfItemsHeldLeft > 1)
+                {
+                    leftHand = (GameObject)leftHandInventory.Pop();
+                    amountOfItemsHeldLeft--;
+                }
             }
-            else if (amountOfItemsHeld > 1)
+        }
+        else if(controllingHand == hand.Right)
+        {
+            if(amountOfItemsHeldRight > 0)
             {
-                leftHand = (GameObject)leftHandInventory.Pop();
-                amountOfItemsHeld--;
+                Transform t1 = cam.GetComponent<Transform>();
+                rightHand.SetActive(true);
+                rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                Debug.Log("We dropped " + rightHand.name);
+
+                if (amountOfItemsHeldRight == 1)
+                {
+                    rightHand = null;
+                    ui.Idle(controllingHand);
+                    amountOfItemsHeldRight--;
+                }
+                else if (amountOfItemsHeldRight > 1)
+                {
+                    rightHand = (GameObject)rightHandInventory.Pop();
+                    amountOfItemsHeldRight--;
+                }
             }
+        }
+    }
+
+    private void SwitchHand() {
+        if(controllingHand == hand.Left)
+        {
+            controllingHand = hand.Right;
+            Debug.Log("now controlling right hand");
+        }
+        else if(controllingHand == hand.Right) 
+        { 
+            controllingHand = hand.Left;
+            Debug.Log("now controlling left hand");
         }
     }
 }

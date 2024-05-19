@@ -25853,31 +25853,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 741234737}
     - target: {fileID: 4070702225171862584, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: speed
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4070702225171862584, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: jumpPower
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4070702225171862584, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: sprintMult
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4070702225171862584, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: maxSlopeAngle
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8598819908069563284, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: m_Drag
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8598819908069563284, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8598819908069563284, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
-      propertyPath: m_AngularDrag
+      propertyPath: grav
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8598819908069563284, guid: 2df34c2f2df2b114c8a10c9b0f1009e6, type: 3}
