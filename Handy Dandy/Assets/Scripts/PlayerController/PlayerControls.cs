@@ -45,7 +45,7 @@ public class PlayerControls : MonoBehaviour
     Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
-    string appleRegex = @"Apple.*";
+    string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*";
 
     void Awake()
     {   
@@ -122,11 +122,21 @@ public class PlayerControls : MonoBehaviour
 
             if(controllingHand == hand.Left)
             {
-                ui.HoldItem(controllingHand, leftHand.GetComponent<ItemIdentification>().itemType);
+                if(Regex.Match(leftHand.name, appleRegex).Success){
+                    ui.HoldApple(controllingHand);
+                }
+                else if(Regex.Match(leftHand.name, ice_cubeRegex).Success) {
+                    ui.HoldIce_Cube(controllingHand);
+                }
             }
             else if(controllingHand == hand.Right)
             {
-                ui.HoldItem(controllingHand, rightHand.GetComponent<ItemIdentification>().itemType);
+                if(Regex.Match(rightHand.name, appleRegex).Success){
+                    ui.HoldApple(controllingHand);
+                }
+                else if(Regex.Match(rightHand.name, ice_cubeRegex).Success) {
+                    ui.HoldIce_Cube(controllingHand);
+                }
             }
         }
 

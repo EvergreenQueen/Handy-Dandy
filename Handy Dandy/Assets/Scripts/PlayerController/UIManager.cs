@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     //Other vars
     enum State{Idle, Point, Hold};
-    // enum Item{None, Apple};
+    enum Item{None, Apple, Ice_Cube};
 
     State currStateLeft;
     State currStateRight;
@@ -88,8 +88,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Drop(PlayerControls.hand h){ HoldItem(h, GlobalVars.PickableItems.None); }
-    // public void HoldApple(PlayerControls.hand h){ HoldItem(h, Item.Apple); }
+    public void Drop(PlayerControls.hand h){ HoldItem(h, Item.None); }
+    public void HoldApple(PlayerControls.hand h){ HoldItem(h, Item.Apple); }
+    public void HoldIce_Cube(PlayerControls.hand h){ HoldItem(h, Item.Ice_Cube); }
 
     public void HoldItem(PlayerControls.hand h, GlobalVars.PickableItems itemType){
         // i thought enums were stand-ins for numbers? maybe we could do it without switch case?
@@ -101,6 +102,9 @@ public class UIManager : MonoBehaviour
                     break;
                 case GlobalVars.PickableItems.Apple:
                     itemRendererLeft.sprite = baseItems[1];
+                    break;
+                case Item.Ice_Cube:
+                    itemRendererLeft.sprite = baseItems[2];
                     break;
                 default:
                     break;
@@ -114,6 +118,9 @@ public class UIManager : MonoBehaviour
                     break;
                 case GlobalVars.PickableItems.Apple:
                     itemRendererRight.sprite = baseItems[1];
+                    break;
+                case Item.Ice_Cube:
+                    itemRendererRight.sprite = baseItems[2];
                     break;
                 default:
                     break;
