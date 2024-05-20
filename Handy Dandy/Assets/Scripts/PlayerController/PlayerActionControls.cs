@@ -355,7 +355,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_RClick;
     private readonly InputAction m_Movement_E;
     private readonly InputAction m_Movement_SwitchHand;
-    private readonly InputAction m_Movement_RClick;
     public struct MovementActions
     {
         private @PlayerActionControls m_Wrapper;
@@ -369,7 +368,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         public InputAction @RClick => m_Wrapper.m_Movement_RClick;
         public InputAction @E => m_Wrapper.m_Movement_E;
         public InputAction @SwitchHand => m_Wrapper.m_Movement_SwitchHand;
-        public InputAction @RClick => m_Wrapper.m_Movement_RClick;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -480,6 +478,5 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         void OnRClick(InputAction.CallbackContext context);
         void OnE(InputAction.CallbackContext context);
         void OnSwitchHand(InputAction.CallbackContext context);
-        void OnRClick(InputAction.CallbackContext context);
     }
 }
