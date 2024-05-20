@@ -88,43 +88,43 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Drop(PlayerControls.hand h){ HoldItem(h, Item.None); }
-    public void HoldApple(PlayerControls.hand h){ HoldItem(h, Item.Apple); }
-    public void HoldIce_Cube(PlayerControls.hand h){ HoldItem(h, Item.Ice_Cube); }
+    // public void Drop(PlayerControls.hand h){ HoldItem(h, Item.None); }
+    // public void HoldApple(PlayerControls.hand h){ HoldItem(h, Item.Apple); }
+    // public void HoldIce_Cube(PlayerControls.hand h){ HoldItem(h, Item.Ice_Cube); }
 
-    public void HoldItem(PlayerControls.hand h, GlobalVars.PickableItems itemType){
-        // i thought enums were stand-ins for numbers? maybe we could do it without switch case?
-        if(h == PlayerControls.hand.Left)
-        {
-            switch(itemType){
-                case GlobalVars.PickableItems.None:
-                    itemRendererLeft.sprite = baseItems[0];
-                    break;
-                case GlobalVars.PickableItems.Apple:
-                    itemRendererLeft.sprite = baseItems[1];
-                    break;
-                case Item.Ice_Cube:
-                    itemRendererLeft.sprite = baseItems[2];
-                    break;
-                default:
-                    break;
-            }
-        }
-        else if(h == PlayerControls.hand.Right)
-        {
-            switch(itemType){
-                case GlobalVars.PickableItems.None:
-                    itemRendererRight.sprite = baseItems[0];
-                    break;
-                case GlobalVars.PickableItems.Apple:
-                    itemRendererRight.sprite = baseItems[1];
-                    break;
-                case Item.Ice_Cube:
-                    itemRendererRight.sprite = baseItems[2];
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    // public void HoldItem(PlayerControls.hand h, GlobalVars.PickableItems itemType){
+    //     // i thought enums were stand-ins for numbers? maybe we could do it without switch case?
+    //     if(h == PlayerControls.hand.Left)
+    //     {
+    //         switch(itemType){
+    //             case GlobalVars.PickableItems.None:
+    //                 itemRendererLeft.sprite = baseItems[0];
+    //                 break;
+    //             case GlobalVars.PickableItems.Apple:
+    //                 itemRendererLeft.sprite = baseItems[1];
+    //                 break;
+    //             case Item.Ice_Cube:
+    //                 itemRendererLeft.sprite = baseItems[2];
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     }
+    //     else if(h == PlayerControls.hand.Right)
+    //     {
+    //         switch(itemType){
+    //             case GlobalVars.PickableItems.None:
+    //                 itemRendererRight.sprite = baseItems[0];
+    //                 break;
+    //             case GlobalVars.PickableItems.Apple:
+    //                 itemRendererRight.sprite = baseItems[1];
+    //                 break;
+    //             case Item.Ice_Cube:
+    //                 itemRendererRight.sprite = baseItems[2];
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     }
+    // }
 }

@@ -11,6 +11,7 @@ public static class HandleQuests
     public static PlayerControls player;
     public static int currQuest = 0;
     public static List<int> completedQuests = new List<int>();
+    public static List<string> introsPlayed = new List<string>();
     public static bool questCompleted = false;
     public static bool alreadyCompleted = false;
 
@@ -47,6 +48,26 @@ public static class HandleQuests
                 alreadyCompleted = true;
             }
         }
+    }
+
+    [YarnCommand("set_intro_done")]
+    public static void SetIntroDone(string whatIntro){
+        introsPlayed.Add(whatIntro);
+    }
+
+    [YarnFunction("get_curr_quest")]
+    public static int GetCurrQuest(){
+        return currQuest;
+    }
+
+    [YarnFunction("see_if_already_played_intro")]
+    public static bool SeeIfAlreadyPlayedIntro(string whatIntro){
+        for(int i=0; i<introsPlayed.Count; ++i){
+            if(introsPlayed[i] == whatIntro){
+                return true;
+            }
+        }
+        return false;
     }
 }
 

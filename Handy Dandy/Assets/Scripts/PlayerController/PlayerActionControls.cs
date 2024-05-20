@@ -85,9 +85,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""name"": ""E"",
                     ""type"": ""Button"",
                     ""id"": ""4ebe0b0b-ea2f-4512-a53e-55e0868f765f"",
-                    ""name"": ""RClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""82a44133-3b87-4c43-bcd1-e6527194a947"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -101,6 +98,15 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RClick"",
+                    ""type"": ""Value"",
+                    ""id"": ""69db18c7-bfc5-498c-9de4-828d372ecb55"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -222,12 +228,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""E"",
-                    ""id"": ""55fe809b-493d-4e1b-b41e-203eda9834b2"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -239,6 +239,17 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwitchHand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""105a9464-af92-40cc-96f2-b8ab93031eb1"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -262,8 +273,8 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
         m_Movement_LClick = m_Movement.FindAction("LClick", throwIfNotFound: true);
         m_Movement_E = m_Movement.FindAction("E", throwIfNotFound: true);
-        m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
         m_Movement_SwitchHand = m_Movement.FindAction("SwitchHand", throwIfNotFound: true);
+        m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -332,8 +343,8 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Jump;
     private readonly InputAction m_Movement_LClick;
     private readonly InputAction m_Movement_E;
-    private readonly InputAction m_Movement_RClick;
     private readonly InputAction m_Movement_SwitchHand;
+    private readonly InputAction m_Movement_RClick;
     public struct MovementActions
     {
         private @PlayerActionControls m_Wrapper;
@@ -345,8 +356,8 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Movement_Jump;
         public InputAction @LClick => m_Wrapper.m_Movement_LClick;
         public InputAction @E => m_Wrapper.m_Movement_E;
-        public InputAction @RClick => m_Wrapper.m_Movement_RClick;
         public InputAction @SwitchHand => m_Wrapper.m_Movement_SwitchHand;
+        public InputAction @RClick => m_Wrapper.m_Movement_RClick;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -377,12 +388,12 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @E.started += instance.OnE;
             @E.performed += instance.OnE;
             @E.canceled += instance.OnE;
-            @RClick.started += instance.OnRClick;
-            @RClick.performed += instance.OnRClick;
-            @RClick.canceled += instance.OnRClick;
             @SwitchHand.started += instance.OnSwitchHand;
             @SwitchHand.performed += instance.OnSwitchHand;
             @SwitchHand.canceled += instance.OnSwitchHand;
+            @RClick.started += instance.OnRClick;
+            @RClick.performed += instance.OnRClick;
+            @RClick.canceled += instance.OnRClick;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -408,12 +419,12 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @E.started -= instance.OnE;
             @E.performed -= instance.OnE;
             @E.canceled -= instance.OnE;
-            @RClick.started -= instance.OnRClick;
-            @RClick.performed -= instance.OnRClick;
-            @RClick.canceled -= instance.OnRClick;
             @SwitchHand.started -= instance.OnSwitchHand;
             @SwitchHand.performed -= instance.OnSwitchHand;
             @SwitchHand.canceled -= instance.OnSwitchHand;
+            @RClick.started -= instance.OnRClick;
+            @RClick.performed -= instance.OnRClick;
+            @RClick.canceled -= instance.OnRClick;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -449,7 +460,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnLClick(InputAction.CallbackContext context);
         void OnE(InputAction.CallbackContext context);
-        void OnRClick(InputAction.CallbackContext context);
         void OnSwitchHand(InputAction.CallbackContext context);
+        void OnRClick(InputAction.CallbackContext context);
     }
 }

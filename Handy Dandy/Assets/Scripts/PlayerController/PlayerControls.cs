@@ -104,41 +104,41 @@ public class PlayerControls : MonoBehaviour
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
-        if(leftHand == null) { ui.Idle(hand.Left); ui.Drop(hand.Left); }
-        if(rightHand == null) { ui.Idle(hand.Right); ui.Drop(hand.Right); }
-        if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // If controlling hand is empty...
-        {
-            // if the controlling hand is empty
-            if(lookingAtObject) {
-                ui.Point(controllingHand);
-            }
-            else {
-                ui.Idle(controllingHand);
-            }
-        }
-        else //Else if holding something
-        {
-            ui.Hold(controllingHand); //Changes to holding.
+        // if(leftHand == null) { ui.Idle(hand.Left); ui.Drop(hand.Left); }
+        // if(rightHand == null) { ui.Idle(hand.Right); ui.Drop(hand.Right); }
+        // if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // If controlling hand is empty...
+        // {
+        //     // if the controlling hand is empty
+        //     if(lookingAtObject) {
+        //         ui.Point(controllingHand);
+        //     }
+        //     else {
+        //         ui.Idle(controllingHand);
+        //     }
+        // }
+        // else //Else if holding something
+        // {
+        //     ui.Hold(controllingHand); //Changes to holding.
 
-            if(controllingHand == hand.Left)
-            {
-                if(Regex.Match(leftHand.name, appleRegex).Success){
-                    ui.HoldApple(controllingHand);
-                }
-                else if(Regex.Match(leftHand.name, ice_cubeRegex).Success) {
-                    ui.HoldIce_Cube(controllingHand);
-                }
-            }
-            else if(controllingHand == hand.Right)
-            {
-                if(Regex.Match(rightHand.name, appleRegex).Success){
-                    ui.HoldApple(controllingHand);
-                }
-                else if(Regex.Match(rightHand.name, ice_cubeRegex).Success) {
-                    ui.HoldIce_Cube(controllingHand);
-                }
-            }
-        }
+        //     if(controllingHand == hand.Left)
+        //     {
+        //         if(Regex.Match(leftHand.name, appleRegex).Success){
+        //             ui.HoldApple(controllingHand);
+        //         }
+        //         else if(Regex.Match(leftHand.name, ice_cubeRegex).Success) {
+        //             ui.HoldIce_Cube(controllingHand);
+        //         }
+        //     }
+        //     else if(controllingHand == hand.Right)
+        //     {
+        //         if(Regex.Match(rightHand.name, appleRegex).Success){
+        //             ui.HoldApple(controllingHand);
+        //         }
+        //         else if(Regex.Match(rightHand.name, ice_cubeRegex).Success) {
+        //             ui.HoldIce_Cube(controllingHand);
+        //         }
+        //     }
+        // }
 
        
     }
