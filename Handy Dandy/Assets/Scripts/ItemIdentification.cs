@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class ItemIdentification : MonoBehaviour
 {
-    enum ListOfPossibleTags{Hot, Cold, Animal, Fruit, Child, Grippable, Big}
+    public enum ListOfPossibleTags{Hot, Cold, Animal, Fruit, Child, Grippable, Big}
     [SerializeField] string name;
+    [SerializeField] public int id;
     [SerializeField] ListOfPossibleTags[] tags;
     [SerializeField] string description;
 
-    public GlobalVars.PickableItems itemType;
+    public bool containsTag(ListOfPossibleTags t)
+    {
+        foreach(ListOfPossibleTags tag in tags)
+        {
+            if(tag == t) return true;
+        }
+
+        return false;
+    }
 }

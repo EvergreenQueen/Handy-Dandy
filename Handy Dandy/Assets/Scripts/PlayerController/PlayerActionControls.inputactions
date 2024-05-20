@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RClick",
+                    "type": "Button",
+                    "id": "5e0e4541-b12e-408b-9021-ade03a34aaf4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "E",
                     "type": "Button",
                     "id": "4ebe0b0b-ea2f-4512-a53e-55e0868f765f",
@@ -222,8 +231,8 @@
                 },
                 {
                     "name": "",
-                    "id": "105a9464-af92-40cc-96f2-b8ab93031eb1",
-                    "path": "",
+                    "id": "533cf5b5-e41b-4604-9920-6345bddd33f0",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
