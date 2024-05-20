@@ -30,9 +30,11 @@ public class PlayerControls : MonoBehaviour
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
 
-    public enum hand{Left, Right};
-    hand controllingHand = hand.Left;
-
+    public enum containerType{Hand, Basket};
+    public enum whichContainer{Left, Right};
+    whichContainer controllingContainer = whichContainer.Left;
+    containerType[] containers = {containerType.Hand, containerType.Hand};
+                                // left container       right container
     GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
@@ -45,7 +47,7 @@ public class PlayerControls : MonoBehaviour
     Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
-    string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*";
+    string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
 
     void Awake()
     {   
@@ -103,40 +105,64 @@ public class PlayerControls : MonoBehaviour
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
-        if(leftHand == null) { ui.Idle(hand.Left); ui.Drop(hand.Left); }
-        if(rightHand == null) { ui.Idle(hand.Right); ui.Drop(hand.Right); }
-        if((controllingHand == hand.Left && leftHand == null) || (controllingHand == hand.Right && rightHand == null)) // long code lmfao
+        visualUpdateContainers();
         {
-            // if the controlling hand is empty
-            if(lookingAtObject) {
-                ui.Point(controllingHand);
-            }
-            else {
-                ui.Idle(controllingHand);
-            }
-        }
-        else
-        {
-            ui.Hold(controllingHand);
+        // if(leftHand == null) { ui.Idle(whichContainer.Left); ui.Drop(whichContainer.Left); }
+        // if(rightHand == null) { ui.Idle(whichContainer.Right); ui.Drop(whichContainer.Right); }
+        // if((controllingContainer == whichContainer.Left && leftHand == null) || (controllingContainer == whichContainer.Right && rightHand == null)) // long code lmfao
+        // {
+        //     // if the controlling hand is empty
+        //     if(lookingAtObject) {
+        //         ui.Point(controllingContainer);
+        //     }
+        //     else {
+        //         ui.Idle(controllingContainer);
+        //     }
+        // }
+        // else
+        // {
+        //     ItemIdentification item = null; // im gonna eat my hands
+        //     if(controllingContainer == whichContainer.Left)
+        //     {
+        //         item = leftHand.GetComponent<ItemIdentification>();
+        //     }
+        //     else if(controllingContainer == whichContainer.Right)
+        //     {
+        //         item = rightHand.GetComponent<ItemIdentification>();
+        //     }
 
-            if(controllingHand == hand.Left)
-            {
-                if(Regex.Match(leftHand.name, appleRegex).Success){
-                    ui.HoldApple(controllingHand);
-                }
-                else if(Regex.Match(leftHand.name, ice_cubeRegex).Success) {
-                    ui.HoldIce_Cube(controllingHand);
-                }
-            }
-            else if(controllingHand == hand.Right)
-            {
-                if(Regex.Match(rightHand.name, appleRegex).Success){
-                    ui.HoldApple(controllingHand);
-                }
-                else if(Regex.Match(rightHand.name, ice_cubeRegex).Success) {
-                    ui.HoldIce_Cube(controllingHand);
-                }
-            }
+        //     if(item.containsTag(ItemIdentification.ListOfPossibleTags.Animal))
+        //     {
+        //         ui.Grip_Loose(controllingContainer);
+        //     }
+        //     else
+        //     {
+        //         ui.Hold(controllingContainer);
+        //     }
+
+        //     string itemName = "";
+        //     if(controllingContainer == whichContainer.Left)
+        //     {
+        //         itemName = leftHand.name;
+        //     }
+        //     else if(controllingContainer == whichContainer.Right)
+        //     {
+        //         itemName = rightHand.name;
+        //     }
+
+        //     if(Regex.Match(itemName, appleRegex).Success){
+        //         ui.HoldApple(controllingContainer);
+        //     }
+        //     else if(Regex.Match(itemName, ice_cubeRegex).Success) {
+        //         ui.HoldIce_Cube(controllingContainer);
+        //     }
+        //     else if(Regex.Match(itemName, mouseRegex).Success) {
+        //         ui.HoldMouse(controllingContainer);
+        //     }
+        //     else if(Regex.Match(itemName, catRegex).Success) {
+        //         ui.HoldCat(controllingContainer);
+        //     }
+        // }
         }
 
         // if(lookingAtObject && leftHand == null) {
@@ -157,6 +183,59 @@ public class PlayerControls : MonoBehaviour
         // Debug.Log("Doges this dogert");
         
         // checkGroundDist();
+    }
+
+    // VISUAL UPDATE ONLY. NO HOLDING/DROPPING LOGIC
+    void visualUpdateContainers() {
+        // iterate over all containers (here, 2 times. left and right)
+        for(int which = (int)whichContainer.Left; which <= (int)whichContainer.Right; which++)
+        {
+            containerType type = containers[which];             // 0 = hand, 1 = basket...
+            whichContainer whichCont = (whichContainer)which;   // 0 = left, 1 = right
+            GameObject itemToDisplay = null;
+            ItemIdentification itemInfo = null;
+
+            // not a huge fan of this implementation, but our display is weird anyway
+            if(whichCont == whichContainer.Left) itemToDisplay = leftHand; // left
+            else if(whichCont == whichContainer.Right) itemToDisplay = rightHand; // right
+
+            // important for tags
+            if(itemToDisplay != null) itemInfo = itemToDisplay.GetComponent<ItemIdentification>();
+
+            switch(type)
+            {
+                case containerType.Hand:
+                    // stupid complex logic here
+                    if(itemToDisplay == null)
+                    {
+                        // if looking at smth, point, else idle
+                        if(lookingAtObject && controllingContainer == whichCont) ui.ChangeHands(whichCont, UIManager.State.Point);
+                        else ui.ChangeHands(whichCont, UIManager.State.Idle);
+                    }
+                    else
+                    {
+                        // if holding grippable, grip, else hold
+                        if(itemInfo.containsTag(ItemIdentification.ListOfPossibleTags.Grippable)) ui.ChangeHands(whichCont, UIManager.State.Grip_Loose);
+                        else ui.ChangeHands(whichCont, UIManager.State.Hold);
+                    }
+
+                    break;
+                case containerType.Basket:
+                    // just draw the basket
+                    ui.ChangeHands(whichCont, UIManager.State.Basket);
+                    break;
+                default:
+                    break;
+            }
+
+            // item display
+            if(itemToDisplay == null) ui.Drop(whichCont);
+            else
+            {
+                int itemId = itemInfo.id;
+                ui.HoldItem(whichCont, (UIManager.Item)itemId);
+            }
+        }
     }
 
     void FixedUpdate()
@@ -240,7 +319,7 @@ public class PlayerControls : MonoBehaviour
             return; // ha ha
         }
         
-        if(controllingHand == hand.Left)
+        if(controllingContainer == whichContainer.Left)
         {
             if(amountOfItemsHeldLeft < currentInventoryCapacityLeft)
             {
@@ -269,7 +348,7 @@ public class PlayerControls : MonoBehaviour
                 Debug.Log("Can't pick up anymore items!");
             }
         }
-        else if(controllingHand == hand.Right)
+        else if(controllingContainer == whichContainer.Right)
         {
             if(amountOfItemsHeldRight < currentInventoryCapacityRight)
             {
@@ -308,7 +387,7 @@ public class PlayerControls : MonoBehaviour
     }
     
     private void Drop() {
-        if(controllingHand == hand.Left)
+        if(controllingContainer == whichContainer.Left)
         {
             if(amountOfItemsHeldLeft > 0)
             {
@@ -320,7 +399,7 @@ public class PlayerControls : MonoBehaviour
                 if (amountOfItemsHeldLeft == 1)
                 {
                     leftHand = null;
-                    ui.Idle(controllingHand);
+                    ui.Idle(controllingContainer);
                     amountOfItemsHeldLeft--;
                 }
                 else if (amountOfItemsHeldLeft > 1)
@@ -330,7 +409,7 @@ public class PlayerControls : MonoBehaviour
                 }
             }
         }
-        else if(controllingHand == hand.Right)
+        else if(controllingContainer == whichContainer.Right)
         {
             if(amountOfItemsHeldRight > 0)
             {
@@ -342,7 +421,7 @@ public class PlayerControls : MonoBehaviour
                 if (amountOfItemsHeldRight == 1)
                 {
                     rightHand = null;
-                    ui.Idle(controllingHand);
+                    ui.Idle(controllingContainer);
                     amountOfItemsHeldRight--;
                 }
                 else if (amountOfItemsHeldRight > 1)
@@ -355,14 +434,14 @@ public class PlayerControls : MonoBehaviour
     }
 
     private void SwitchHand() {
-        if(controllingHand == hand.Left)
+        if(controllingContainer == whichContainer.Left)
         {
-            controllingHand = hand.Right;
+            controllingContainer = whichContainer.Right;
             Debug.Log("now controlling right hand");
         }
-        else if(controllingHand == hand.Right) 
+        else if(controllingContainer == whichContainer.Right) 
         { 
-            controllingHand = hand.Left;
+            controllingContainer = whichContainer.Left;
             Debug.Log("now controlling left hand");
         }
     }
