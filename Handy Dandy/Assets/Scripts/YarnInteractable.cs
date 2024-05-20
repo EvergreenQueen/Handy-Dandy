@@ -31,16 +31,27 @@ public class YarnInteractable : MonoBehaviour {
 
     public void Start() {
         dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
-        dialogueRunner.onDialogueComplete.AddListener(EndConversation);
-        lightIndicatorObject = GetComponentInChildren<Light>();
-        // get starter intensity of light then
-        // if we're using it as an indicator => hide it 
-        if (lightIndicatorObject != null) {
-            defaultIndicatorIntensity = lightIndicatorObject.intensity;
-            lightIndicatorObject.intensity = 0;
-        }
+        // dialogueRunner.onDialogueComplete.AddListener(EndConversation);
+        // lightIndicatorObject = GetComponentInChildren<Light>();
+        // // get starter intensity of light then
+        // // if we're using it as an indicator => hide it 
+        // if (lightIndicatorObject != null) {
+        //     defaultIndicatorIntensity = lightIndicatorObject.intensity;
+        //     lightIndicatorObject.intensity = 0;
+        // }
 
         // now trying this function to pass in everything to HandleQuests
+        // dialogueRunner.AddCommandHandler("switch_project", HandleQuests.SwitchProject);
+        // Debug.Log("command registered");
+        // dialogueRunner.AddCommandHandler("check_quest_completion", HandleQuests.CheckQuestCompletion);
+        // dialogueRunner.AddCommandHandler<int>("start_quest", HandleQuests.StartQuest);
+        // dialogueRunner.AddCommandHandler<int>("see_if_already_completed", HandleQuests.SeeIfAlreadyCompleted);
+        // dialogueRunner.AddCommandHandler<string>("set_intro_done", HandleQuests.SetIntroDone);
+        // dialogueRunner.AddCommandHandler("check_quest_completion", HandleQuests.CheckQuestCompletion);
+
+        // dialogueRunner.AddFunction<int>("get_curr_quest", HandleQuests.GetCurrQuest);
+        // dialogueRunner.AddFunction<string, bool>("see_if_already_played_intro", HandleQuests.SeeIfAlreadyPlayedIntro);
+
         HandleQuests.dialogueRunner = dialogueRunner;
         HandleQuests.varStore = dialogueRunner.GetComponent<InMemoryVariableStorage>();
         HandleQuests.charaDialogue = yarnProject;

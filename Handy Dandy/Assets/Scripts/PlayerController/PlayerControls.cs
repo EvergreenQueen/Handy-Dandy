@@ -53,7 +53,7 @@ public class PlayerControls : MonoBehaviour
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
-    DialogueRunner dialogueRunner;
+    public DialogueRunner dialogueRunner;
     void Awake()
     {   
         pc = new PlayerActionControls();
