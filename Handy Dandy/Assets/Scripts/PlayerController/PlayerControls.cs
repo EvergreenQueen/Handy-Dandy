@@ -163,7 +163,7 @@ public class PlayerControls : MonoBehaviour
         //     else if(Regex.Match(itemName, catRegex).Success) {
         //         ui.HoldCat(controllingContainer);
         //     }
-        // }
+        // } //
         }
 
         // if(lookingAtObject && leftHand == null) {
