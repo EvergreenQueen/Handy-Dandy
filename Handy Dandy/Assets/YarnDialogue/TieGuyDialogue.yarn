@@ -52,6 +52,7 @@ tags:
 <<endif>>
 Tie Guy: Oh please find my pets again!
 Tie Guy: They usually stay close to the house…
+Tie Guy: OI da wrong option you got was {get_wrong_option()}
 ===
 
 title: Quest1Cat

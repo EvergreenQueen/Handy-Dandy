@@ -39,11 +39,18 @@ public static class HandleQuests
 
         List<UIManager.Item> allItems = new List<UIManager.Item>();
 
+        Debug.Log("maxSize is: "+maxSize);
+
         for(int i=0; i<maxSize; ++i){
             ItemIdentification itemDesc = BothHands[i].GetComponent<ItemIdentification>();
             int itemID = itemDesc.id;
             UIManager.Item item = (UIManager.Item) itemID;
             allItems.Add(item);
+            Debug.Log("HELLO???");
+        }
+
+        foreach (UIManager.Item item in allItems){
+            Debug.Log(item);
         }
 
         switch(whatQuest){
