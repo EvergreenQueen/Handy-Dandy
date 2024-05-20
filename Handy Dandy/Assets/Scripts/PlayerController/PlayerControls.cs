@@ -53,7 +53,8 @@ public class PlayerControls : MonoBehaviour
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
-    DialogueRunner dialogueRunner;
+    public DialogueRunner dialogueRunner;
+    bool isCurrentConversation = false;
     void Awake()
     {   
         pc = new PlayerActionControls();
@@ -111,6 +112,11 @@ public class PlayerControls : MonoBehaviour
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
+
+        // if (isCurrentConversation) {
+        //     isCurrentConversation = false;
+        //     Debug.Log($"Started conversation with {hit.collider.gameObject.name}.");
+        // }
 
         visualUpdateContainers();
         {
@@ -477,8 +483,24 @@ public class PlayerControls : MonoBehaviour
         if(!(Physics.Raycast(pos, dir, out hit, 3, NPCLayerMask))){
             return;
         }else{
-            Debug.Log(hit.collider.gameObject.name);
-            dialogueRunner.StartDialogue("PieGuyDialogueIntro");
+            string currNPC = hit.collider.gameObject.name;
+            Debug.Log(currNPC);
+            if (isCurrentConversation) {
+                Debug.Log("We are so not cooking");
+                if (currNPC != hit.collider.gameObject.name) {
+                    isCurrentConversation = false;
+                }
+            }
+            else if (currNPC == hit.collider.gameObject.name) {
+                dialogueRunner.StartDialogue("TieGuyDialogueIntro");
+                isCurrentConversation = true;
+                dialogueRunner.Stop();
+            }
+            else {
+                isCurrentConversation = false;
+                
+            }
+            //isCurrentConversation = true;
         }
     }
 }
