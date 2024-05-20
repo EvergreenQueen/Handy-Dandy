@@ -48,8 +48,8 @@ public class PlayerControls : MonoBehaviour
     float slopeAngle;
     float playerheight;
     RaycastHit slopeHit;
-    Stack rightHandInventory = new Stack(inventorySize);
-    Stack leftHandInventory = new Stack(inventorySize);
+    public Stack rightHandInventory = new Stack(inventorySize);
+    public Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
@@ -478,7 +478,7 @@ public class PlayerControls : MonoBehaviour
             return;
         }else{
             Debug.Log(hit.collider.gameObject.name);
-            dialogueRunner.StartDialogue("PieGuyDialogueIntro");
+            dialogueRunner.StartDialogue("TieGuyDialogueIntro");
         }
     }
 }
