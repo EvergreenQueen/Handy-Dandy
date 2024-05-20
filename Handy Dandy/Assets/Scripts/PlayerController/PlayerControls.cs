@@ -29,6 +29,10 @@ public class PlayerControls : MonoBehaviour
     bool lookingAtObject = false;    
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
+    int NPCLayerMask = 1 << 8; //npc npc npc
+    Transform t;
+    Vector3 pos;
+    Vector3 dir;
 
     public enum containerType{Hand, Basket};
     public enum whichContainer{Left, Right};
@@ -61,6 +65,7 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.Sprint.performed += _ => Sprint(true);
         pc.Movement.Sprint.canceled += _ => Sprint(false);
         pc.Movement.Jump.performed += _ => Jump();
+        pc.Movement.E.performed += _ => InteractWithNPC();
 
 
         pc.Movement.LClick.Enable();
@@ -98,9 +103,9 @@ public class PlayerControls : MonoBehaviour
         {
             isGrounded = false;
         }
-        Transform t = cam.GetComponent<Transform>();
-        Vector3 pos = t.position;
-        Vector3 dir = t.TransformDirection(Vector3.forward);
+        t = cam.GetComponent<Transform>();
+        pos = t.position;
+        dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
@@ -464,6 +469,14 @@ public class PlayerControls : MonoBehaviour
         { 
             controllingContainer = whichContainer.Left;
             Debug.Log("now controlling left hand");
+        }
+    }
+
+    private void InteractWithNPC(){
+        if(!(Physics.Raycast(pos, dir, out hit, 3, NPCLayerMask))){
+            return;
+        }else{
+            Debug.Log(hit.collider.gameObject.name);
         }
     }
 }
