@@ -385,6 +385,11 @@ public class PlayerControls : MonoBehaviour
                 leftHand = hit.collider.gameObject; // set the object being held
                 leftHandInventory.Push(leftHand);
 
+                if (amountOfItemsHeldLeft > -1)
+                {
+                    leftHandInventory.Push(leftHand);
+                }
+
                 leftHand.SetActive(false);
                 Debug.Log("We picked up " + leftHand.name);
                 Debug.Log("lhs count: " + leftHandInventory.Count);
@@ -410,6 +415,11 @@ public class PlayerControls : MonoBehaviour
                 rightHand = hit.collider.gameObject; // set the object being held
                 rightHandInventory.Push(rightHand);
                                                     // Destroy(hit.collider.gameObject);
+
+                if (amountOfItemsHeldRight > -1)
+                {
+                    rightHandInventory.Push(rightHand);
+                }
                 rightHand.SetActive(false);
                 Debug.Log("We picked up " + rightHand.name);
                 Debug.Log("rhs count: " + rightHandInventory.Count);
@@ -510,36 +520,7 @@ public class PlayerControls : MonoBehaviour
             return;
         }else{
             Debug.Log(hit.collider.gameObject.name);
-            dialogueRunner.StartDialogue("TieGuyDialogueIntro");
+            dialogueRunner.StartDialogue(hit.collider.gameObject.name + "DialogueIntro");
         }
     }
     }
-
-//     public void StartDialogue(string nodeName = "Start")
-// {
-//     if (isCurrentConversation)
-//     {
-//         Debug.LogWarning("Can't start a dialogue that is already running");
-//         return;
-//     }
-//     isCurrentConversation = true;
-//     dialogue.SetNode(nodeName);
-//     dialogueRunner.StartDialogue(nodeName);
-//     dialogue.Continue();
-// }
-// public void StopDialogue()
-// {
-//     dialogueRunner.Stop();
-//     isCurrentConversation = false;
-// }
-
-// public void Continue()
-// {
-//     if (!isCurrentConversation)
-//     {
-//         Debug.LogWarning("Can't continue dialogue when we aren't currently running any");
-//         return;
-//     }
-
-//     dialogue.Continue();
-// }
