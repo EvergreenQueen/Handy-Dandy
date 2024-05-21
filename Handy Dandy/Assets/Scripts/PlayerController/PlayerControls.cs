@@ -27,7 +27,7 @@ public class PlayerControls : MonoBehaviour
     Camera cam;
     [SerializeField] UIManager ui;
 
-    bool lookingAtObject = false;    
+    bool lookingAtObject = false;
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
     int NPCLayerMask = 1 << 8; //npc npc npc
@@ -35,11 +35,11 @@ public class PlayerControls : MonoBehaviour
     Vector3 pos;
     Vector3 dir;
 
-    public enum containerType{Hand, Basket};
-    public enum whichContainer{Left, Right};
+    public enum containerType { Hand, Basket };
+    public enum whichContainer { Left, Right };
     whichContainer controllingContainer = whichContainer.Left;
-    containerType[] containers = {containerType.Hand, containerType.Hand};
-                                // left container       right container
+    containerType[] containers = { containerType.Hand, containerType.Hand };
+    // left container       right container
     GameObject leftHand, rightHand; // what either hand is carrying
     //Variables
     LayerMask isGround;
@@ -55,11 +55,10 @@ public class PlayerControls : MonoBehaviour
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     AudioSource audioSource;
     AudioManager audioManager;
-    string appleRegex = @"Apple.*";
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
     void Awake()
-    {   
+    {
         pc = new PlayerActionControls();
         pc.Movement.Enable();
         pc.Movement.WASD.Enable();
@@ -89,8 +88,8 @@ public class PlayerControls : MonoBehaviour
         audioSource.clip = audioManager.sounds[0];
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
-        isGround = 1 <<  LayerMask.NameToLayer("Ground");
-        
+        isGround = 1 << LayerMask.NameToLayer("Ground");
+
         Debug.Log(LayerMask.NameToLayer("Ground"));
         // isGround;
 
@@ -121,62 +120,62 @@ public class PlayerControls : MonoBehaviour
 
         visualUpdateContainers();
         {
-        // if(leftHand == null) { ui.Idle(whichContainer.Left); ui.Drop(whichContainer.Left); }
-        // if(rightHand == null) { ui.Idle(whichContainer.Right); ui.Drop(whichContainer.Right); }
-        // if((controllingContainer == whichContainer.Left && leftHand == null) || (controllingContainer == whichContainer.Right && rightHand == null)) // long code lmfao
-        // {
-        //     // if the controlling hand is empty
-        //     if(lookingAtObject) {
-        //         ui.Point(controllingContainer);
-        //     }
-        //     else {
-        //         ui.Idle(controllingContainer);
-        //     }
-        // }
-        // else
-        // {
-        //     ItemIdentification item = null; // im gonna eat my hands
-        //     if(controllingContainer == whichContainer.Left)
-        //     {
-        //         item = leftHand.GetComponent<ItemIdentification>();
-        //     }
-        //     else if(controllingContainer == whichContainer.Right)
-        //     {
-        //         item = rightHand.GetComponent<ItemIdentification>();
-        //     }
+            // if(leftHand == null) { ui.Idle(whichContainer.Left); ui.Drop(whichContainer.Left); }
+            // if(rightHand == null) { ui.Idle(whichContainer.Right); ui.Drop(whichContainer.Right); }
+            // if((controllingContainer == whichContainer.Left && leftHand == null) || (controllingContainer == whichContainer.Right && rightHand == null)) // long code lmfao
+            // {
+            //     // if the controlling hand is empty
+            //     if(lookingAtObject) {
+            //         ui.Point(controllingContainer);
+            //     }
+            //     else {
+            //         ui.Idle(controllingContainer);
+            //     }
+            // }
+            // else
+            // {
+            //     ItemIdentification item = null; // im gonna eat my hands
+            //     if(controllingContainer == whichContainer.Left)
+            //     {
+            //         item = leftHand.GetComponent<ItemIdentification>();
+            //     }
+            //     else if(controllingContainer == whichContainer.Right)
+            //     {
+            //         item = rightHand.GetComponent<ItemIdentification>();
+            //     }
 
-        //     if(item.containsTag(ItemIdentification.ListOfPossibleTags.Animal))
-        //     {
-        //         ui.Grip_Loose(controllingContainer);
-        //     }
-        //     else
-        //     {
-        //         ui.Hold(controllingContainer);
-        //     }
+            //     if(item.containsTag(ItemIdentification.ListOfPossibleTags.Animal))
+            //     {
+            //         ui.Grip_Loose(controllingContainer);
+            //     }
+            //     else
+            //     {
+            //         ui.Hold(controllingContainer);
+            //     }
 
-        //     string itemName = "";
-        //     if(controllingContainer == whichContainer.Left)
-        //     {
-        //         itemName = leftHand.name;
-        //     }
-        //     else if(controllingContainer == whichContainer.Right)
-        //     {
-        //         itemName = rightHand.name;
-        //     }
+            //     string itemName = "";
+            //     if(controllingContainer == whichContainer.Left)
+            //     {
+            //         itemName = leftHand.name;
+            //     }
+            //     else if(controllingContainer == whichContainer.Right)
+            //     {
+            //         itemName = rightHand.name;
+            //     }
 
-        //     if(Regex.Match(itemName, appleRegex).Success){
-        //         ui.HoldApple(controllingContainer);
-        //     }
-        //     else if(Regex.Match(itemName, ice_cubeRegex).Success) {
-        //         ui.HoldIce_Cube(controllingContainer);
-        //     }
-        //     else if(Regex.Match(itemName, mouseRegex).Success) {
-        //         ui.HoldMouse(controllingContainer);
-        //     }
-        //     else if(Regex.Match(itemName, catRegex).Success) {
-        //         ui.HoldCat(controllingContainer);
-        //     }
-        // } //
+            //     if(Regex.Match(itemName, appleRegex).Success){
+            //         ui.HoldApple(controllingContainer);
+            //     }
+            //     else if(Regex.Match(itemName, ice_cubeRegex).Success) {
+            //         ui.HoldIce_Cube(controllingContainer);
+            //     }
+            //     else if(Regex.Match(itemName, mouseRegex).Success) {
+            //         ui.HoldMouse(controllingContainer);
+            //     }
+            //     else if(Regex.Match(itemName, catRegex).Success) {
+            //         ui.HoldCat(controllingContainer);
+            //     }
+            // } //
         }
 
         // if(lookingAtObject && leftHand == null) {
@@ -216,13 +215,14 @@ public class PlayerControls : MonoBehaviour
         //     }
         // }
 
-       
+
     }
 
     // VISUAL UPDATE ONLY. NO HOLDING/DROPPING LOGIC
-    void visualUpdateContainers() {
+    void visualUpdateContainers()
+    {
         // iterate over all containers (here, 2 times. left and right)
-        for(int which = (int)whichContainer.Left; which <= (int)whichContainer.Right; which++)
+        for (int which = (int)whichContainer.Left; which <= (int)whichContainer.Right; which++)
         {
             containerType type = containers[which];             // 0 = hand, 1 = basket...
             whichContainer whichCont = (whichContainer)which;   // 0 = left, 1 = right
@@ -230,26 +230,26 @@ public class PlayerControls : MonoBehaviour
             ItemIdentification itemInfo = null;
 
             // not a huge fan of this implementation, but our display is weird anyway
-            if(whichCont == whichContainer.Left) itemToDisplay = leftHand; // left
-            else if(whichCont == whichContainer.Right) itemToDisplay = rightHand; // right
+            if (whichCont == whichContainer.Left) itemToDisplay = leftHand; // left
+            else if (whichCont == whichContainer.Right) itemToDisplay = rightHand; // right
 
             // important for tags
-            if(itemToDisplay != null) itemInfo = itemToDisplay.GetComponent<ItemIdentification>();
+            if (itemToDisplay != null) itemInfo = itemToDisplay.GetComponent<ItemIdentification>();
 
-            switch(type)
+            switch (type)
             {
                 case containerType.Hand:
                     // stupid complex logic here
-                    if(itemToDisplay == null)
+                    if (itemToDisplay == null)
                     {
                         // if looking at smth, point, else idle
-                        if(lookingAtObject && controllingContainer == whichCont) ui.ChangeHands(whichCont, UIManager.State.Point);
+                        if (lookingAtObject && controllingContainer == whichCont) ui.ChangeHands(whichCont, UIManager.State.Point);
                         else ui.ChangeHands(whichCont, UIManager.State.Idle);
                     }
                     else
                     {
                         // if holding grippable, grip, else hold
-                        if(itemInfo.containsTag(ItemIdentification.ListOfPossibleTags.Grippable)) ui.ChangeHands(whichCont, UIManager.State.Grip_Loose);
+                        if (itemInfo.containsTag(ItemIdentification.ListOfPossibleTags.Grippable)) ui.ChangeHands(whichCont, UIManager.State.Grip_Loose);
                         else ui.ChangeHands(whichCont, UIManager.State.Hold);
                     }
 
@@ -263,7 +263,7 @@ public class PlayerControls : MonoBehaviour
             }
 
             // item display
-            if(itemToDisplay == null) ui.Drop(whichCont);
+            if (itemToDisplay == null) ui.Drop(whichCont);
             else
             {
                 int itemId = itemInfo.id;
@@ -286,7 +286,7 @@ public class PlayerControls : MonoBehaviour
         Move();
         //checkGroundDist();
         //Time.timeScale = timeScale;
-        
+
 
         //Camera Looking with Mouse:
         moveCamera();
@@ -301,7 +301,6 @@ public class PlayerControls : MonoBehaviour
             Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
             input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
             rb.transform.position += input.normalized * speed;
-            Debug.Log(audioSource.clip.name);
             if (!input.Equals(Vector3.zero) && !soundIsPlaying)
             {
                 audioSource.Play();
@@ -378,18 +377,12 @@ public class PlayerControls : MonoBehaviour
                 //Debug.DrawRay(pos, dir, Color.red, 10);
 
                 amountOfItemsHeldLeft++;
-                if (amountOfItemsHeldLeft > 1)
-                {
-                    leftHandInventory.Push(leftHand);
-                }
-
                 leftHand = hit.collider.gameObject; // set the object being held
-                                                    // Destroy(hit.collider.gameObject);
+                leftHandInventory.Push(leftHand);
 
                 leftHand.SetActive(false);
                 Debug.Log("We picked up " + leftHand.name);
-                //Debug.Log("lhs count: " + leftHandInventory.Count);
-                Debug.Log("lhs count: " + amountOfItemsHeldLeft);
+                Debug.Log("lhs count: " + leftHandInventory.Count);
             }
             else
             {
@@ -400,18 +393,21 @@ public class PlayerControls : MonoBehaviour
         {
             if(amountOfItemsHeldRight < currentInventoryCapacityRight)
             {
+                Transform t = cam.GetComponent<Transform>();
+                Vector3 pos = t.position;
+                Vector3 dir = t.TransformDirection(Vector3.forward);
+                RaycastHit hit;
+
+                // origin, direction, where to put the raycast, distance to cast, layer
+                bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
                 amountOfItemsHeldRight++;
-                if (amountOfItemsHeldRight > 1)
-                {
-                    rightHandInventory.Push(rightHand);
-                }
 
                 rightHand = hit.collider.gameObject; // set the object being held
+                rightHandInventory.Push(rightHand);
                                                     // Destroy(hit.collider.gameObject);
                 rightHand.SetActive(false);
                 Debug.Log("We picked up " + rightHand.name);
-                //Debug.Log("rhs count: " + rightHandInventory.Count);
-                Debug.Log("rhs count: " + amountOfItemsHeldRight);
+                Debug.Log("rhs count: " + rightHandInventory.Count);
             }
             else
             {
@@ -440,50 +436,53 @@ public class PlayerControls : MonoBehaviour
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
     }
-    
-    private void Drop() {
-        if(controllingContainer == whichContainer.Left)
+
+    private void Drop()
+    {
+        if (controllingContainer == whichContainer.Left)
         {
-            if(amountOfItemsHeldLeft > 0)
+            if (amountOfItemsHeldLeft > 0)
             {
                 Transform t1 = cam.GetComponent<Transform>();
                 leftHand.SetActive(true);
                 leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
                 Debug.Log("We dropped " + leftHand.name);
 
+                leftHandInventory.Pop();
                 if (amountOfItemsHeldLeft == 1)
                 {
                     leftHand = null;
                     ui.Idle(controllingContainer);
-                    amountOfItemsHeldLeft--;
                 }
                 else if (amountOfItemsHeldLeft > 1)
                 {
-                    leftHand = (GameObject)leftHandInventory.Pop();
-                    amountOfItemsHeldLeft--;
+                    leftHand = (GameObject)leftHandInventory.Peek();
                 }
+                amountOfItemsHeldLeft--;
+                Debug.Log("lhs count: " + leftHandInventory.Count);
             }
         }
-        else if(controllingContainer == whichContainer.Right)
+        else if (controllingContainer == whichContainer.Right)
         {
-            if(amountOfItemsHeldRight > 0)
+            if (amountOfItemsHeldRight > 0)
             {
                 Transform t1 = cam.GetComponent<Transform>();
                 rightHand.SetActive(true);
                 rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
                 Debug.Log("We dropped " + rightHand.name);
 
+                rightHandInventory.Pop();
                 if (amountOfItemsHeldRight == 1)
                 {
                     rightHand = null;
                     ui.Idle(controllingContainer);
-                    amountOfItemsHeldRight--;
                 }
                 else if (amountOfItemsHeldRight > 1)
                 {
-                    rightHand = (GameObject)rightHandInventory.Pop();
-                    amountOfItemsHeldRight--;
+                    rightHand = (GameObject)rightHandInventory.Peek();
                 }
+                amountOfItemsHeldRight--;
+                Debug.Log("rhs count: " + rightHandInventory.Count);
             }
         }
     }
