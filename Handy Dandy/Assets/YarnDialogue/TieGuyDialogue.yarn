@@ -111,7 +111,7 @@ tags:
 <<endif>>
 Tie Guy: Hey, did you manage to get those apples for me?
 Tie Guy: In case you forgot, I need 3 entire apples
-Tie Guy: Don't forget the basket! It's near the door!
+Tie Guy: Don't forget the <color=brown>basket</color>! It's near the door!
 ===
 
 title: Quest2IncorrectApples
@@ -120,6 +120,7 @@ tags:
 Tie Guy: Is that… 2 apples?
 Tie Guy: I don't want that! 
 Tie Guy: Please bring me 3 apples. :)
+Tie Guy: If only you had a <color=brown>basket</color> to hold more apples...
 ===
 
 title: Quest2IncorrectApples1
@@ -132,6 +133,20 @@ Tie Guy: RAHHHHHHHHHHHHHHHHHHHHHHHHHH
 title: Quest2Finish
 tags:
 ---
+<<if see_if_already_played_intro("Quest2Finish")>>
+    <<jump TieGuyIdle>>
+<<endif>>
 Tie Guy: Wow! You understood my cryptic awesome instructions.
 Tie Guy: Thank you so much! I'll go ask my roommate to make that pie for you now.
+<<set_intro_done "Quest2Finish">>
+===
+
+title: TieGuyIdle
+tags:
+---
+Tie Guy: Thanks again for my cat and my dog and my apple :)
+Tie Guy: Maybe you are the chosen one.
+Tie Guy: The one to fulfill this God's task or whatever.
+Tie Guy: Or not.
+Tie Guy: Either way, you're a good lad.
 ===
