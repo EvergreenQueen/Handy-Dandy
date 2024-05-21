@@ -84,7 +84,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RClick"",
                     ""type"": ""Button"",
-                    ""id"": ""5e0e4541-b12e-408b-9021-ade03a34aaf4"",
+                    ""id"": ""fdd371ab-5a5e-42c6-81e3-238eb5cc75f8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -107,15 +107,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RClick"",
-                    ""type"": ""Value"",
-                    ""id"": ""69db18c7-bfc5-498c-9de4-828d372ecb55"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -253,7 +244,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""533cf5b5-e41b-4604-9920-6345bddd33f0"",
+                    ""id"": ""a36ecb8e-2377-42a8-8b1f-c9c88a74145b"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -284,7 +275,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
         m_Movement_E = m_Movement.FindAction("E", throwIfNotFound: true);
         m_Movement_SwitchHand = m_Movement.FindAction("SwitchHand", throwIfNotFound: true);
-        m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -404,9 +394,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @SwitchHand.started += instance.OnSwitchHand;
             @SwitchHand.performed += instance.OnSwitchHand;
             @SwitchHand.canceled += instance.OnSwitchHand;
-            @RClick.started += instance.OnRClick;
-            @RClick.performed += instance.OnRClick;
-            @RClick.canceled += instance.OnRClick;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -438,9 +425,6 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @SwitchHand.started -= instance.OnSwitchHand;
             @SwitchHand.performed -= instance.OnSwitchHand;
             @SwitchHand.canceled -= instance.OnSwitchHand;
-            @RClick.started -= instance.OnRClick;
-            @RClick.performed -= instance.OnRClick;
-            @RClick.canceled -= instance.OnRClick;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
