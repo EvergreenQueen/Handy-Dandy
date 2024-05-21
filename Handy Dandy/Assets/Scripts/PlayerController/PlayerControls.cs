@@ -55,6 +55,7 @@ public class PlayerControls : MonoBehaviour
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
     bool isCurrentConversation = false;
+    private Yarn.Dialogue dialogue;
     void Awake()
     {   
         pc = new PlayerActionControls();
@@ -485,22 +486,63 @@ public class PlayerControls : MonoBehaviour
         }else{
             string currNPC = hit.collider.gameObject.name;
             Debug.Log(currNPC);
-            if (isCurrentConversation) {
-                Debug.Log("We are so not cooking");
-                if (currNPC != hit.collider.gameObject.name) {
-                    isCurrentConversation = false;
-                }
-            }
-            else if (currNPC == hit.collider.gameObject.name) {
-                dialogueRunner.StartDialogue("TieGuyDialogueIntro");
-                isCurrentConversation = true;
-                dialogueRunner.Stop();
-            }
-            else {
-                isCurrentConversation = false;
+
+
+            // while {
+            // dialogueRunner.StartDialogue("TieGuyDialogueIntro");
+            // } do (dialogueRunner.onNodeComplete != "TieGuyDialogueIntro");
+
+            //dialogueRunner.onNodeComplete != "TieGuyDialogueIntro"
+
+            // if (isCurrentConversation) {
+            //     Debug.Log("We are so not cooking");
+            //     if (currNPC != hit.collider.gameObject.name) {
+            //         isCurrentConversation = false;
+            //     }
+            // }
+            // else if (currNPC == hit.collider.gameObject.name) {
+            //     dialogueRunner.StartDialogue("TieGuyDialogueIntro");
+            //     isCurrentConversation = true;
+            //     dialogueRunner.Stop();
+            // }
+            // else {
+            //     isCurrentConversation = false;
                 
-            }
-            //isCurrentConversation = true;
-        }
+            // }
+            // //isCurrentConversation = true;
+            dialogueRunner.Stop();
+            //StartDialogue("TieGuyDialogueIntro");
+            dialogueRunner.StartDialogue("TieGuyDialogueIntro");
+        
     }
+    }
+
+    public void StartDialogue(string nodeName = "Start")
+{
+    if (isCurrentConversation)
+    {
+        Debug.LogWarning("Can't start a dialogue that is already running");
+        return;
+    }
+    isCurrentConversation = true;
+    dialogue.SetNode(nodeName);
+    dialogueRunner.StartDialogue(nodeName);
+    dialogue.Continue();
+}
+public void StopDialogue()
+{
+    dialogueRunner.Stop();
+    isCurrentConversation = false;
+}
+
+public void Continue()
+{
+    if (!isCurrentConversation)
+    {
+        Debug.LogWarning("Can't continue dialogue when we aren't currently running any");
+        return;
+    }
+
+    dialogue.Continue();
+}
 }
