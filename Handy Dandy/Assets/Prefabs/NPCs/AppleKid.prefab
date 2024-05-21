@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3123265807891985955}
   - component: {fileID: 7272404891977391421}
   m_Layer: 8
-  m_Name: QuestGuy1
+  m_Name: AppleKid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
