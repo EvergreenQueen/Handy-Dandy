@@ -493,31 +493,31 @@ public class PlayerControls : MonoBehaviour
     }
     }
 
-    public void StartDialogue(string nodeName = "Start")
-{
-    if (isCurrentConversation)
-    {
-        Debug.LogWarning("Can't start a dialogue that is already running");
-        return;
-    }
-    isCurrentConversation = true;
-    dialogue.SetNode(nodeName);
-    dialogueRunner.StartDialogue(nodeName);
-    dialogue.Continue();
-}
-public void StopDialogue()
-{
-    dialogueRunner.Stop();
-    isCurrentConversation = false;
-}
+//     public void StartDialogue(string nodeName = "Start")
+// {
+//     if (isCurrentConversation)
+//     {
+//         Debug.LogWarning("Can't start a dialogue that is already running");
+//         return;
+//     }
+//     isCurrentConversation = true;
+//     dialogue.SetNode(nodeName);
+//     dialogueRunner.StartDialogue(nodeName);
+//     dialogue.Continue();
+// }
+// public void StopDialogue()
+// {
+//     dialogueRunner.Stop();
+//     isCurrentConversation = false;
+// }
 
-public void Continue()
-{
-    if (!isCurrentConversation)
-    {
-        Debug.LogWarning("Can't continue dialogue when we aren't currently running any");
-        return;
-    }
+// public void Continue()
+// {
+//     if (!isCurrentConversation)
+//     {
+//         Debug.LogWarning("Can't continue dialogue when we aren't currently running any");
+//         return;
+//     }
 
-    dialogue.Continue();
-}
+//     dialogue.Continue();
+// }
