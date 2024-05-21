@@ -78,7 +78,7 @@ title: Quest1Finish
 tags:
 ---
 <<if see_if_already_played_intro("Quest1Finish")>>
-    <<jump Quest2INtro>>
+    <<jump Quest2Intro>>
 <<endif>>
 Tie Guy: Cat! Mouse!
 Tie Guy: They're back :)!

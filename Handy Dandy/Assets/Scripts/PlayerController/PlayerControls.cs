@@ -359,16 +359,19 @@ public class PlayerControls : MonoBehaviour
                 bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
                 //Debug.DrawRay(pos, dir, Color.red, 10);
 
+                leftHand = hit.collider.gameObject; // set the object being held
+                                                    // Destroy(hit.collider.gameObject);
+
                 amountOfItemsHeldLeft++;
                 if (amountOfItemsHeldLeft > 1)
                 {
                     leftHandInventory.Push(leftHand);
                 }
-
-                leftHand = hit.collider.gameObject; // set the object being held
-                                                    // Destroy(hit.collider.gameObject);
+                
                 leftHand.SetActive(false);
                 Debug.Log("We picked up " + leftHand.name);
+                //Debug.Log("lhs count: " + leftHandInventory.Count);
+                Debug.Log("lhs count: " + amountOfItemsHeldLeft);
             }
             else
             {
@@ -389,6 +392,8 @@ public class PlayerControls : MonoBehaviour
                                                     // Destroy(hit.collider.gameObject);
                 rightHand.SetActive(false);
                 Debug.Log("We picked up " + rightHand.name);
+                //Debug.Log("rhs count: " + rightHandInventory.Count);
+                Debug.Log("rhs count: " + amountOfItemsHeldRight);
             }
             else
             {
