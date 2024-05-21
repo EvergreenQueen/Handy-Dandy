@@ -13,7 +13,6 @@ public static class HandleQuests
     public static int wrongOption = 0;
     public static List<int> completedQuests = new List<int>();
     public static List<string> introsPlayed = new List<string>();
-    public static bool alreadyCompleted = false;
 
     [YarnCommand("switch_project")]
     public static void SwitchProject(){
@@ -131,13 +130,14 @@ public static class HandleQuests
         currQuest = whatQuest;
     }
 
-    [YarnCommand("see_if_already_completed")]
-    public static void SeeIfAlreadyCompleted(int whatQuest){
+    [YarnFunction("see_if_already_completed")]
+    public static bool SeeIfAlreadyCompleted(int whatQuest){
         for(int i = 0; i < completedQuests.Count; ++i){
             if(completedQuests[i] == whatQuest){
-                alreadyCompleted = true;
+                return true;
             }
         }
+        return false;
     }
 
     [YarnCommand("set_intro_done")]

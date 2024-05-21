@@ -43,7 +43,7 @@ Tie Guy: I don't think they wandered too far from the house
 title: Quest1ReIntro
 tags:
 ---
-<<if check_quest_completion()>>
+<<if (check_quest_completion() || see_if_already_completed(1))>>
     <<jump Quest1Finish>>
 <<elseif get_wrong_option() == 1>>
     <<jump Quest1Cat>>
@@ -101,7 +101,7 @@ Tie Guy: If you need it, you can use that basket near the door.
 title: Quest2ReIntro
 tags:
 ---
-<<if check_quest_completion()>>
+<<if (check_quest_completion() || see_if_already_completed(2))>>
     <<jump Quest2Finish>>
 <<elseif get_wrong_option() == 1>>
     <<jump Quest2IncorrectApples1>>
