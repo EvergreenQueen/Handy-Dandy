@@ -29,12 +29,12 @@ public class UIManager : MonoBehaviour
 
     State currStateLeft;
     State currStateRight;
-    Item itemLeft;
-    Item itemRight;
+    // Item itemLeft;
+    // Item itemRight;
 
     void Awake(){
         currStateLeft = currStateRight = State.Idle; //First one!
-        itemLeft = itemRight = Item.None;
+        // itemLeft = itemRight = Item.None;
     }
 
     //public methods:

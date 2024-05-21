@@ -107,6 +107,15 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RClick"",
+                    ""type"": ""Value"",
+                    ""id"": ""69db18c7-bfc5-498c-9de4-828d372ecb55"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -275,6 +284,7 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
         m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
         m_Movement_E = m_Movement.FindAction("E", throwIfNotFound: true);
         m_Movement_SwitchHand = m_Movement.FindAction("SwitchHand", throwIfNotFound: true);
+        m_Movement_RClick = m_Movement.FindAction("RClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -394,6 +404,9 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @SwitchHand.started += instance.OnSwitchHand;
             @SwitchHand.performed += instance.OnSwitchHand;
             @SwitchHand.canceled += instance.OnSwitchHand;
+            @RClick.started += instance.OnRClick;
+            @RClick.performed += instance.OnRClick;
+            @RClick.canceled += instance.OnRClick;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -425,6 +438,9 @@ public partial class @PlayerActionControls: IInputActionCollection2, IDisposable
             @SwitchHand.started -= instance.OnSwitchHand;
             @SwitchHand.performed -= instance.OnSwitchHand;
             @SwitchHand.canceled -= instance.OnSwitchHand;
+            @RClick.started -= instance.OnRClick;
+            @RClick.performed -= instance.OnRClick;
+            @RClick.canceled -= instance.OnRClick;
         }
 
         public void RemoveCallbacks(IMovementActions instance)

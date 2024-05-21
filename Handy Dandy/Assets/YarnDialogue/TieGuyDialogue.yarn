@@ -1,24 +1,35 @@
 ﻿title: TieGuyDialogueIntro
 tags:
 ---
-Tie Guy: It's rare we get visitors y'know.
-Tie Guy: Especially those that fall 10,000 feet from the skies and plop down without a single scratch.
-Tie Guy: But what would I know? I'm just the <color=red>Tie Guy</color>.
-Tie Guy: Welcome to the grand lands of <color=red>Apple Orchard Valley</color>, kid.
-Tie Guy: Our main export is apples and our main import is... well it used to be apples till our bridge fell apart.
-Tie Guy: Some dude said he was <color=yellow>God</color> and he wanted to 'give out a test' or something like that I dunno but either way that douche broke our bridge so no one goes in and no one goes out.
-Tie Guy: Yes there's only 1 entrance and exit to the valley.
-Tie Guy: So until we fix that bridge, we're all doomed here to die.
-Tie Guy: Er, munch on apples for the rest of <b>eternity</b>.
-Tie Guy: Basically the same as dying.
-Tie Guy: And we can't fix it since we don't have ha- 
-Tie Guy: <b>WHAT IN THE BLOODY JONES IS THAT YOUR HANDS</b>
-Tie Guy: Well I'll be damned.
+/// ok so currQuest starts out at 0
+<<if (get_curr_quest()<1) && (!see_if_already_played_intro("TieGuyDialogueIntro"))>>
+    Tie Guy: It's rare we get visitors y'know.
+    Tie Guy: Especially those that fall 10,000 feet from the skies and plop down without a single scratch.
+    Tie Guy: But what would I know? I'm just the <color=red>Tie Guy</color>.
+    Tie Guy: Welcome to the grand lands of <color=red>Apple Orchard Valley</color>, kid.
+    Tie Guy: Our main export is apples and our main import is... well it used to be apples till our bridge fell apart.
+    Tie Guy: Some dude said he was <color=yellow>God</color> and he wanted to 'give out a test' or something like that I dunno but either way that douche broke our bridge so no one goes in and no one goes out.
+    Tie Guy: Yes there's only 1 entrance and exit to the valley.
+    Tie Guy: So until we fix that bridge, we're all doomed here to die.
+    Tie Guy: Er, munch on apples for the rest of <b>eternity</b>.
+    Tie Guy: Basically the same as dying.
+    Tie Guy: And we can't fix it since we don't have ha- 
+    Tie Guy: <b>WHAT IN THE BLOODY JONES IS THAT YOUR HANDS</b>
+    Tie Guy: Well I'll be damned.
+<<elseif (get_curr_quest()<1)>>
+    <<jump Quest1Intro>>
+<<elseif (get_curr_quest() == 1)>>
+    <<jump Quest1ReIntro>>
+<<elseif (get_curr_quest() == 2)>>
+    <<jump Quest2ReIntro>>
+<<endif>>
+<<set_intro_done "TieGuyDialogueIntro">>
 ===
 
 title: Quest1Intro
 tags:
 ---
+<<start_quest 1>>
 Tie Guy: Well, visitor
 Tie Guy: wait, can I call you Handy?
 Tie Guy: I'll call you Handy.
@@ -26,13 +37,22 @@ Tie Guy: I lost Cat and Mouse
 Tie Guy: They're a cat and a mouse
 Tie Guy: Can you find them, please?
 Tie Guy: I don't think they wandered too far from the house
+<<set_intro_done "Quest1Intro">>
 ===
 
 title: Quest1ReIntro
 tags:
 ---
+<<if check_quest_completion()>>
+    <<jump Quest1Finish>>
+<<elseif get_wrong_option() == 1>>
+    <<jump Quest1Cat>>
+<<elseif get_wrong_option() == 2>>
+    <<jump Quest1Mouse>>
+<<endif>>
 Tie Guy: Oh please find my pets again!
 Tie Guy: They usually stay close to the house…
+Tie Guy: OI da wrong option you got was {get_wrong_option()}
 ===
 
 title: Quest1Cat
@@ -57,25 +77,38 @@ Tie Guy: Can you bring them together?
 title: Quest1Finish
 tags:
 ---
+<<if see_if_already_played_intro("Quest1Finish")>>
+    <<jump Quest2Intro>>
+<<endif>>
 Tie Guy: Cat! Mouse!
 Tie Guy: They're back :)!
 Tie Guy: Thank you so much for bringing back my pets!
 Tie Guy: How could I ever repay you?
+<<set_intro_done "Quest1Finish">>
 ===
 
 title: Quest2Intro
 tags:
 ---
+<<start_quest 2>>
 Tie Guy: Thank you so much again for helping me with my pets!
 Tie Guy: I want to give you an apple pie as thanks, but I need some help first.
 Tie Guy: See, I still have no arms or hands.
 Tie Guy: Could you bring me 3 apples from the tree in my yard?
 Tie Guy: If you need it, you can use that basket near the door.
+<<set_intro_done "Quest2Intro">>
 ===
 
 title: Quest2ReIntro
 tags:
 ---
+<<if check_quest_completion()>>
+    <<jump Quest2Finish>>
+<<elseif get_wrong_option() == 1>>
+    <<jump Quest2IncorrectApples1>>
+<<elseif get_wrong_option() == 2>>
+    <<jump Quest2IncorrectApples>>
+<<endif>>
 Tie Guy: Hey, did you manage to get those apples for me?
 Tie Guy: In case you forgot, I need 3 entire apples
 Tie Guy: Don't forget the basket! It's near the door!
@@ -87,6 +120,13 @@ tags:
 Tie Guy: Is that… 2 apples?
 Tie Guy: I don't want that! 
 Tie Guy: Please bring me 3 apples. :)
+===
+
+title: Quest2IncorrectApples1
+tags:
+---
+Tie Guy: O-ONE APPLE?!?!
+Tie Guy: RAHHHHHHHHHHHHHHHHHHHHHHHHHH
 ===
 
 title: Quest2Finish

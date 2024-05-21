@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Yarn.Unity;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class PlayerControls : MonoBehaviour
     bool lookingAtObject = false;    
     RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
+    int NPCLayerMask = 1 << 8; //npc npc npc
+    Transform t;
+    Vector3 pos;
+    Vector3 dir;
 
     public enum containerType{Hand, Basket};
     public enum whichContainer{Left, Right};
@@ -44,15 +49,15 @@ public class PlayerControls : MonoBehaviour
     float slopeAngle;
     float playerheight;
     RaycastHit slopeHit;
-    Stack rightHandInventory = new Stack(inventorySize);
-    Stack leftHandInventory = new Stack(inventorySize);
+    public Stack rightHandInventory = new Stack(inventorySize);
+    public Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
     int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     AudioSource audioSource;
     AudioManager audioManager;
     string appleRegex = @"Apple.*";
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
-
+    public DialogueRunner dialogueRunner;
     void Awake()
     {   
         pc = new PlayerActionControls();
@@ -65,6 +70,7 @@ public class PlayerControls : MonoBehaviour
         pc.Movement.Sprint.performed += _ => Sprint(true);
         pc.Movement.Sprint.canceled += _ => Sprint(false);
         pc.Movement.Jump.performed += _ => Jump();
+        pc.Movement.E.performed += _ => InteractWithNPC();
 
 
         pc.Movement.LClick.Enable();
@@ -90,6 +96,7 @@ public class PlayerControls : MonoBehaviour
 
         leftHand = rightHand = null;
 
+        HandleQuests.player = this;
     }
 
     // Update is called once per frame
@@ -104,9 +111,9 @@ public class PlayerControls : MonoBehaviour
         {
             isGrounded = false;
         }
-        Transform t = cam.GetComponent<Transform>();
-        Vector3 pos = t.position;
-        Vector3 dir = t.TransformDirection(Vector3.forward);
+        t = cam.GetComponent<Transform>();
+        pos = t.position;
+        dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
@@ -169,7 +176,7 @@ public class PlayerControls : MonoBehaviour
         //     else if(Regex.Match(itemName, catRegex).Success) {
         //         ui.HoldCat(controllingContainer);
         //     }
-        // }
+        // } //
         }
 
         // if(lookingAtObject && leftHand == null) {
@@ -177,19 +184,39 @@ public class PlayerControls : MonoBehaviour
         // }
         // else if(leftHand == null)
         // {
-        //     ui.Idle();
+        //     // if the controlling hand is empty
+        //     if(lookingAtObject) {
+        //         ui.Point(controllingHand);
+        //     }
+        //     else {
+        //         ui.Idle(controllingHand);
+        //     }
         // }
-        // else
+        // else //Else if holding something
         // {
-        //     ui.Hold();
-        //     // spawn the stupid 3d item for the stupid hold ui
+        //     ui.Hold(controllingHand); //Changes to holding.
+
+        //     if(controllingHand == hand.Left)
+        //     {
+        //         if(Regex.Match(leftHand.name, appleRegex).Success){
+        //             ui.HoldApple(controllingHand);
+        //         }
+        //         else if(Regex.Match(leftHand.name, ice_cubeRegex).Success) {
+        //             ui.HoldIce_Cube(controllingHand);
+        //         }
+        //     }
+        //     else if(controllingHand == hand.Right)
+        //     {
+        //         if(Regex.Match(rightHand.name, appleRegex).Success){
+        //             ui.HoldApple(controllingHand);
+        //         }
+        //         else if(Regex.Match(rightHand.name, ice_cubeRegex).Success) {
+        //             ui.HoldIce_Cube(controllingHand);
+        //         }
+        //     }
         // }
 
-
-        // print("wtff");
-        // Debug.Log("Doges this dogert");
-        
-        // checkGroundDist();
+       
     }
 
     // VISUAL UPDATE ONLY. NO HOLDING/DROPPING LOGIC
@@ -350,16 +377,19 @@ public class PlayerControls : MonoBehaviour
                 bool lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
                 //Debug.DrawRay(pos, dir, Color.red, 10);
 
+                leftHand = hit.collider.gameObject; // set the object being held
+                                                    // Destroy(hit.collider.gameObject);
+
                 amountOfItemsHeldLeft++;
                 if (amountOfItemsHeldLeft > 1)
                 {
                     leftHandInventory.Push(leftHand);
                 }
-
-                leftHand = hit.collider.gameObject; // set the object being held
-                                                    // Destroy(hit.collider.gameObject);
+                
                 leftHand.SetActive(false);
                 Debug.Log("We picked up " + leftHand.name);
+                //Debug.Log("lhs count: " + leftHandInventory.Count);
+                Debug.Log("lhs count: " + amountOfItemsHeldLeft);
             }
             else
             {
@@ -380,6 +410,8 @@ public class PlayerControls : MonoBehaviour
                                                     // Destroy(hit.collider.gameObject);
                 rightHand.SetActive(false);
                 Debug.Log("We picked up " + rightHand.name);
+                //Debug.Log("rhs count: " + rightHandInventory.Count);
+                Debug.Log("rhs count: " + amountOfItemsHeldRight);
             }
             else
             {
@@ -466,6 +498,15 @@ public class PlayerControls : MonoBehaviour
         { 
             controllingContainer = whichContainer.Left;
             Debug.Log("now controlling left hand");
+        }
+    }
+
+    private void InteractWithNPC(){
+        if(!(Physics.Raycast(pos, dir, out hit, 3, NPCLayerMask))){
+            return;
+        }else{
+            Debug.Log(hit.collider.gameObject.name);
+            dialogueRunner.StartDialogue("TieGuyDialogueIntro");
         }
     }
 }
