@@ -23,7 +23,7 @@ public static class HandleQuests
     }
 
     public static bool CheckIfQuestComplete(int whatQuest){
-        // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
+        //loop through leftHandInventory and rightHandInventory to grab em all in one big stack
         Debug.Log("Left hand object count: "+player.leftHandInventory.Count);
         GameObject[] leftHand = new GameObject[player.leftHandInventory.Count];
         player.leftHandInventory.CopyTo(leftHand, player.leftHandInventory.Count);

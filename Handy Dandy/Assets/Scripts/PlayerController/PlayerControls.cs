@@ -51,7 +51,7 @@ public class PlayerControls : MonoBehaviour
     public Stack rightHandInventory = new Stack(inventorySize);
     public Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 5, currentInventoryCapacityRight = 5;
-    int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
+    public int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
     void Awake()
@@ -365,18 +365,19 @@ public class PlayerControls : MonoBehaviour
                 //Debug.DrawRay(pos, dir, Color.red, 10);
 
                 amountOfItemsHeldLeft++;
-                if (amountOfItemsHeldLeft > 1)
-                {
-                    leftHandInventory.Push(leftHand);
-                }
 
                 leftHand = hit.collider.gameObject; // set the object being held
                                                     // Destroy(hit.collider.gameObject);
 
+                if (amountOfItemsHeldLeft > -1)
+                {
+                    leftHandInventory.Push(leftHand);
+                }
+
                 leftHand.SetActive(false);
                 Debug.Log("We picked up " + leftHand.name);
-                //Debug.Log("lhs count: " + leftHandInventory.Count);
-                Debug.Log("lhs count: " + amountOfItemsHeldLeft);
+                Debug.Log("lhs count: " + leftHandInventory.Count);
+                //Debug.Log("lhs count: " + amountOfItemsHeldLeft);
             }
             else
             {
@@ -388,17 +389,19 @@ public class PlayerControls : MonoBehaviour
             if(amountOfItemsHeldRight < currentInventoryCapacityRight)
             {
                 amountOfItemsHeldRight++;
-                if (amountOfItemsHeldRight > 1)
-                {
-                    rightHandInventory.Push(rightHand);
-                }
+                
 
                 rightHand = hit.collider.gameObject; // set the object being held
                                                     // Destroy(hit.collider.gameObject);
+
+                if (amountOfItemsHeldRight > -1)
+                {
+                    rightHandInventory.Push(rightHand);
+                }
                 rightHand.SetActive(false);
                 Debug.Log("We picked up " + rightHand.name);
-                //Debug.Log("rhs count: " + rightHandInventory.Count);
-                Debug.Log("rhs count: " + amountOfItemsHeldRight);
+                Debug.Log("rhs count: " + rightHandInventory.Count);
+                //Debug.Log("rhs count: " + amountOfItemsHeldRight);
             }
             else
             {
@@ -488,36 +491,7 @@ public class PlayerControls : MonoBehaviour
             return;
         }else{
             Debug.Log(hit.collider.gameObject.name);
-            dialogueRunner.StartDialogue("TieGuyDialogueIntro");
+            dialogueRunner.StartDialogue(hit.collider.gameObject.name + "DialogueIntro");
         }
     }
     }
-
-//     public void StartDialogue(string nodeName = "Start")
-// {
-//     if (isCurrentConversation)
-//     {
-//         Debug.LogWarning("Can't start a dialogue that is already running");
-//         return;
-//     }
-//     isCurrentConversation = true;
-//     dialogue.SetNode(nodeName);
-//     dialogueRunner.StartDialogue(nodeName);
-//     dialogue.Continue();
-// }
-// public void StopDialogue()
-// {
-//     dialogueRunner.Stop();
-//     isCurrentConversation = false;
-// }
-
-// public void Continue()
-// {
-//     if (!isCurrentConversation)
-//     {
-//         Debug.LogWarning("Can't continue dialogue when we aren't currently running any");
-//         return;
-//     }
-
-//     dialogue.Continue();
-// }

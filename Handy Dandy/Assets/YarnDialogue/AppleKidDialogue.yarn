@@ -1,0 +1,22 @@
+﻿title: AppleKidDialogueIntro
+tags:
+---
+<<if (!see_if_already_played_intro("AppleKidDialogueIntro"))>>
+Apple Kid: Oh hiya! I'm Apple Kid!
+Apple Kid: Right over there is ma apple tree!
+Apple Kid: I'm so proud of ma apples!
+<<else>>
+    <<jump AppleFlavorText>>
+<<endif>>
+<<set_intro_done "AppleKidDialogueIntro">>
+===
+
+title: AppleFlavorText
+tags:
+---
+Apple Kid: You're looking pretty handy over there!
+Apple Kid: Get it? Cause you have hands!
+Apple Kid: We all lost our hands cause of the Dark Lord.
+Apple Kid: But that's okay!
+Apple Kid: Natural selection I guess!
+===
