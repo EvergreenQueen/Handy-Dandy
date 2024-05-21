@@ -383,7 +383,7 @@ public class PlayerControls : MonoBehaviour
 
                 amountOfItemsHeldLeft++;
                 leftHand = hit.collider.gameObject; // set the object being held
-                leftHandInventory.Push(leftHand);
+                //leftHandInventory.Push(leftHand);
 
                 if (amountOfItemsHeldLeft > -1)
                 {
@@ -413,7 +413,7 @@ public class PlayerControls : MonoBehaviour
                 amountOfItemsHeldRight++;
 
                 rightHand = hit.collider.gameObject; // set the object being held
-                rightHandInventory.Push(rightHand);
+                //rightHandInventory.Push(rightHand);
                                                     // Destroy(hit.collider.gameObject);
 
                 if (amountOfItemsHeldRight > -1)
