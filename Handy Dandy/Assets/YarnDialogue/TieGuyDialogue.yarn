@@ -52,7 +52,6 @@ tags:
 <<endif>>
 Tie Guy: Oh please find my pets again!
 Tie Guy: They usually stay close to the house…
-Tie Guy: OI da wrong option you got was {get_wrong_option()}
 ===
 
 title: Quest1Cat
@@ -111,7 +110,7 @@ tags:
 <<endif>>
 Tie Guy: Hey, did you manage to get those apples for me?
 Tie Guy: In case you forgot, I need 3 entire apples
-Tie Guy: Don't forget the <color=brown>basket</color>! It's near the door!
+Tie Guy: Don't forget the <color=yellow>basket</color>! It's near the door!
 ===
 
 title: Quest2IncorrectApples
@@ -120,7 +119,7 @@ tags:
 Tie Guy: Is that… 2 apples?
 Tie Guy: I don't want that! 
 Tie Guy: Please bring me 3 apples. :)
-Tie Guy: If only you had a <color=brown>basket</color> to hold more apples...
+Tie Guy: If only you had a <color=yellow>basket</color> to hold more apples...
 ===
 
 title: Quest2IncorrectApples1

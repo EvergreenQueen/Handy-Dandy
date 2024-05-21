@@ -24,11 +24,21 @@ public static class HandleQuests
 
     public static bool CheckIfQuestComplete(int whatQuest){
         // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
+        GameObject[] leftHand = null;
+        GameObject[] rightHand = null;
+        if(player.leftHandInventory.Count + player.rightHandInventory.Count == 0){
+            wrongOption = 3;
+            return false;
+        }
         Debug.Log("Left hand object count: "+player.leftHandInventory.Count);
-        GameObject[] leftHand = new GameObject[player.leftHandInventory.Count];
-        player.leftHandInventory.CopyTo(leftHand, player.leftHandInventory.Count);
-        GameObject[] rightHand = new GameObject[player.rightHandInventory.Count];
-        player.rightHandInventory.CopyTo(rightHand, player.rightHandInventory.Count);
+        if(player.leftHandInventory.Count != 0){
+            leftHand = new GameObject[player.leftHandInventory.Count];
+            player.leftHandInventory.CopyTo(leftHand, 0);
+        }
+        if(player.rightHandInventory.Count != 0){
+            rightHand = new GameObject[player.rightHandInventory.Count];
+            player.rightHandInventory.CopyTo(rightHand, 0);
+        }
         int maxSize = player.leftHandInventory.Count + player.rightHandInventory.Count;
         GameObject[] BothHands = new GameObject[maxSize];
         for(int i=0; i<player.leftHandInventory.Count; ++i){
