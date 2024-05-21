@@ -118,6 +118,11 @@ public class PlayerControls : MonoBehaviour
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
+        // if (isCurrentConversation) {
+        //     isCurrentConversation = false;
+        //     Debug.Log($"Started conversation with {hit.collider.gameObject.name}.");
+        // }
+
         visualUpdateContainers();
         {
             // if(leftHand == null) { ui.Idle(whichContainer.Left); ui.Drop(whichContainer.Left); }
@@ -508,4 +513,33 @@ public class PlayerControls : MonoBehaviour
             dialogueRunner.StartDialogue("TieGuyDialogueIntro");
         }
     }
-}
+    }
+
+//     public void StartDialogue(string nodeName = "Start")
+// {
+//     if (isCurrentConversation)
+//     {
+//         Debug.LogWarning("Can't start a dialogue that is already running");
+//         return;
+//     }
+//     isCurrentConversation = true;
+//     dialogue.SetNode(nodeName);
+//     dialogueRunner.StartDialogue(nodeName);
+//     dialogue.Continue();
+// }
+// public void StopDialogue()
+// {
+//     dialogueRunner.Stop();
+//     isCurrentConversation = false;
+// }
+
+// public void Continue()
+// {
+//     if (!isCurrentConversation)
+//     {
+//         Debug.LogWarning("Can't continue dialogue when we aren't currently running any");
+//         return;
+//     }
+
+//     dialogue.Continue();
+// }
