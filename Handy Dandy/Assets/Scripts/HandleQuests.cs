@@ -110,10 +110,10 @@ public static class HandleQuests
                 bool hotObject = true;
 
                 foreach (ItemIdentification item in allItems){
-                    if(item.containsTag(Hot)){
+                    if(item.containsTag(ItemIdentification.ListOfPossibleTags.Hot)){
                         hotObject = true;
                     }
-                    if(item.containsTag(Cold)){
+                    if(item.containsTag(ItemIdentification.ListOfPossibleTags.Cold)){
                         coldObject = true;
                     }
                 }
