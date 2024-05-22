@@ -9,6 +9,8 @@ public static class HandleQuests
     public static DialogueRunner dialogueRunner;
     public static YarnProject charaDialogue;
     public static PlayerControls player;
+    public static GameObject PieGuy;
+    public static GameObject Oven;
     public static int currQuest = 0;
     public static int wrongOption = 0;
     public static List<int> completedQuests = new List<int>();
@@ -47,19 +49,16 @@ public static class HandleQuests
             BothHands[player.leftHandInventory.Count+j] = rightHand[j];
         }
 
-        List<UIManager.Item> allItems = new List<UIManager.Item>();
+        List<ItemIdentification> allItems = new List<ItemIdentification>();
 
         Debug.Log("maxSize is: "+maxSize);
 
         for(int i=0; i<maxSize; ++i){
-            ItemIdentification itemDesc = BothHands[i].GetComponent<ItemIdentification>();
-            int itemID = itemDesc.id;
-            UIManager.Item item = (UIManager.Item) itemID;
+            ItemIdentification item = BothHands[i].GetComponent<ItemIdentification>();
             allItems.Add(item);
-            Debug.Log("HELLO???");
         }
 
-        foreach (UIManager.Item item in allItems){
+        foreach (ItemIdentification item in allItems){
             Debug.Log(item);
         }
 
@@ -68,11 +67,11 @@ public static class HandleQuests
                 bool foundCat = false;
                 bool foundMouse = false;
 
-                foreach (UIManager.Item item in allItems){
-                    if(item == UIManager.Item.Cat){
+                foreach (ItemIdentification item in allItems){
+                    if(item.name == "Cat"){
                         foundCat = true;
                     }
-                    if(item == UIManager.Item.Mouse){
+                    if(item.name == "Mouse"){
                         foundMouse = true;
                     }
                 }
@@ -88,12 +87,10 @@ public static class HandleQuests
                 }
                 break;
             case 2:
-                bool oneApple = false;
-                bool twoApple = false;
                 int howManyApple = 0;
 
-                foreach (UIManager.Item item in allItems){
-                    if(item == UIManager.Item.Apple){
+                foreach (ItemIdentification item in allItems){
+                    if(item.name == "Apple"){
                         howManyApple++;
                     }
                 }
@@ -109,6 +106,25 @@ public static class HandleQuests
                 }
                 break;
             case 3:
+                bool coldObject = false;
+                bool hotObject = true;
+
+                foreach (ItemIdentification item in allItems){
+                    if(item.containsTag(Hot)){
+                        hotObject = true;
+                    }
+                    if(item.containsTag(Cold)){
+                        coldObject = true;
+                    }
+                }
+
+                if(hotObject){
+                    return true;
+                }else if(coldObject){
+                    wrongOption = 1;
+                }else{
+                    wrongOption = 3;
+                }
                 break;
             case 0:
                 break;
@@ -163,6 +179,22 @@ public static class HandleQuests
             }
         }
         return false;
+    }
+
+    [YarnCommand("set_certain_quest_people_and_things_active")]
+    public static void SetCertainQuestPeopleAndThingsActive(int whatQuest){
+        switch(whatQuest){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                PieGuy.SetActive(true);
+                Oven.SetActive(true);
+                break;
+        }
     }
 }
 

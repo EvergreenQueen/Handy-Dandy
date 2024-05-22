@@ -18,6 +18,10 @@ Pie Guy: ...oops.
 title: Quest3Intro
 tags:
 ---
+<<if see_if_already_played_intro("Quest3Intro")>>
+    <<jump Quest3ReIntro>>
+<<endif>>
+<<start_quest 3>>
 Pie Guy: Now obviously to make a pie
 Pie Guy: We need an oven
 Pie Guy: To be specific
@@ -26,11 +30,17 @@ Pie Guy: This oven is not working because I moved it outside my house
 Pie Guy: hmmm...
 Pie Guy: I bet if you find something <b>HOT</b> the oven will work again!
 Items have certain <b>TAGS</b> that describe their properties! Often many solutions will be available for quests that require <b>TAGGED</b> items!
+<<set_intro_done "Quest3Intro">>
 ===
 
 title: Quest3ReIntro
 tags: 
 ---
+<<if (check_quest_completion() || see_if_already_completed(3))>>
+    <<jump Quest3Finish>>
+<<elseif get_wrong_option() == 1>>
+    <<jump Quest3ColdItem>>
+<<endif>>
 Pie Guy: hey you aren't <b>HOT</b> enough dummy
 Pie Guy: hurry up and find something <b>HOT</b> so we can bake this pie
 ===
@@ -41,17 +51,21 @@ tags:
 Pie Guy: what the fuck
 ===
 
-title: Quest3WrongItem
-tags:
----
-Pie Guy: Hey you know what would really make this pie pop???
-Pie Guy: Something <b>HOT</b>.
-===
-
 title: Quest3Finish
 tags:
 ---
+<<if see_if_already_played_intro("Quest3Finish")>>
+    <<jump TieGuyIdle>>
+<<endif>>
 Pie Guy: AWESOME
 Pie Guy: here take it and get out of here
 Pie Guy: i gotta get this oven back into my house
+<<set_intro_done "Quest3Finish">>
+===
+
+title: PieGuyIdleDialogue
+tags:
+---
+Pie Guy: Gee I sure love my oven
+Pie Guy: Thanks i guess for making my oven work
 ===

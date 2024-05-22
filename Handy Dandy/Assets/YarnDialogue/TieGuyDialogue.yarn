@@ -89,6 +89,9 @@ Tie Guy: How could I ever repay you?
 title: Quest2Intro
 tags:
 ---
+<<if see_if_already_played_intro("Quest2Intro")>>
+    <<jump Quest2ReIntro>>
+<<endif>>
 <<start_quest 2>>
 Tie Guy: Thank you so much again for helping me with my pets!
 Tie Guy: I want to give you an apple pie as thanks, but I need some help first.
@@ -138,6 +141,7 @@ tags:
 Tie Guy: Wow! You understood my cryptic awesome instructions.
 Tie Guy: Thank you so much! I'll go ask my roommate to make that pie for you now.
 <<set_intro_done "Quest2Finish">>
+<<set_certain_quest_people_and_things_active 3>>
 ===
 
 title: TieGuyIdle
