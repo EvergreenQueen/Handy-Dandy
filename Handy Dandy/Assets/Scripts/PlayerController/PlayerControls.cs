@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 using Yarn.Unity;
 
@@ -292,7 +293,6 @@ public class PlayerControls : MonoBehaviour
         //checkGroundDist();
         //Time.timeScale = timeScale;
 
-
         //Camera Looking with Mouse:
         moveCamera();
     }
@@ -304,7 +304,14 @@ public class PlayerControls : MonoBehaviour
             Vector3 input;
             Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, isGround);
             Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
-            input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
+            if (isGrounded)
+            {
+                input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
+            }
+            else
+            {
+                input = transform.forward * rawInput.y + transform.right * rawInput.x;
+            }
             rb.transform.position += input.normalized * speed;
             if (!input.Equals(Vector3.zero) && !soundIsPlaying)
             {
@@ -454,15 +461,19 @@ public class PlayerControls : MonoBehaviour
 
     private void Drop()
     {
+        Rigidbody temp;
         if (controllingContainer == whichContainer.Left)
         {
             if (amountOfItemsHeldLeft > 0)
             {
                 Transform t1 = cam.GetComponent<Transform>();
                 leftHand.SetActive(true);
+                // Unfreeze object if originally sleeping
+                temp = leftHand.GetComponent<Rigidbody>();
+                temp.isKinematic = false;
                 leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
                 Debug.Log("We dropped " + leftHand.name);
-
+                
                 leftHandInventory.Pop();
                 if (amountOfItemsHeldLeft == 1)
                 {
@@ -485,7 +496,8 @@ public class PlayerControls : MonoBehaviour
                 rightHand.SetActive(true);
                 rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
                 Debug.Log("We dropped " + rightHand.name);
-
+                temp = rightHand.GetComponent<Rigidbody>();
+                temp.isKinematic = false;
                 rightHandInventory.Pop();
                 if (amountOfItemsHeldRight == 1)
                 {
