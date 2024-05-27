@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba46325fc6ea97149a48264d29538c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Ice_Cube
+  name: Ice Cube
   id: 2
   tags: 01000000
   description: It's so cold...
