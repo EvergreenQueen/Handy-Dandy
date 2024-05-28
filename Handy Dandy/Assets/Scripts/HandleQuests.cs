@@ -23,42 +23,42 @@ public static class HandleQuests
         dialogueRunner.Stop();
     }
 
-    public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
-        for(int i=0; i<leftHand.length; ++i){
-            if(leftHand[i].GetComponent<ItemIdentification>().name == whatItem){
-                leftHandInventory.Pop();
-                if (amountOfItemsHeldLeft == 1)
-                {
-                    leftHand = null;
-                    ui.Idle(controllingContainer);
-                }
-                else if (amountOfItemsHeldLeft > 1)
-                {
-                    leftHand = (GameObject)leftHandInventory.Peek();
-                }
-                amountOfItemsHeldLeft--;
-                howMany -= 1;
-            }
-        }
-        if(howMany != 0){
-            foreach (GameObject item in rightHand){
-                if(rightHand[i].GetComponent<ItemIdentification>().name == whatItem){
-                    rightHandInventory.Pop();
-                    if (amountOfItemsHeldRight == 1)
-                    {
-                        rightHand = null;
-                        ui.Idle(controllingContainer);
-                    }
-                    else if (amountOfItemsHeldLeft > 1)
-                    {
-                        rightHand = (GameObject)rightHandInventory.Peek();
-                    }
-                    amountOfItemsHeldRight--;
-                    howMany -= 1;
-                }
-            }
-        }
-    }
+    // public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+    //     for(int i=0; i<leftHand.length; ++i){
+    //         if(leftHand[i].GetComponent<ItemIdentification>().name == whatItem){
+    //             leftHandInventory.Pop();
+    //             if (amountOfItemsHeldLeft == 1)
+    //             {
+    //                 leftHand = null;
+    //                 ui.Idle(controllingContainer);
+    //             }
+    //             else if (amountOfItemsHeldLeft > 1)
+    //             {
+    //                 leftHand = (GameObject)leftHandInventory.Peek();
+    //             }
+    //             amountOfItemsHeldLeft--;
+    //             howMany -= 1;
+    //         }
+    //     }
+    //     if(howMany != 0){
+    //         foreach (GameObject item in rightHand){
+    //             if(rightHand[i].GetComponent<ItemIdentification>().name == whatItem){
+    //                 rightHandInventory.Pop();
+    //                 if (amountOfItemsHeldRight == 1)
+    //                 {
+    //                     rightHand = null;
+    //                     ui.Idle(controllingContainer);
+    //                 }
+    //                 else if (amountOfItemsHeldLeft > 1)
+    //                 {
+    //                     rightHand = (GameObject)rightHandInventory.Peek();
+    //                 }
+    //                 amountOfItemsHeldRight--;
+    //                 howMany -= 1;
+    //             }
+    //         }
+    //     }
+    // }
 
     public static bool CheckIfQuestComplete(int whatQuest){
         // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
