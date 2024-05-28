@@ -23,6 +23,43 @@ public static class HandleQuests
         dialogueRunner.Stop();
     }
 
+    public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+        for(int i=0; i<leftHand.length; ++i){
+            if(leftHand[i].GetComponent<ItemIdentification>().name == whatItem){
+                leftHandInventory.Pop();
+                if (amountOfItemsHeldLeft == 1)
+                {
+                    leftHand = null;
+                    ui.Idle(controllingContainer);
+                }
+                else if (amountOfItemsHeldLeft > 1)
+                {
+                    leftHand = (GameObject)leftHandInventory.Peek();
+                }
+                amountOfItemsHeldLeft--;
+                howMany -= 1;
+            }
+        }
+        if(howMany != 0){
+            foreach (GameObject item in rightHand){
+                if(rightHand[i].GetComponent<ItemIdentification>().name == whatItem){
+                    rightHandInventory.Pop();
+                    if (amountOfItemsHeldRight == 1)
+                    {
+                        rightHand = null;
+                        ui.Idle(controllingContainer);
+                    }
+                    else if (amountOfItemsHeldLeft > 1)
+                    {
+                        rightHand = (GameObject)rightHandInventory.Peek();
+                    }
+                    amountOfItemsHeldRight--;
+                    howMany -= 1;
+                }
+            }
+        }
+    }
+
     public static bool CheckIfQuestComplete(int whatQuest){
         // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
         GameObject[] leftHand = null;
@@ -77,6 +114,7 @@ public static class HandleQuests
                 }
 
                 if(foundCat && foundMouse){
+                    // Get rid of cat and mouse
                     return true;
                 }else if(foundCat){
                     wrongOption = 1;
@@ -107,7 +145,7 @@ public static class HandleQuests
                 break;
             case 3:
                 bool coldObject = false;
-                bool hotObject = true;
+                bool hotObject = false;
 
                 foreach (ItemIdentification item in allItems){
                     if(item.containsTag(ItemIdentification.ListOfPossibleTags.Hot)){
@@ -123,7 +161,7 @@ public static class HandleQuests
                 }else if(coldObject){
                     wrongOption = 1;
                 }else{
-                    wrongOption = 3;
+                    wrongOption = 2;
                 }
                 break;
             case 0:

@@ -52,7 +52,7 @@ public class PlayerControls : MonoBehaviour
     public Stack rightHandInventory = new Stack(inventorySize);
     public Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 1, currentInventoryCapacityRight = 1;
-    int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
+    public int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     AudioSource audioSource;
     AudioManager audioManager;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";

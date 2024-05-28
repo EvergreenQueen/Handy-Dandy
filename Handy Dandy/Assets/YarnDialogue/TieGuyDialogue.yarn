@@ -8,14 +8,8 @@ tags:
     Tie Guy: But what would I know? I'm just the <color=red>Tie Guy</color>.
     Tie Guy: Welcome to the grand lands of <color=red>Apple Orchard Valley</color>, kid.
     Tie Guy: Our main export is apples and our main import is... well it used to be apples till our bridge fell apart.
-    Tie Guy: Some dude said he was <color=yellow>God</color> and he wanted to 'give out a test' or something like that I dunno but either way that douche broke our bridge so no one goes in and no one goes out.
     Tie Guy: Yes there's only 1 entrance and exit to the valley.
     Tie Guy: So until we fix that bridge, we're all doomed here to die.
-    Tie Guy: Er, munch on apples for the rest of <b>eternity</b>.
-    Tie Guy: Basically the same as dying.
-    Tie Guy: And we can't fix it since we don't have ha- 
-    Tie Guy: <b>WHAT IN THE BLOODY JONES IS THAT YOUR HANDS</b>
-    Tie Guy: Well I'll be damned.
 <<elseif (get_curr_quest()<1)>>
     <<jump Quest1Intro>>
 <<elseif (get_curr_quest() == 1)>>
@@ -30,13 +24,11 @@ title: Quest1Intro
 tags:
 ---
 <<start_quest 1>>
-Tie Guy: Well, visitor
-Tie Guy: wait, can I call you Handy?
-Tie Guy: I'll call you Handy.
-Tie Guy: I lost Cat and Mouse
-Tie Guy: They're a cat and a mouse
+Tie Guy: Well, visitor.
+Tie Guy: I lost Cat and Mouse.
+Tie Guy: They're a cat and a mouse.
 Tie Guy: Can you find them, please?
-Tie Guy: I don't think they wandered too far from the house
+Tie Guy: I don't think they wandered too far from the house.
 <<set_intro_done "Quest1Intro">>
 ===
 
