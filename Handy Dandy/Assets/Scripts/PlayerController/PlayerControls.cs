@@ -57,6 +57,10 @@ public class PlayerControls : MonoBehaviour
     AudioManager audioManager;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
+    bool rightMaxAdjust;
+    bool leftMaxAdjust;
+
+    
     void Awake()
     {
         pc = new PlayerActionControls();
@@ -96,6 +100,8 @@ public class PlayerControls : MonoBehaviour
         leftHand = rightHand = null;
 
         HandleQuests.player = this;
+
+        leftMaxAdjust = rightMaxAdjust = false;
     }
 
     // Update is called once per frame
@@ -336,6 +342,12 @@ public class PlayerControls : MonoBehaviour
                 leftHand = hit.collider.gameObject; // set the object being held
                 // leftHandInventory.Push(leftHand);
 
+                //Checking if it's a container:
+                if(leftHand.GetComponent<ItemIdentification>().containsTag(ItemIdentification.ListOfPossibleTags.Container)){
+                    currentInventoryCapacityLeft = leftHand.GetComponent<ItemIdentification>().containerMax + 1;
+                    leftMaxAdjust = true;
+                }
+
                 if (amountOfItemsHeldLeft > -1)
                 {
                     leftHandInventory.Push(leftHand);
@@ -367,10 +379,18 @@ public class PlayerControls : MonoBehaviour
                 // rightHandInventory.Push(rightHand);
                                                     // Destroy(hit.collider.gameObject);
 
+                //Checking if it's a container:
+                if(rightHand.GetComponent<ItemIdentification>().containsTag(ItemIdentification.ListOfPossibleTags.Container)){
+                    currentInventoryCapacityRight = rightHand.GetComponent<ItemIdentification>().containerMax + 1;
+                    rightMaxAdjust = true;
+                }
+
                 if (amountOfItemsHeldRight > -1)
                 {
                     rightHandInventory.Push(rightHand);
                 }
+
+
                 rightHand.SetActive(false);
                 Debug.Log("We picked up " + rightHand.name);
                 Debug.Log("rhs count: " + rightHandInventory.Count);
@@ -409,22 +429,45 @@ public class PlayerControls : MonoBehaviour
         {
             if (amountOfItemsHeldLeft > 0)
             {
-                Transform t1 = cam.GetComponent<Transform>();
-                leftHand.SetActive(true);
-                leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                Debug.Log("We dropped " + leftHand.name);
-
-                leftHandInventory.Pop();
-                if (amountOfItemsHeldLeft == 1)
-                {
-                    leftHand = null;
+                
+                if(!leftMaxAdjust){
+                    Transform t1 = cam.GetComponent<Transform>();
+                    leftHand.SetActive(true);
+                    leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    Debug.Log("We dropped " + leftHand.name);
+                    leftHandInventory.Pop();
+                    if (amountOfItemsHeldLeft == 1)
+                    {
+                        leftHand = null;
+                        ui.Idle(controllingContainer);
+                    }
+                    else if (amountOfItemsHeldLeft > 1)
+                    {
+                        leftHand = (GameObject)leftHandInventory.Peek();
+                    }
+                    amountOfItemsHeldLeft--;
+                    
+                }else{
                     ui.Idle(controllingContainer);
+                    for(amountOfItemsHeldLeft = amountOfItemsHeldLeft; amountOfItemsHeldLeft > 0; amountOfItemsHeldLeft--){
+                        Transform t1 = cam.GetComponent<Transform>();
+                        leftHand.SetActive(true);
+                        leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                        leftHandInventory.Pop();
+
+                        if (amountOfItemsHeldLeft == 1)
+                        {
+                            leftHand = null;
+                            // ui.Idle(controllingContainer);
+                        }
+                        else if (amountOfItemsHeldLeft > 1)
+                        {
+                            leftHand = (GameObject)leftHandInventory.Peek();
+                        }
+                    }
+                    leftMaxAdjust = false;
+                    currentInventoryCapacityLeft = 1;
                 }
-                else if (amountOfItemsHeldLeft > 1)
-                {
-                    leftHand = (GameObject)leftHandInventory.Peek();
-                }
-                amountOfItemsHeldLeft--;
                 Debug.Log("lhs count: " + leftHandInventory.Count);
             }
         }
@@ -432,23 +475,47 @@ public class PlayerControls : MonoBehaviour
         {
             if (amountOfItemsHeldRight > 0)
             {
-                Transform t1 = cam.GetComponent<Transform>();
-                rightHand.SetActive(true);
-                rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                Debug.Log("We dropped " + rightHand.name);
+                if(!rightMaxAdjust){
+                    Transform t1 = cam.GetComponent<Transform>();
+                    rightHand.SetActive(true);
+                    rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    Debug.Log("We dropped " + rightHand.name);
 
-                rightHandInventory.Pop();
-                if (amountOfItemsHeldRight == 1)
-                {
-                    rightHand = null;
+                    rightHandInventory.Pop();
+                    if (amountOfItemsHeldRight == 1)
+                    {
+                        rightHand = null;
+                        ui.Idle(controllingContainer);
+                    }
+                    else if (amountOfItemsHeldRight > 1)
+                    {
+                        rightHand = (GameObject)rightHandInventory.Peek();
+                    }
+                    amountOfItemsHeldRight--;
+                    Debug.Log("rhs count: " + rightHandInventory.Count);
+                }else{
                     ui.Idle(controllingContainer);
+                    for(amountOfItemsHeldRight = amountOfItemsHeldRight; amountOfItemsHeldRight > 0; amountOfItemsHeldRight--){
+                        Transform t1 = cam.GetComponent<Transform>();
+                        rightHand.SetActive(true);
+                        rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                        rightHandInventory.Pop();
+
+                        if (amountOfItemsHeldRight == 1)
+                        {
+                            rightHand = null;
+                            // ui.Idle(controllingContainer);
+                        }
+                        else if (amountOfItemsHeldRight > 1)
+                        {
+                            rightHand = (GameObject)rightHandInventory.Peek();
+                        }
+                    }
+                    rightMaxAdjust = false;
+                    currentInventoryCapacityRight = 1;
                 }
-                else if (amountOfItemsHeldRight > 1)
-                {
-                    rightHand = (GameObject)rightHandInventory.Peek();
-                }
-                amountOfItemsHeldRight--;
-                Debug.Log("rhs count: " + rightHandInventory.Count);
+
+                
             }
         }
     }
