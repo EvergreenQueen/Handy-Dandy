@@ -28,6 +28,7 @@ Pie Guy: Hmmm, it's not usually broken.
 Pie Guy: Well, I reckon if you find something HOT to put in this here oven it'll work again. Ovens are supposed to be HOT anyways.
 Items have certain <b>TAGS</b> that describe their properties! Often many solutions will be available for quests that require <b>TAGGED</b> items!
 <<set_intro_done "Quest3Intro">>
+<<turn_on_questui>>
 ===
 
 title: Quest3ReIntro
@@ -66,6 +67,7 @@ tags:
 <<endif>>
 Pie Guy: AWESOME, now take it and get outta here, I gotta get this oven back in my house.
 <<set_intro_done "Quest3Finish">>
+<<turn_on_questui>>
 ===
 
 title: PieGuyIdleDialogue

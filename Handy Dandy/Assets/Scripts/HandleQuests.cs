@@ -15,6 +15,7 @@ public static class HandleQuests
     public static int wrongOption = 0;
     public static List<int> completedQuests = new List<int>();
     public static List<string> introsPlayed = new List<string>();
+    public static bool questUIToggle = false;
 
     [YarnCommand("switch_project")]
     public static void SwitchProject(){
@@ -217,6 +218,11 @@ public static class HandleQuests
             }
         }
         return false;
+    }
+
+    [YarnCommand("turn_on_questui")]
+    public static void TurnOnQuestUI(){
+        questUIToggle = !questUIToggle;
     }
 
     [YarnCommand("set_certain_quest_people_and_things_active")]

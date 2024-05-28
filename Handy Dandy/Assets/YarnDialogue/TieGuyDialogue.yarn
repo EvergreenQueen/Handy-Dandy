@@ -30,6 +30,7 @@ Tie Guy: They're a cat and a mouse.
 Tie Guy: Can you find them, please?
 Tie Guy: I don't think they wandered too far from the house.
 <<set_intro_done "Quest1Intro">>
+<<turn_on_questui>>
 ===
 
 title: Quest1ReIntro
@@ -71,6 +72,7 @@ tags:
 <<if see_if_already_played_intro("Quest1Finish")>>
     <<jump Quest2Intro>>
 <<endif>>
+<<turn_on_questui>>
 Tie Guy: Cat! Mouse!
 Tie Guy: They're back :)!
 Tie Guy: Thank you so much for bringing back my pets!
@@ -91,6 +93,7 @@ Tie Guy: See, I still have no arms or hands.
 Tie Guy: Could you bring me 3 apples from the tree in my yard?
 Tie Guy: If you need it, you can use that basket near the door.
 <<set_intro_done "Quest2Intro">>
+<<turn_on_questui>>
 ===
 
 title: Quest2ReIntro
@@ -133,6 +136,7 @@ tags:
 Tie Guy: Wow! You understood my cryptic awesome instructions.
 Tie Guy: Thank you so much! I'll go ask my roommate to make that pie for you now.
 <<set_intro_done "Quest2Finish">>
+<<turn_on_questui>>
 <<set_certain_quest_people_and_things_active 3>>
 ===
 

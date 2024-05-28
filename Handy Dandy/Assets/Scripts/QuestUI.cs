@@ -12,6 +12,7 @@ public class QuestUI : MonoBehaviour
     public TMP_Text questText;
     int currQuest = HandleQuests.currQuest;
     public List<string> currQuestInfo;
+    bool questUIOn = HandleQuests.questUIToggle;
 
     void Start() {
         currQuestInfo.Add("Help Tie Guy find his Cat and Mouse!");
@@ -25,7 +26,9 @@ public class QuestUI : MonoBehaviour
 
     public void questBox() {
         currQuest = HandleQuests.currQuest;
-        if (currQuest > 0) {
+        questUIOn = HandleQuests.questUIToggle;
+        
+        if ((currQuest > 0) && (questUIOn)) {
             Debug.Log("currQuest should pop up");
             questUI.SetActive(true);
             //currquest is not 0 indexed!! booooo!!
