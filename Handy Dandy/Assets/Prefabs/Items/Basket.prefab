@@ -172,4 +172,5 @@ MonoBehaviour:
   name: Basket
   id: 0
   tags: 
-  description: '[WIP]'
+  description: A nice wicker container. Holds 3 items.
+  containerMax: 3
