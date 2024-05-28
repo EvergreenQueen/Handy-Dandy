@@ -8,14 +8,8 @@ tags:
     Tie Guy: But what would I know? I'm just the <color=red>Tie Guy</color>.
     Tie Guy: Welcome to the grand lands of <color=red>Apple Orchard Valley</color>, kid.
     Tie Guy: Our main export is apples and our main import is... well it used to be apples till our bridge fell apart.
-    Tie Guy: Some dude said he was <color=yellow>God</color> and he wanted to 'give out a test' or something like that I dunno but either way that douche broke our bridge so no one goes in and no one goes out.
     Tie Guy: Yes there's only 1 entrance and exit to the valley.
     Tie Guy: So until we fix that bridge, we're all doomed here to die.
-    Tie Guy: Er, munch on apples for the rest of <b>eternity</b>.
-    Tie Guy: Basically the same as dying.
-    Tie Guy: And we can't fix it since we don't have ha- 
-    Tie Guy: <b>WHAT IN THE BLOODY JONES IS THAT YOUR HANDS</b>
-    Tie Guy: Well I'll be damned.
 <<elseif (get_curr_quest()<1)>>
     <<jump Quest1Intro>>
 <<elseif (get_curr_quest() == 1)>>
@@ -30,20 +24,19 @@ title: Quest1Intro
 tags:
 ---
 <<start_quest 1>>
-Tie Guy: Well, visitor
-Tie Guy: wait, can I call you Handy?
-Tie Guy: I'll call you Handy.
-Tie Guy: I lost Cat and Mouse
-Tie Guy: They're a cat and a mouse
+Tie Guy: Well, visitor.
+Tie Guy: I lost Cat and Mouse.
+Tie Guy: They're a cat and a mouse.
 Tie Guy: Can you find them, please?
-Tie Guy: I don't think they wandered too far from the house
+Tie Guy: I don't think they wandered too far from the house.
 <<set_intro_done "Quest1Intro">>
+<<turn_on_questui>>
 ===
 
 title: Quest1ReIntro
 tags:
 ---
-<<if check_quest_completion()>>
+<<if (check_quest_completion() || see_if_already_completed(1))>>
     <<jump Quest1Finish>>
 <<elseif get_wrong_option() == 1>>
     <<jump Quest1Cat>>
@@ -79,6 +72,7 @@ tags:
 <<if see_if_already_played_intro("Quest1Finish")>>
     <<jump Quest2Intro>>
 <<endif>>
+<<turn_on_questui>>
 Tie Guy: Cat! Mouse!
 Tie Guy: They're back :)!
 Tie Guy: Thank you so much for bringing back my pets!
@@ -89,6 +83,9 @@ Tie Guy: How could I ever repay you?
 title: Quest2Intro
 tags:
 ---
+<<if see_if_already_played_intro("Quest2Intro")>>
+    <<jump Quest2ReIntro>>
+<<endif>>
 <<start_quest 2>>
 Tie Guy: Thank you so much again for helping me with my pets!
 Tie Guy: I want to give you an apple pie as thanks, but I need some help first.
@@ -96,12 +93,13 @@ Tie Guy: See, I still have no arms or hands.
 Tie Guy: Could you bring me 3 apples from the tree in my yard?
 Tie Guy: If you need it, you can use that basket near the door.
 <<set_intro_done "Quest2Intro">>
+<<turn_on_questui>>
 ===
 
 title: Quest2ReIntro
 tags:
 ---
-<<if check_quest_completion()>>
+<<if (check_quest_completion() || see_if_already_completed(2))>>
     <<jump Quest2Finish>>
 <<elseif get_wrong_option() == 1>>
     <<jump Quest2IncorrectApples1>>
@@ -138,6 +136,8 @@ tags:
 Tie Guy: Wow! You understood my cryptic awesome instructions.
 Tie Guy: Thank you so much! I'll go ask my roommate to make that pie for you now.
 <<set_intro_done "Quest2Finish">>
+<<turn_on_questui>>
+<<set_certain_quest_people_and_things_active 3>>
 ===
 
 title: TieGuyIdle

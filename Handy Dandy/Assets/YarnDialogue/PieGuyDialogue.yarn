@@ -18,40 +18,61 @@ Pie Guy: ...oops.
 title: Quest3Intro
 tags:
 ---
-Pie Guy: Now obviously to make a pie
-Pie Guy: We need an oven
-Pie Guy: To be specific
-Pie Guy: A working oven
-Pie Guy: This oven is not working because I moved it outside my house
-Pie Guy: hmmm...
-Pie Guy: I bet if you find something <b>HOT</b> the oven will work again!
+<<if see_if_already_played_intro("Quest3Intro")>>
+    <<jump Quest3ReIntro>>
+<<endif>>
+<<start_quest 3>>
+Pie Guy: Alright, now, Tie Guy told me to expect you. Said you needed a pie baked. I've got the only oven in this orchard, apparently.
+Pie Guy: Obviously to bake a pie we need an oven, but you for sure aren't getting into my house. So... let me just...
+Pie Guy: Hmmm, it's not usually broken.
+Pie Guy: Well, I reckon if you find something HOT to put in this here oven it'll work again. Ovens are supposed to be HOT anyways.
 Items have certain <b>TAGS</b> that describe their properties! Often many solutions will be available for quests that require <b>TAGGED</b> items!
+<<set_intro_done "Quest3Intro">>
+<<turn_on_questui>>
 ===
 
 title: Quest3ReIntro
 tags: 
 ---
-Pie Guy: hey you aren't <b>HOT</b> enough dummy
-Pie Guy: hurry up and find something <b>HOT</b> so we can bake this pie
+<<if (check_quest_completion() || see_if_already_completed(3))>>
+    <<jump Quest3Finish>>
+<<elseif get_wrong_option() == 1>>
+    <<jump Quest3ColdItem>>
+<<elseif get_wrong_option() == 2>>
+    <<jump Quest3WrongItem>>
+<<endif>>
+Pie Guy: Nice try, stranger, but you aren't nearly HOT enough for this oven.
+Pie Guy: Now get a move on and find something HOT so we can bake this pie!
 ===
 
 title: Quest3ColdItem
 tags:
 ---
-Pie Guy: what the fuck
+Pie Guy: ...
+Pie Guy: Who dropped you on your head as a child?
 ===
 
 title: Quest3WrongItem
 tags:
 ---
-Pie Guy: Hey you know what would really make this pie pop???
-Pie Guy: Something <b>HOT</b>.
+Pie Guy: You know what could really make this oven work, stranger?
+Pie Guy: Something HOT!
 ===
 
 title: Quest3Finish
 tags:
 ---
-Pie Guy: AWESOME
-Pie Guy: here take it and get out of here
-Pie Guy: i gotta get this oven back into my house
+<<if see_if_already_played_intro("Quest3Finish")>>
+    <<jump TieGuyIdle>>
+<<endif>>
+Pie Guy: AWESOME, now take it and get outta here, I gotta get this oven back in my house.
+<<set_intro_done "Quest3Finish">>
+<<turn_on_questui>>
+===
+
+title: PieGuyIdleDialogue
+tags:
+---
+Pie Guy: Gee I sure love my oven
+Pie Guy: Thanks i guess for making my oven work
 ===
