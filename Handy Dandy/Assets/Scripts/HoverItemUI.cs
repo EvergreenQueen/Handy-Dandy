@@ -37,15 +37,16 @@ public class HoverItemUI : MonoBehaviour
     }
 
     public void drawUI() {
+        tags.Clear();
         if(currentItem != null)
         {
+            Debug.Log("currentItem = " + currentItem.name);
             // draw shit
             hoverItemUI.SetActive(true);
             ItemIdentification itemInfo = currentItem.GetComponent<ItemIdentification>();
 
             itemInfoText.text = itemInfo.name + "\n" + itemInfo.description;
 
-            tags.Clear();
             foreach(var tag in itemInfo.tags)
             {
                 tags.Add(tag);
@@ -53,6 +54,7 @@ public class HoverItemUI : MonoBehaviour
         }
         else
         {
+            Debug.Log("currentItem = null");
             hoverItemUI.SetActive(false);
         }
         drawTags();
@@ -61,7 +63,8 @@ public class HoverItemUI : MonoBehaviour
     void drawTags() {
         int numTags = tags.Count;
         int remainingRenderers = renderers.Count - numTags;
-        Debug.Log("remaining renderers = " + remainingRenderers);
+        // Debug.Log("remaining renderers = " + remainingRenderers);
+        // Debug.Log("numTags = " + numTags);
 
         int i = 0;
         for(i = i; i < numTags; i++)
