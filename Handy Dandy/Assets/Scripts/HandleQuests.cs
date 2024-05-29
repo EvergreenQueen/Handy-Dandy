@@ -24,42 +24,61 @@ public static class HandleQuests
         dialogueRunner.Stop();
     }
 
-    // public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
-    //     for(int i=0; i<leftHand.length; ++i){
-    //         if(leftHand[i].GetComponent<ItemIdentification>().name == whatItem){
-    //             leftHandInventory.Pop();
-    //             if (amountOfItemsHeldLeft == 1)
-    //             {
-    //                 leftHand = null;
-    //                 ui.Idle(controllingContainer);
-    //             }
-    //             else if (amountOfItemsHeldLeft > 1)
-    //             {
-    //                 leftHand = (GameObject)leftHandInventory.Peek();
-    //             }
-    //             amountOfItemsHeldLeft--;
-    //             howMany -= 1;
-    //         }
-    //     }
-    //     if(howMany != 0){
-    //         foreach (GameObject item in rightHand){
-    //             if(rightHand[i].GetComponent<ItemIdentification>().name == whatItem){
-    //                 rightHandInventory.Pop();
-    //                 if (amountOfItemsHeldRight == 1)
-    //                 {
-    //                     rightHand = null;
-    //                     ui.Idle(controllingContainer);
-    //                 }
-    //                 else if (amountOfItemsHeldLeft > 1)
-    //                 {
-    //                     rightHand = (GameObject)rightHandInventory.Peek();
-    //                 }
-    //                 amountOfItemsHeldRight--;
-    //                 howMany -= 1;
-    //             }
-    //         }
-    //     }
-    // }
+    public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+        // ok so right now, we have arrays lefthand and righthand
+        // convert to list so that we can actually get rid of items in a way that's good
+        // and then convert it back into an array so we can convert it into a stack
+        // so that we can replace both rightHandInventory and leftHandInventory
+        // ezpz
+        List<GameObject> leftList = new List<GameObject>(leftHand);
+        List<GameObject> rightList = new List<GameObject>(rightHand);
+
+        for(int i=0; i<leftList.Count; i++){
+            if((leftList[i].name == whatItem) && (howMany > 0)){
+                leftList.RemoveAt(i);
+                howMany -= 1;
+                player.leftHandInventory = new Stack(leftList);
+                Debug.Log(player.leftHandInventory);
+                player.DropUpdateUI();
+            }
+        }
+        for(int i=0; i<rightList.Count; i++){
+            if((rightList[i].name == whatItem) && (howMany > 0)){
+                rightList.RemoveAt(i);
+                howMany -= 1;
+                player.rightHandInventory = new Stack(rightList);
+                Debug.Log(player.rightHandInventory);
+                player.DropUpdateUI();
+            }
+        }
+    }
+
+    public static void GetRidOfItemsByTag(ItemIdentification.ListOfPossibleTags whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+        // ok so right now, we have arrays lefthand and righthand
+        // convert to list so that we can actually get rid of items in a way that's good
+        // and then convert it back into an array so we can convert it into a stack
+        // so that we can replace both rightHandInventory and leftHandInventory
+        // ezpz
+        List<GameObject> leftList = new List<GameObject>(leftHand);
+        List<GameObject> rightList = new List<GameObject>(rightHand);
+
+        for(int i=0; i<leftList.Count; i++){
+            if((leftList[i].GetComponent<ItemIdentification>().containsTag(whatItem)) && (howMany > 0)){
+                leftList.RemoveAt(i);
+                howMany -= 1;
+                player.leftHandInventory = new Stack(leftList);
+                player.DropUpdateUI();
+            }
+        }
+        for(int i=0; i<rightList.Count; i++){
+            if((rightList[i].GetComponent<ItemIdentification>().containsTag(whatItem)) && (howMany > 0)){
+                rightList.RemoveAt(i);
+                howMany -= 1;
+                player.rightHandInventory = new Stack(rightList);
+                player.DropUpdateUI();
+            }
+        }
+    }
 
     public static bool CheckIfQuestComplete(int whatQuest){
         // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
@@ -116,6 +135,8 @@ public static class HandleQuests
 
                 if(foundCat && foundMouse){
                     // Get rid of cat and mouse
+                    GetRidOfItemsByName("Cat", 1, leftHand, rightHand);
+                    GetRidOfItemsByName("Mouse", 1, leftHand, rightHand);
                     return true;
                 }else if(foundCat){
                     wrongOption = 1;
@@ -135,6 +156,8 @@ public static class HandleQuests
                 }
 
                 if(howManyApple == 3){
+                    // Get rid of 3 apples
+                    GetRidOfItemsByName("Apple", 3, leftHand, rightHand);
                     return true;
                 }else if(howManyApple == 1){
                     wrongOption = 1;
@@ -158,6 +181,8 @@ public static class HandleQuests
                 }
 
                 if(hotObject){
+                    // Get rid of hot object
+                    GetRidOfItemsByTag(ItemIdentification.ListOfPossibleTags.Hot, 1, leftHand, rightHand);
                     return true;
                 }else if(coldObject){
                     wrongOption = 1;

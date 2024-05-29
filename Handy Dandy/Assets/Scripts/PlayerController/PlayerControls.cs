@@ -569,6 +569,97 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    public void DropUpdateUI(){
+        if (amountOfItemsHeldLeft > 0)
+        {
+            
+            if(!leftMaxAdjust){
+                Transform t1 = cam.GetComponent<Transform>();
+                leftHand.SetActive(true);
+                leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                Debug.Log("We dropped " + leftHand.name);
+                // leftHandInventory.Pop();
+                if (amountOfItemsHeldLeft == 1)
+                {
+                    leftHand = null;
+                    ui.Idle(controllingContainer);
+                }
+                else if (amountOfItemsHeldLeft > 1)
+                {
+                    leftHand = (GameObject)leftHandInventory.Peek();
+                }
+                amountOfItemsHeldLeft--;
+                
+            }else{
+                ui.Idle(controllingContainer);
+                for(amountOfItemsHeldLeft = amountOfItemsHeldLeft; amountOfItemsHeldLeft > 0; amountOfItemsHeldLeft--){
+                    Transform t1 = cam.GetComponent<Transform>();
+                    leftHand.SetActive(true);
+                    leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    // leftHandInventory.Pop();
+
+                    if (amountOfItemsHeldLeft == 1)
+                    {
+                        leftHand = null;
+                        // ui.Idle(controllingContainer);
+                    }
+                    else if (amountOfItemsHeldLeft > 1)
+                    {
+                        leftHand = (GameObject)leftHandInventory.Peek();
+                    }
+                }
+                leftMaxAdjust = false;
+                currentInventoryCapacityLeft = 1;
+            }
+            Debug.Log("lhs count: " + leftHandInventory.Count);
+        }
+    
+        if (amountOfItemsHeldRight > 0)
+        {
+            if(!rightMaxAdjust){
+                Transform t1 = cam.GetComponent<Transform>();
+                rightHand.SetActive(true);
+                rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                Debug.Log("We dropped " + rightHand.name);
+
+                // rightHandInventory.Pop();
+                if (amountOfItemsHeldRight == 1)
+                {
+                    rightHand = null;
+                    ui.Idle(controllingContainer);
+                }
+                else if (amountOfItemsHeldRight > 1)
+                {
+                    rightHand = (GameObject)rightHandInventory.Peek();
+                }
+                amountOfItemsHeldRight--;
+                Debug.Log("rhs count: " + rightHandInventory.Count);
+            }else{
+                ui.Idle(controllingContainer);
+                for(amountOfItemsHeldRight = amountOfItemsHeldRight; amountOfItemsHeldRight > 0; amountOfItemsHeldRight--){
+                    Transform t1 = cam.GetComponent<Transform>();
+                    rightHand.SetActive(true);
+                    rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    // rightHandInventory.Pop();
+
+                    if (amountOfItemsHeldRight == 1)
+                    {
+                        rightHand = null;
+                        // ui.Idle(controllingContainer);
+                    }
+                    else if (amountOfItemsHeldRight > 1)
+                    {
+                        rightHand = (GameObject)rightHandInventory.Peek();
+                    }
+                }
+                rightMaxAdjust = false;
+                currentInventoryCapacityRight = 1;
+            }
+            Debug.Log("rhs count: " + rightHandInventory.Count);
+            
+        }
+    }
+
     private void SwitchHand() {
         if(controllingContainer == whichContainer.Left)
         {
