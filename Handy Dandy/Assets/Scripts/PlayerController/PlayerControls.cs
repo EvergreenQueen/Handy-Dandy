@@ -570,6 +570,7 @@ public class PlayerControls : MonoBehaviour
     }
 
     public void DropUpdateUI(){
+        Debug.Log("Where does this take me?");
         if (amountOfItemsHeldLeft > 0)
         {
             
@@ -577,7 +578,7 @@ public class PlayerControls : MonoBehaviour
                 Transform t1 = cam.GetComponent<Transform>();
                 leftHand.SetActive(true);
                 leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                Debug.Log("We dropped " + leftHand.name);
+                Debug.Log("Over here? " + leftHand.name);
                 // leftHandInventory.Pop();
                 if (amountOfItemsHeldLeft == 1)
                 {
@@ -592,7 +593,6 @@ public class PlayerControls : MonoBehaviour
                 
             }else{
                 ui.Idle(controllingContainer);
-                for(amountOfItemsHeldLeft = amountOfItemsHeldLeft; amountOfItemsHeldLeft > 0; amountOfItemsHeldLeft--){
                     Transform t1 = cam.GetComponent<Transform>();
                     leftHand.SetActive(true);
                     leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
@@ -602,14 +602,21 @@ public class PlayerControls : MonoBehaviour
                     {
                         leftHand = null;
                         // ui.Idle(controllingContainer);
+                        leftMaxAdjust = false;
+                        currentInventoryCapacityLeft = 1;
+                        leftHandInventory.Pop();
                     }
                     else if (amountOfItemsHeldLeft > 1)
                     {
                         leftHand = (GameObject)leftHandInventory.Peek();
                     }
-                }
-                leftMaxAdjust = false;
-                currentInventoryCapacityLeft = 1;
+                    else if (amountOfItemsHeldLeft == 0)
+                    {
+                        
+                    }
+                amountOfItemsHeldLeft--;
+                
+                
             }
             Debug.Log("lhs count: " + leftHandInventory.Count);
         }
@@ -620,7 +627,7 @@ public class PlayerControls : MonoBehaviour
                 Transform t1 = cam.GetComponent<Transform>();
                 rightHand.SetActive(true);
                 rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                Debug.Log("We dropped " + rightHand.name);
+                Debug.Log("Or over here?? " + rightHand.name);
 
                 // rightHandInventory.Pop();
                 if (amountOfItemsHeldRight == 1)
@@ -636,7 +643,6 @@ public class PlayerControls : MonoBehaviour
                 Debug.Log("rhs count: " + rightHandInventory.Count);
             }else{
                 ui.Idle(controllingContainer);
-                for(amountOfItemsHeldRight = amountOfItemsHeldRight; amountOfItemsHeldRight > 0; amountOfItemsHeldRight--){
                     Transform t1 = cam.GetComponent<Transform>();
                     rightHand.SetActive(true);
                     rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
@@ -646,14 +652,21 @@ public class PlayerControls : MonoBehaviour
                     {
                         rightHand = null;
                         // ui.Idle(controllingContainer);
+                        rightMaxAdjust = false;
+                        currentInventoryCapacityRight = 1;
+                        rightHandInventory.Pop();
                     }
                     else if (amountOfItemsHeldRight > 1)
                     {
                         rightHand = (GameObject)rightHandInventory.Peek();
                     }
-                }
-                rightMaxAdjust = false;
-                currentInventoryCapacityRight = 1;
+                    else if (amountOfItemsHeldRight == 0)
+                    {
+                    
+                    }
+                amountOfItemsHeldRight--;
+                
+                
             }
             Debug.Log("rhs count: " + rightHandInventory.Count);
             

@@ -29,7 +29,7 @@ public class QuestUI : MonoBehaviour
         questUIOn = HandleQuests.questUIToggle;
         
         if ((currQuest > 0) && (questUIOn)) {
-            Debug.Log("currQuest should pop up");
+            // Debug.Log("currQuest should pop up");
             questUI.SetActive(true);
             //currquest is not 0 indexed!! booooo!!
             questText.text = currQuestInfo[currQuest - 1];

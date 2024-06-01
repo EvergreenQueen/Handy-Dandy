@@ -30,22 +30,36 @@ public static class HandleQuests
         // and then convert it back into an array so we can convert it into a stack
         // so that we can replace both rightHandInventory and leftHandInventory
         // ezpz
-        List<GameObject> leftList = new List<GameObject>(leftHand);
-        List<GameObject> rightList = new List<GameObject>(rightHand);
+        List<GameObject> leftList = new List<GameObject>();
+        leftList.AddRange(leftHand);
+        List<GameObject> rightList = new List<GameObject>();
+        rightList.AddRange(rightHand);
 
         for(int i=0; i<leftList.Count; i++){
             if((leftList[i].name == whatItem) && (howMany > 0)){
                 leftList.RemoveAt(i);
+                i--;
                 howMany -= 1;
                 player.leftHandInventory = new Stack(leftList);
                 Debug.Log(player.leftHandInventory);
                 player.DropUpdateUI();
             }
         }
+
+        Debug.Log("Right List Count is: " + rightList.Count);
+
+        foreach(GameObject a in rightList){
+            Debug.Log("This is in rightList: "+a.name);
+        }
+
         for(int i=0; i<rightList.Count; i++){
+            Debug.Log("Current item: "+rightList[i].name);
             if((rightList[i].name == whatItem) && (howMany > 0)){
                 rightList.RemoveAt(i);
+                i--;
                 howMany -= 1;
+                Debug.Log("How Many? " + howMany);
+                // Debug.Log("Am I dum");
                 player.rightHandInventory = new Stack(rightList);
                 Debug.Log(player.rightHandInventory);
                 player.DropUpdateUI();
@@ -82,8 +96,8 @@ public static class HandleQuests
 
     public static bool CheckIfQuestComplete(int whatQuest){
         // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
-        GameObject[] leftHand = null;
-        GameObject[] rightHand = null;
+        GameObject[] leftHand = new GameObject[player.leftHandInventory.Count];
+        GameObject[] rightHand = new GameObject[player.rightHandInventory.Count];
         if(player.leftHandInventory.Count + player.rightHandInventory.Count == 0){
             wrongOption = 3;
             return false;
@@ -157,6 +171,7 @@ public static class HandleQuests
 
                 if(howManyApple == 3){
                     // Get rid of 3 apples
+                    Debug.Log("Gets to here");
                     GetRidOfItemsByName("Apple", 3, leftHand, rightHand);
                     return true;
                 }else if(howManyApple == 1){
