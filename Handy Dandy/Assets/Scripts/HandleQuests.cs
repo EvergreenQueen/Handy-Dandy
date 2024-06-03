@@ -37,12 +37,13 @@ public static class HandleQuests
 
         for(int i=0; i<leftList.Count; i++){
             if((leftList[i].name == whatItem) && (howMany > 0)){
+                GameObject temp = leftList[i];
                 leftList.RemoveAt(i);
                 i--;
                 howMany -= 1;
                 player.leftHandInventory = new Stack(leftList);
                 Debug.Log(player.leftHandInventory);
-                player.DropUpdateUI();
+                player.DropUpdateUI(true, temp);
             }
         }
 
@@ -55,6 +56,7 @@ public static class HandleQuests
         for(int i=0; i<rightList.Count; i++){
             Debug.Log("Current item: "+rightList[i].name);
             if((rightList[i].name == whatItem) && (howMany > 0)){
+                GameObject temp = rightList[i];
                 rightList.RemoveAt(i);
                 i--;
                 howMany -= 1;
@@ -62,7 +64,7 @@ public static class HandleQuests
                 // Debug.Log("Am I dum");
                 player.rightHandInventory = new Stack(rightList);
                 Debug.Log(player.rightHandInventory);
-                player.DropUpdateUI();
+                player.DropUpdateUI(false, temp);
             }
         }
     }
@@ -78,18 +80,20 @@ public static class HandleQuests
 
         for(int i=0; i<leftList.Count; i++){
             if((leftList[i].GetComponent<ItemIdentification>().containsTag(whatItem)) && (howMany > 0)){
+                GameObject temp = leftList[i];
                 leftList.RemoveAt(i);
                 howMany -= 1;
                 player.leftHandInventory = new Stack(leftList);
-                player.DropUpdateUI();
+                player.DropUpdateUI(true, temp);
             }
         }
         for(int i=0; i<rightList.Count; i++){
             if((rightList[i].GetComponent<ItemIdentification>().containsTag(whatItem)) && (howMany > 0)){
+                GameObject temp = rightList[i];
                 rightList.RemoveAt(i);
                 howMany -= 1;
                 player.rightHandInventory = new Stack(rightList);
-                player.DropUpdateUI();
+                player.DropUpdateUI(false, temp);
             }
         }
     }
