@@ -34,7 +34,7 @@ Items have certain <b>TAGS</b> that describe their properties! Often many soluti
 title: Quest3ReIntro
 tags: 
 ---
-<<if (check_quest_completion() || see_if_already_completed(3))>>
+<<if (see_if_already_completed(3) || check_quest_completion())>>
     <<jump Quest3Finish>>
 <<elseif get_wrong_option() == 1>>
     <<jump Quest3ColdItem>>
@@ -63,7 +63,7 @@ title: Quest3Finish
 tags:
 ---
 <<if see_if_already_played_intro("Quest3Finish")>>
-    <<jump TieGuyIdle>>
+    <<jump PieGuyIdle>>
 <<endif>>
 Pie Guy: AWESOME, now take it and get outta here, I gotta get this oven back in my house.
 <<set_intro_done "Quest3Finish">>
