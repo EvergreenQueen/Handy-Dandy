@@ -82,8 +82,10 @@ public static class HandleQuests
             if((leftList[i].GetComponent<ItemIdentification>().containsTag(whatItem)) && (howMany > 0)){
                 GameObject temp = leftList[i];
                 leftList.RemoveAt(i);
+                i--;
                 howMany -= 1;
                 player.leftHandInventory = new Stack(leftList);
+                Debug.Log(player.leftHandInventory);
                 player.DropUpdateUI(true, temp);
             }
         }
@@ -91,8 +93,12 @@ public static class HandleQuests
             if((rightList[i].GetComponent<ItemIdentification>().containsTag(whatItem)) && (howMany > 0)){
                 GameObject temp = rightList[i];
                 rightList.RemoveAt(i);
+                i--;
                 howMany -= 1;
+                Debug.Log("How Many? " + howMany);
+                // Debug.Log("Am I dum");
                 player.rightHandInventory = new Stack(rightList);
+                Debug.Log(player.rightHandInventory);
                 player.DropUpdateUI(false, temp);
             }
         }
