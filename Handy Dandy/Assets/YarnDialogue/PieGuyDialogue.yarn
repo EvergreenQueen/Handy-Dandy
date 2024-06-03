@@ -70,7 +70,7 @@ Pie Guy: AWESOME, now take it and get outta here, I gotta get this oven back in 
 <<turn_on_questui>>
 ===
 
-title: PieGuyIdleDialogue
+title: PieGuyIdle
 tags:
 ---
 Pie Guy: Gee I sure love my oven
