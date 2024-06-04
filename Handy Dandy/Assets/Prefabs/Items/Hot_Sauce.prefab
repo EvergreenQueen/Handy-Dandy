@@ -10,19 +10,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8082078779971187131, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_Size.x
-      value: 0.01
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8082078779971187131, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_Size.y
-      value: 0.01
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8082078779971187131, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_Size.z
-      value: 0.01
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: -8082078779971187131, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
+      propertyPath: m_Center.z
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 1121147343487467084, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_Name
-      value: Basket
+      value: Hot_Sauce
       objectReference: {fileID: 0}
     - target: {fileID: 1121147343487467084, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_IsActive
@@ -34,15 +38,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7289499054340540719, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_LocalScale.x
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7289499054340540719, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_LocalScale.y
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7289499054340540719, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_LocalScale.z
-      value: 50
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7289499054340540719, guid: 624855c4858a8fd4fb29bc2aa4bf93fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -124,10 +128,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7628a851059c28d48a2d3328323f9668, type: 2}
-  - {fileID: 2100000, guid: 7628a851059c28d48a2d3328323f9668, type: 2}
-  - {fileID: 2100000, guid: d4f2d4fd263a11748a0ad455e41a2d63, type: 2}
-  - {fileID: 2100000, guid: d4f2d4fd263a11748a0ad455e41a2d63, type: 2}
+  - {fileID: 2100000, guid: 72a67b083ebcd274eb20e9e44ece56d2, type: 2}
+  - {fileID: 2100000, guid: 058e99d9d620e0149a8b3260e052e620, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,7 +158,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3191348478482445832}
-  m_Mesh: {fileID: -138443022536306997, guid: e3f5c5912ab03ef45bf1e064b4148903, type: 3}
+  m_Mesh: {fileID: 689771942241324346, guid: 0d2453ea5bf166e40b7f3ab73ce578ed, type: 3}
 --- !u!114 &-7632926627536472554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba46325fc6ea97149a48264d29538c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Basket
-  id: 0
-  tags: 
-  description: A nice wicker container. Holds 3 items.
-  containerMax: 3
+  name: Hot Sauce
+  id: 5
+  tags: 00000000
+  description: '"Fl*min'' Hot!"'
+  containerMax: 0
