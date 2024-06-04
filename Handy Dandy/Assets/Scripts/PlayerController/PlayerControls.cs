@@ -132,7 +132,7 @@ public class PlayerControls : MonoBehaviour
         dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
-        lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
+        lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
         _timeSinceLastStepPlayed += Time.deltaTime;
 
@@ -570,107 +570,121 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    public void DropUpdateUI(){
+    public void DropUpdateUI(bool whichHand, GameObject whatItem){
         Debug.Log("Where does this take me?");
-        if (amountOfItemsHeldLeft > 0)
-        {
-            
-            if(!leftMaxAdjust){
-                Transform t1 = cam.GetComponent<Transform>();
-                leftHand.SetActive(true);
-                leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                Debug.Log("Over here? " + leftHand.name);
-                // leftHandInventory.Pop();
-                if (amountOfItemsHeldLeft == 1)
-                {
-                    leftHand = null;
-                    ui.Idle(controllingContainer);
-                }
-                else if (amountOfItemsHeldLeft > 1)
-                {
-                    leftHand = (GameObject)leftHandInventory.Peek();
-                }
-                amountOfItemsHeldLeft--;
+        if(whichHand){
+            if (amountOfItemsHeldLeft > 0)
+            {
                 
-            }else{
-                ui.Idle(controllingContainer);
+                if(!leftMaxAdjust){
                     Transform t1 = cam.GetComponent<Transform>();
+                    leftHand = whatItem;
                     leftHand.SetActive(true);
                     leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    Rigidbody rb = leftHand.GetComponent<Rigidbody>();
+                    rb.velocity = new Vector3(Random.Range(0f, 5f), Random.Range(0f, 5f), Random.Range(0f, 5f));
+                    Debug.Log("Over here? " + leftHand.name);
                     // leftHandInventory.Pop();
-
                     if (amountOfItemsHeldLeft == 1)
                     {
                         leftHand = null;
-                        // ui.Idle(controllingContainer);
-                        leftMaxAdjust = false;
-                        currentInventoryCapacityLeft = 1;
-                        leftHandInventory.Pop();
+                        ui.Idle(controllingContainer);
                     }
                     else if (amountOfItemsHeldLeft > 1)
                     {
                         leftHand = (GameObject)leftHandInventory.Peek();
                     }
-                    else if (amountOfItemsHeldLeft == 0)
-                    {
-                        
-                    }
-                amountOfItemsHeldLeft--;
-                
-                
-            }
-            Debug.Log("lhs count: " + leftHandInventory.Count);
-        }
-    
-        if (amountOfItemsHeldRight > 0)
-        {
-            if(!rightMaxAdjust){
-                Transform t1 = cam.GetComponent<Transform>();
-                rightHand.SetActive(true);
-                rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                Debug.Log("Or over here?? " + rightHand.name);
-
-                // rightHandInventory.Pop();
-                if (amountOfItemsHeldRight == 1)
-                {
-                    rightHand = null;
+                    amountOfItemsHeldLeft--;
+                    
+                }else{
                     ui.Idle(controllingContainer);
+                        Transform t1 = cam.GetComponent<Transform>();
+                        leftHand = whatItem;
+                        leftHand.SetActive(true);
+                        leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                        Rigidbody rb = leftHand.GetComponent<Rigidbody>();
+                        rb.velocity = new Vector3(Random.Range(0f, 5f), Random.Range(0f, 5f), Random.Range(0f, 5f));
+                        // leftHandInventory.Pop();
+
+                        if (amountOfItemsHeldLeft == 1)
+                        {
+                            leftHand = null;
+                            // ui.Idle(controllingContainer);
+                            leftMaxAdjust = false;
+                            currentInventoryCapacityLeft = 1;
+                            leftHandInventory.Pop();
+                        }
+                        else if (amountOfItemsHeldLeft > 1)
+                        {
+                            leftHand = (GameObject)leftHandInventory.Peek();
+                        }
+                        else if (amountOfItemsHeldLeft == 0)
+                        {
+                            
+                        }
+                    amountOfItemsHeldLeft--;
+                    
+                    
                 }
-                else if (amountOfItemsHeldRight > 1)
-                {
-                    rightHand = (GameObject)rightHandInventory.Peek();
-                }
-                amountOfItemsHeldRight--;
-                Debug.Log("rhs count: " + rightHandInventory.Count);
-            }else{
-                ui.Idle(controllingContainer);
+                Debug.Log("lhs count: " + leftHandInventory.Count);
+            }
+        }else{
+            if (amountOfItemsHeldRight > 0)
+            {
+                if(!rightMaxAdjust){
                     Transform t1 = cam.GetComponent<Transform>();
+                    rightHand = whatItem;
                     rightHand.SetActive(true);
                     rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
-                    // rightHandInventory.Pop();
+                    Rigidbody rb = rightHand.GetComponent<Rigidbody>();
+                    rb.velocity = new Vector3(Random.Range(0f, 5f), Random.Range(0f, 5f), Random.Range(0f, 5f));
+                    Debug.Log("Or over here?? " + rightHand.name);
 
+                    // rightHandInventory.Pop();
                     if (amountOfItemsHeldRight == 1)
                     {
                         rightHand = null;
-                        // ui.Idle(controllingContainer);
-                        rightMaxAdjust = false;
-                        currentInventoryCapacityRight = 1;
-                        rightHandInventory.Pop();
+                        ui.Idle(controllingContainer);
                     }
                     else if (amountOfItemsHeldRight > 1)
                     {
                         rightHand = (GameObject)rightHandInventory.Peek();
                     }
-                    else if (amountOfItemsHeldRight == 0)
-                    {
+                    amountOfItemsHeldRight--;
+                    Debug.Log("rhs count: " + rightHandInventory.Count);
+                }else{
+                    ui.Idle(controllingContainer);
+                        Transform t1 = cam.GetComponent<Transform>();
+                        rightHand = whatItem;
+                        rightHand.SetActive(true);
+                        rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                        Rigidbody rb = rightHand.GetComponent<Rigidbody>();
+                        rb.velocity = new Vector3(Random.Range(0f, 5f), Random.Range(0f, 5f), Random.Range(0f, 5f));
+                        // rightHandInventory.Pop();
+
+                        if (amountOfItemsHeldRight == 1)
+                        {
+                            rightHand = null;
+                            // ui.Idle(controllingContainer);
+                            rightMaxAdjust = false;
+                            currentInventoryCapacityRight = 1;
+                            rightHandInventory.Pop();
+                        }
+                        else if (amountOfItemsHeldRight > 1)
+                        {
+                            rightHand = (GameObject)rightHandInventory.Peek();
+                        }
+                        else if (amountOfItemsHeldRight == 0)
+                        {
+                        
+                        }
+                    amountOfItemsHeldRight--;
                     
-                    }
-                amountOfItemsHeldRight--;
-                
+                    
+                }
+                Debug.Log("rhs count: " + rightHandInventory.Count);
                 
             }
-            Debug.Log("rhs count: " + rightHandInventory.Count);
-            
         }
     }
 
