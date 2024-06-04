@@ -13896,6 +13896,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieGuy: {fileID: 448752997}
   oven: {fileID: 1003873593}
+--- !u!114 &712759467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712759459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9aae03697a08a043b79fdd6b7749d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &719195948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17624,6 +17636,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3652349561266931091, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 712759466}
+    - targetCorrespondingSourceObject: {fileID: 3652349561266931091, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 712759467}
   m_SourcePrefab: {fileID: 100100000, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
 --- !u!4 &910097783 stripped
 Transform:
