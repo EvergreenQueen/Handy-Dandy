@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     //Other vars
     public enum State{Idle, Point, Hold, Grip_Loose, Basket};
-    public enum Item{None, Apple, Ice_Cube, Mouse, Cat, Hot_Sauce};
+    public enum Item{None, Apple, Ice_Cube, Mouse, Cat, Hot_Sauce, Start};
 
     State currStateLeft;
     State currStateRight;
