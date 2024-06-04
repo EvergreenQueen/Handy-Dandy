@@ -82,7 +82,7 @@ public class MainMenu : MonoBehaviour
             yield break;
         }
         sceneSwitching = true;
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("AppleOrchard");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("MainScene");
 
         while (!asyncLoad.isDone)
         {

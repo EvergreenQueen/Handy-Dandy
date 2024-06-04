@@ -1002,6 +1002,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 769668549204678347, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
+      propertyPath: baseItems.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 769668549204678347, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
+      propertyPath: baseItems.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: dcf27794657237d4c967c353f7ec35a5, type: 3}
+    - target: {fileID: 769668549204678347, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
+      propertyPath: baseItems.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 09aa01d475873be4f9bce06c219fd87d, type: 3}
+    - target: {fileID: 769668549204678347, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
+      propertyPath: baseItems.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6918388dcd6de3f4cb3d2b941301112b, type: 3}
     - target: {fileID: 2313764409185526837, guid: 73aadf6deee5f5a4f8fc20b2f200626a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1292,7 +1308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Start
   id: 7
-  tags: 
+  tags: 01000000
   description: Start
   containerMax: 0
 --- !u!212 &1066883969
@@ -2039,6 +2055,8 @@ MonoBehaviour:
   sounds:
   - {fileID: 8300000, guid: c0fcc1a0b551d5b4ea2fff61cd573699, type: 3}
   - {fileID: 8300000, guid: d3edfb97863affb468b38d255aae53af, type: 3}
+  - {fileID: 8300000, guid: 6cb188f5a5c31434d981d4e8cf4aab2a, type: 3}
+  - {fileID: 8300000, guid: 755f0d8a434117e428bc270a30c69407, type: 3}
 --- !u!1001 &2009407037
 PrefabInstance:
   m_ObjectHideFlags: 0

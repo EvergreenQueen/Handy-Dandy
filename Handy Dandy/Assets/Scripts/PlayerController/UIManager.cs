@@ -140,13 +140,13 @@ public class UIManager : MonoBehaviour
 
     public void HoldItem(PlayerControls.whichContainer h, Item item){
         Image renderer = null;
-        // Debug.Log(h);
+        Debug.Log(h);
         if(h == PlayerControls.whichContainer.Left) {
-            // Debug.Log("CONTAINER LEFT");
+            Debug.Log("CONTAINER LEFT");
             renderer = itemRendererLeft;
             if(currStateLeft == State.Basket) return;
         }else if(h == PlayerControls.whichContainer.Right) {
-            // Debug.Log("CONTAINER right");
+            Debug.Log("CONTAINER right");
             renderer = itemRendererRight;
             if(currStateRight == State.Basket) return;
         }
