@@ -372,6 +372,7 @@ public class PlayerControls : MonoBehaviour
 
                 amountOfItemsHeldLeft++;
                 leftHand = hit.collider.gameObject; // set the object being held
+
                 // leftHandInventory.Push(leftHand);
 
                 //Checking if it's a container:
@@ -382,6 +383,7 @@ public class PlayerControls : MonoBehaviour
                     //For now, it will always be a basket:
                     containers[0] = containerType.Basket;
                 }
+
 
                 if (amountOfItemsHeldLeft > -1)
                 {
