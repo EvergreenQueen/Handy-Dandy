@@ -24,6 +24,7 @@ tags:
 <<start_quest 3>>
 Pie Guy: Alright, now, Tie Guy told me to expect you. Said you needed a pie baked. I've got the only oven in this orchard, apparently.
 Pie Guy: Obviously to bake a pie we need an oven, but you for sure aren't getting into my house. So... let me just...
+<<set_certain_quest_people_and_things_active 4>>
 Pie Guy: Hmmm, it's not usually broken.
 Pie Guy: Well, I reckon if you find something HOT to put in this here oven it'll work again. Ovens are supposed to be HOT anyways.
 Items have certain <b>TAGS</b> that describe their properties! Often many solutions will be available for quests that require <b>TAGGED</b> items!

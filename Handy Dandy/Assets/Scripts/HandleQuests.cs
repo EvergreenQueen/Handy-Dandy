@@ -286,6 +286,8 @@ public static class HandleQuests
                 break;
             case 3:
                 PieGuy.SetActive(true);
+                break;
+            case 4:
                 Oven.SetActive(true);
                 break;
         }
