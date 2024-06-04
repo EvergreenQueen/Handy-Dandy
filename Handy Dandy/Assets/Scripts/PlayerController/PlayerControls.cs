@@ -63,7 +63,7 @@ public class PlayerControls : MonoBehaviour
     bool rightMaxAdjust;
     bool leftMaxAdjust;
 
-    public NPCSpeaking nPCSpeaking;
+    //public NPCSpeaking nPCSpeaking;
    
 
     
@@ -96,9 +96,9 @@ public class PlayerControls : MonoBehaviour
         audioSource = GetComponentInChildren<AudioSource>();
         //NPCAudio = HandleQuests.audioSource;
         NPCAudio = GetComponentInChildren<AudioSource>();
-        NPCAudio.clip = audioManager.sounds[2];
         audioManager = GetComponentInChildren<AudioManager>();
         audioSource.clip = audioManager.sounds[0];
+        NPCAudio.clip = audioManager.sounds[2];
         
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
@@ -133,6 +133,7 @@ public class PlayerControls : MonoBehaviour
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
+        _timeSinceLastStepPlayed += Time.deltaTime;
 
         // if (isCurrentConversation) {
         //     isCurrentConversation = false;
@@ -324,6 +325,8 @@ public class PlayerControls : MonoBehaviour
             rb.transform.position += input.normalized * speed;
             if (!input.Equals(Vector3.zero) && !soundIsPlaying)
             {
+                audioSource.clip = audioManager.sounds[0];
+                audioSource.loop = true;
                 audioSource.Play();
                 soundIsPlaying = true;
             }
@@ -337,16 +340,17 @@ public class PlayerControls : MonoBehaviour
         }
         // audioSource.loop = false;
         // audioSource.Stop();
-        else if (soundIsPlaying)
-        {
-            soundIsPlaying = false; audioSource.Stop();
-        }
         
     }
 
     void Stop()
     {
         rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        if (soundIsPlaying)
+        {
+            audioSource.loop = false;
+            soundIsPlaying = false; audioSource.Stop();
+        }
     }
 
     private void changeGrav(float newGrav){
@@ -714,9 +718,16 @@ public class PlayerControls : MonoBehaviour
             // if (hit.collider.gameObject.newAudio != null) {
 
             // }
-            //audioSource.PlayOneShot(audioManager.sounds[2]);
-            // NPCAudio.Stop();
-            //nPCSpeaking.PlayNPCTalking(hit.collider.gameObject);
+            
+            if (_timeSinceLastStepPlayed > 1) {
+                if (hit.collider.gameObject.name == "PieGuy") {
+                    audioSource.PlayOneShot(audioManager.sounds[3]);
+                }
+                else {
+                    audioSource.PlayOneShot(audioManager.sounds[2]);
+                }
+                _timeSinceLastStepPlayed = 0;
+            }
             dialogueRunner.StartDialogue(hit.collider.gameObject.name + "DialogueIntro");
 
         }
