@@ -38,7 +38,7 @@ public static class HandleQuests
         rightList.AddRange(rightHand);
 
         for(int i=0; i<leftList.Count; i++){
-            if((leftList[i].name == whatItem) && (howMany > 0)){
+            if((leftList[i].GetComponent<ItemIdentification>().name == whatItem) && (howMany > 0)){
                 GameObject temp = leftList[i];
                 leftList.RemoveAt(i);
                 i--;
@@ -57,7 +57,7 @@ public static class HandleQuests
 
         for(int i=0; i<rightList.Count; i++){
             Debug.Log("Current item: "+rightList[i].name);
-            if((rightList[i].name == whatItem) && (howMany > 0)){
+            if((rightList[i].GetComponent<ItemIdentification>().name == whatItem) && (howMany > 0)){
                 GameObject temp = rightList[i];
                 rightList.RemoveAt(i);
                 i--;
