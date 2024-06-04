@@ -291,6 +291,7 @@ public static class HandleQuests
                 break;
             case 4:
                 Oven.SetActive(true);
+                // Oven.GetComponent<AudioSource>().Play();
                 break;
         }
     }

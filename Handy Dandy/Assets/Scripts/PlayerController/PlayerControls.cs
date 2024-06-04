@@ -20,6 +20,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float sprintMult = 1.0f;
     [SerializeField] float jumpPower = 5.0f;
     [SerializeField] static int inventorySize = 10;
+    [SerializeField] int grabDistance = 10;
 
     //Objects
     PlayerActionControls pc;
@@ -132,7 +133,7 @@ public class PlayerControls : MonoBehaviour
         dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
-        lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
+        lookingAtObject = Physics.Raycast(pos, dir, out hit, grabDistance, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
         _timeSinceLastStepPlayed += Time.deltaTime;
 
