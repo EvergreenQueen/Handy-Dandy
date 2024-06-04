@@ -5,12 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public PlayerControls player; // Assuming this is set in the editor or dynamically
+    public PlayerControls player;
     public Image screen;
-
     private static MainMenu instance = null;
     private bool started = false;
-    private bool sceneSwitching = false; // Ensure scene switch only happens once
+    private bool sceneSwitching = false;
     void Awake()
     {
         // Enforce the singleton pattern
@@ -52,12 +51,13 @@ public class MainMenu : MonoBehaviour
                 StartCoroutine(switchScene());
                 yield break; // Exit the coroutine to prevent further checks
             }
-            yield return new WaitForSeconds(0.1f); // Reduced wait time for more responsive checks
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
     IEnumerator switchScene()
     {
+        yield return new WaitForSeconds(2);
         // fade to black
         float fadeDuration = 1.0f;
         float elapsedTime = 0.0f;

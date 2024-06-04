@@ -121,7 +121,7 @@ public class PlayerControls : MonoBehaviour
         dir = t.TransformDirection(Vector3.forward);
 
         // origin, direction, where to put the raycast, distance to cast, layer
-        lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
+        lookingAtObject = Physics.Raycast(pos, dir, out hit, 20, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
 
         // if (isCurrentConversation) {
