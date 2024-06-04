@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     //Other vars
     public enum State{Idle, Point, Hold, Grip_Loose, Basket};
-    public enum Item{None, Apple, Ice_Cube, Mouse, Cat};
+    public enum Item{None, Apple, Ice_Cube, Mouse, Cat, Basket};
 
     State currStateLeft;
     State currStateRight;
@@ -58,13 +58,35 @@ public class UIManager : MonoBehaviour
     // nuh uh
     public void ChangeHands(PlayerControls.whichContainer h, State incoming){
         //In case we need other logic before changing hands
+        bool isLeft;
         Image renderer = null;
-        if(h == PlayerControls.whichContainer.Left) renderer = handsRendererLeft;
-        else if(h == PlayerControls.whichContainer.Right) renderer = handsRendererRight;
+        if(h == PlayerControls.whichContainer.Left){
+            renderer = handsRendererLeft;
+            currStateLeft = incoming;
+        }
+        else if(h == PlayerControls.whichContainer.Right){
+            renderer = handsRendererRight;
+            currStateRight = incoming;    
+        }
 
         int stateId = (int)incoming;
 
-        renderer.sprite = baseHands[stateId];
+        renderer.sprite = baseHands[stateId]; 
+
+        //Special Case for basket:
+        if(incoming == State.Basket){
+            // Debug.Log("It is a basket :3");
+            renderer.sprite = baseHands[(int)State.Hold];
+            if(renderer == handsRendererLeft) itemRendererLeft.sprite = baseItems[(int) Item.Basket];
+            if(renderer == handsRendererRight) itemRendererRight.sprite = baseItems[(int) Item.Basket];
+        } else{
+            renderer.sprite = baseHands[stateId]; 
+        }
+        
+
+
+
+
 
         // brackets for collapsability
         {
@@ -117,8 +139,18 @@ public class UIManager : MonoBehaviour
 
     public void HoldItem(PlayerControls.whichContainer h, Item item){
         Image renderer = null;
-        if(h == PlayerControls.whichContainer.Left) renderer = itemRendererLeft;
-        else if(h == PlayerControls.whichContainer.Right) renderer = itemRendererRight;
+        // Debug.Log(h);
+        if(h == PlayerControls.whichContainer.Left) {
+            // Debug.Log("CONTAINER LEFT");
+            renderer = itemRendererLeft;
+            if(currStateLeft == State.Basket) return;
+        }else if(h == PlayerControls.whichContainer.Right) {
+            // Debug.Log("CONTAINER right");
+            renderer = itemRendererRight;
+            if(currStateRight == State.Basket) return;
+        }
+
+        // Debug.Log(renderer);
         
         int itemId = (int)item;
 

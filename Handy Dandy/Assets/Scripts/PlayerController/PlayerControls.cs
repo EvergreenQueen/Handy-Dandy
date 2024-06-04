@@ -243,6 +243,7 @@ public class PlayerControls : MonoBehaviour
             // not a huge fan of this implementation, but our display is weird anyway
             if (whichCont == whichContainer.Left) itemToDisplay = leftHand; // left
             else if (whichCont == whichContainer.Right) itemToDisplay = rightHand; // right
+            // Debug.Log(whichCont);
 
             // important for tags
             if (itemToDisplay != null) itemInfo = itemToDisplay.GetComponent<ItemIdentification>();
@@ -395,6 +396,9 @@ public class PlayerControls : MonoBehaviour
                 if(leftHand.GetComponent<ItemIdentification>().containsTag(ItemIdentification.ListOfPossibleTags.Container)){
                     currentInventoryCapacityLeft = leftHand.GetComponent<ItemIdentification>().containerMax + 1;
                     leftMaxAdjust = true;
+
+                    //For now, it will always be a basket:
+                    containers[0] = containerType.Basket;
                 }
 
                 if (amountOfItemsHeldLeft > -1)
@@ -432,6 +436,10 @@ public class PlayerControls : MonoBehaviour
                 if(rightHand.GetComponent<ItemIdentification>().containsTag(ItemIdentification.ListOfPossibleTags.Container)){
                     currentInventoryCapacityRight = rightHand.GetComponent<ItemIdentification>().containerMax + 1;
                     rightMaxAdjust = true;
+
+                    //For now, it will always be a basket:
+                    containers[1] = containerType.Basket;
+
                 }
 
                 if (amountOfItemsHeldRight > -1)
@@ -515,7 +523,12 @@ public class PlayerControls : MonoBehaviour
                         }
                     }
                     leftMaxAdjust = false;
+                    containers[0] = containerType.Hand;
                     currentInventoryCapacityLeft = 1;
+
+                    Debug.Log("dropped basket");
+                    Debug.Log(containers[0]);
+
                 }
                 Debug.Log("lhs count: " + leftHandInventory.Count);
             }
@@ -561,7 +574,13 @@ public class PlayerControls : MonoBehaviour
                         }
                     }
                     rightMaxAdjust = false;
+                    containers[1] = containerType.Hand;
                     currentInventoryCapacityRight = 1;
+
+                    Debug.Log("dropped basket");
+                    Debug.Log(containers[1]);
+
+
                 }
 
                 
