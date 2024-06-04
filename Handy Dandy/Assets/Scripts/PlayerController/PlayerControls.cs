@@ -36,6 +36,8 @@ public class PlayerControls : MonoBehaviour
     Vector3 pos;
     Vector3 dir;
 
+    private float _timeSinceLastStepPlayed;
+
     public enum containerType { Hand, Basket };
     public enum whichContainer { Left, Right };
     whichContainer controllingContainer = whichContainer.Left;
@@ -56,10 +58,14 @@ public class PlayerControls : MonoBehaviour
     public int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     AudioSource audioSource;
     AudioManager audioManager;
+    AudioSource NPCAudio;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
     bool rightMaxAdjust;
     bool leftMaxAdjust;
+
+    //public NPCSpeaking nPCSpeaking;
+   
 
     
     void Awake()
@@ -89,8 +95,12 @@ public class PlayerControls : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         playerheight = capsuleCollider.height;
         audioSource = GetComponentInChildren<AudioSource>();
+        //NPCAudio = HandleQuests.audioSource;
+        NPCAudio = GetComponentInChildren<AudioSource>();
         audioManager = GetComponentInChildren<AudioManager>();
         audioSource.clip = audioManager.sounds[0];
+        NPCAudio.clip = audioManager.sounds[2];
+        
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
         isGround = 1 << LayerMask.NameToLayer("Ground");
@@ -124,6 +134,7 @@ public class PlayerControls : MonoBehaviour
         // origin, direction, where to put the raycast, distance to cast, layer
         lookingAtObject = Physics.Raycast(pos, dir, out hit, 1000, itemLayerMask);
         Debug.DrawRay(pos, dir, Color.red, 10);
+        _timeSinceLastStepPlayed += Time.deltaTime;
 
         // if (isCurrentConversation) {
         //     isCurrentConversation = false;
@@ -283,20 +294,32 @@ public class PlayerControls : MonoBehaviour
             rb.transform.position += input.normalized * speed;
             if (!input.Equals(Vector3.zero) && !soundIsPlaying)
             {
+                audioSource.clip = audioManager.sounds[0];
+                audioSource.loop = true;
                 audioSource.Play();
                 soundIsPlaying = true;
             }
+            // Debug.Log(Time.deltaTime);
+            // _timeSinceLastStepPlayed += Time.deltaTime;
+            // if (_timeSinceLastStepPlayed >= .015) {
+            //     _timeSinceLastStepPlayed = 0;
+            //     audioSource.loop = true;
+            //     audioSource.Play();
+            // }
         }
-        else if (soundIsPlaying)
-        {
-            soundIsPlaying = false; audioSource.Stop();
-        }
+        // audioSource.loop = false;
+        // audioSource.Stop();
         
     }
 
     void Stop()
     {
         rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        if (soundIsPlaying)
+        {
+            audioSource.loop = false;
+            soundIsPlaying = false; audioSource.Stop();
+        }
     }
 
     private void changeGrav(float newGrav){
@@ -547,6 +570,110 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    public void DropUpdateUI(){
+        Debug.Log("Where does this take me?");
+        if (amountOfItemsHeldLeft > 0)
+        {
+            
+            if(!leftMaxAdjust){
+                Transform t1 = cam.GetComponent<Transform>();
+                leftHand.SetActive(true);
+                leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                Debug.Log("Over here? " + leftHand.name);
+                // leftHandInventory.Pop();
+                if (amountOfItemsHeldLeft == 1)
+                {
+                    leftHand = null;
+                    ui.Idle(controllingContainer);
+                }
+                else if (amountOfItemsHeldLeft > 1)
+                {
+                    leftHand = (GameObject)leftHandInventory.Peek();
+                }
+                amountOfItemsHeldLeft--;
+                
+            }else{
+                ui.Idle(controllingContainer);
+                    Transform t1 = cam.GetComponent<Transform>();
+                    leftHand.SetActive(true);
+                    leftHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    // leftHandInventory.Pop();
+
+                    if (amountOfItemsHeldLeft == 1)
+                    {
+                        leftHand = null;
+                        // ui.Idle(controllingContainer);
+                        leftMaxAdjust = false;
+                        currentInventoryCapacityLeft = 1;
+                        leftHandInventory.Pop();
+                    }
+                    else if (amountOfItemsHeldLeft > 1)
+                    {
+                        leftHand = (GameObject)leftHandInventory.Peek();
+                    }
+                    else if (amountOfItemsHeldLeft == 0)
+                    {
+                        
+                    }
+                amountOfItemsHeldLeft--;
+                
+                
+            }
+            Debug.Log("lhs count: " + leftHandInventory.Count);
+        }
+    
+        if (amountOfItemsHeldRight > 0)
+        {
+            if(!rightMaxAdjust){
+                Transform t1 = cam.GetComponent<Transform>();
+                rightHand.SetActive(true);
+                rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                Debug.Log("Or over here?? " + rightHand.name);
+
+                // rightHandInventory.Pop();
+                if (amountOfItemsHeldRight == 1)
+                {
+                    rightHand = null;
+                    ui.Idle(controllingContainer);
+                }
+                else if (amountOfItemsHeldRight > 1)
+                {
+                    rightHand = (GameObject)rightHandInventory.Peek();
+                }
+                amountOfItemsHeldRight--;
+                Debug.Log("rhs count: " + rightHandInventory.Count);
+            }else{
+                ui.Idle(controllingContainer);
+                    Transform t1 = cam.GetComponent<Transform>();
+                    rightHand.SetActive(true);
+                    rightHand.transform.position = new Vector3(t1.position.x, t1.position.y, t1.position.z) + transform.rotation * Vector3.forward;
+                    // rightHandInventory.Pop();
+
+                    if (amountOfItemsHeldRight == 1)
+                    {
+                        rightHand = null;
+                        // ui.Idle(controllingContainer);
+                        rightMaxAdjust = false;
+                        currentInventoryCapacityRight = 1;
+                        rightHandInventory.Pop();
+                    }
+                    else if (amountOfItemsHeldRight > 1)
+                    {
+                        rightHand = (GameObject)rightHandInventory.Peek();
+                    }
+                    else if (amountOfItemsHeldRight == 0)
+                    {
+                    
+                    }
+                amountOfItemsHeldRight--;
+                
+                
+            }
+            Debug.Log("rhs count: " + rightHandInventory.Count);
+            
+        }
+    }
+
     private void SwitchHand() {
         if(controllingContainer == whichContainer.Left)
         {
@@ -565,7 +692,22 @@ public class PlayerControls : MonoBehaviour
             return;
         }else{
             Debug.Log(hit.collider.gameObject.name);
+            //AudioSource newAudio = GetComponent<hit.collider.gameObject.AudioSource>();
+            // if (hit.collider.gameObject.newAudio != null) {
+
+            // }
+            
+            if (_timeSinceLastStepPlayed > 1) {
+                if (hit.collider.gameObject.name == "PieGuy") {
+                    audioSource.PlayOneShot(audioManager.sounds[3]);
+                }
+                else {
+                    audioSource.PlayOneShot(audioManager.sounds[2]);
+                }
+                _timeSinceLastStepPlayed = 0;
+            }
             dialogueRunner.StartDialogue(hit.collider.gameObject.name + "DialogueIntro");
+
         }
     }
     }
