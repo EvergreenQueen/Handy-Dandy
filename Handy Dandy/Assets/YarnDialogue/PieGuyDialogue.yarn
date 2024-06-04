@@ -66,6 +66,7 @@ tags:
 <<if see_if_already_played_intro("Quest3Finish")>>
     <<jump PieGuyIdle>>
 <<endif>>
+<<set_certain_quest_people_and_things_active 5>>
 Pie Guy: AWESOME, now take it and get outta here, I gotta get this oven back in my house.
 <<set_intro_done "Quest3Finish">>
 <<turn_on_questui>>

@@ -11,6 +11,7 @@ public static class HandleQuests
     public static PlayerControls player;
     public static GameObject PieGuy;
     public static GameObject Oven;
+    public static GameObject Pie;
     public static int currQuest = 0;
     public static int wrongOption = 0;
     public static List<int> completedQuests = new List<int>();
@@ -292,6 +293,10 @@ public static class HandleQuests
             case 4:
                 Oven.SetActive(true);
                 // Oven.GetComponent<AudioSource>().Play();
+                break;
+            case 5:
+                Pie.SetActive(true);
+                Oven.SetActive(false);
                 break;
         }
     }
