@@ -171,6 +171,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Basket
   id: 0
-  tags: 
+  tags: 07000000
   description: A nice wicker container. Holds 3 items.
   containerMax: 3

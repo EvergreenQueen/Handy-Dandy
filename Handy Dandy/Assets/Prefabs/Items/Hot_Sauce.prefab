@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Hot Sauce
-  id: 5
+  id: 6
   tags: 00000000
   description: '"Fl*min'' Hot!"'
   containerMax: 0
