@@ -90,8 +90,8 @@ tags:
 Tie Guy: Thank you so much again for helping me with my pets!
 Tie Guy: I want to give you an apple pie as thanks, but I need some help first.
 Tie Guy: See, I still have no arms or hands.
-Tie Guy: Could you bring me 3 apples from the tree in my yard?
-Tie Guy: If you need it, you can use that basket near the door.
+Tie Guy: Could you bring me 3 apples from that huge apple tree to the left of my house?
+Tie Guy: If you need it, you can use that basket near the logs in the backyard.
 <<set_intro_done "Quest2Intro">>
 <<turn_on_questui>>
 ===
@@ -108,7 +108,7 @@ tags:
 <<endif>>
 Tie Guy: Hey, did you manage to get those apples for me?
 Tie Guy: In case you forgot, I need 3 entire apples
-Tie Guy: Don't forget the <color=yellow>basket</color>! It's near the door!
+Tie Guy: Don't forget the <color=yellow>basket</color>! It's in the backyard!
 ===
 
 title: Quest2IncorrectApples
@@ -133,7 +133,7 @@ tags:
 <<if see_if_already_played_intro("Quest2Finish")>>
     <<jump TieGuyIdle>>
 <<endif>>
-Tie Guy: Wow! You understood my cryptic awesome instructions.
+Tie Guy: Wow! You understood my cryptic awesome instructions. Thanks for the apples.
 Tie Guy: Thank you so much! I'll go ask my roommate to make that pie for you now.
 <<set_intro_done "Quest2Finish">>
 <<turn_on_questui>>

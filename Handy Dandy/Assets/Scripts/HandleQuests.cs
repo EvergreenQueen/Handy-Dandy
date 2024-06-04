@@ -27,7 +27,7 @@ public static class HandleQuests
         dialogueRunner.Stop();
     }
 
-    public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+    public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand, bool delete){
         // ok so right now, we have arrays lefthand and righthand
         // convert to list so that we can actually get rid of items in a way that's good
         // and then convert it back into an array so we can convert it into a stack
@@ -47,6 +47,7 @@ public static class HandleQuests
                 player.leftHandInventory = new Stack(leftList);
                 Debug.Log(player.leftHandInventory);
                 player.DropUpdateUI(true, temp);
+                if (delete) temp.SetActive(false);
             }
         }
 
@@ -68,11 +69,12 @@ public static class HandleQuests
                 player.rightHandInventory = new Stack(rightList);
                 Debug.Log(player.rightHandInventory);
                 player.DropUpdateUI(false, temp);
+                if (delete) temp.SetActive(false);
             }
         }
     }
 
-    public static void GetRidOfItemsByTag(ItemIdentification.ListOfPossibleTags whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+    public static void GetRidOfItemsByTag(ItemIdentification.ListOfPossibleTags whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand, bool delete){
         // ok so right now, we have arrays lefthand and righthand
         // convert to list so that we can actually get rid of items in a way that's good
         // and then convert it back into an array so we can convert it into a stack
@@ -90,6 +92,7 @@ public static class HandleQuests
                 player.leftHandInventory = new Stack(leftList);
                 Debug.Log(player.leftHandInventory);
                 player.DropUpdateUI(true, temp);
+                if (delete) temp.SetActive(false);
             }
         }
         for(int i=0; i<rightList.Count; i++){
@@ -103,6 +106,7 @@ public static class HandleQuests
                 player.rightHandInventory = new Stack(rightList);
                 Debug.Log(player.rightHandInventory);
                 player.DropUpdateUI(false, temp);
+                if (delete) temp.SetActive(false);
             }
         }
     }
@@ -162,8 +166,8 @@ public static class HandleQuests
 
                 if(foundCat && foundMouse){
                     // Get rid of cat and mouse
-                    GetRidOfItemsByName("Cat", 1, leftHand, rightHand);
-                    GetRidOfItemsByName("Mouse", 1, leftHand, rightHand);
+                    GetRidOfItemsByName("Cat", 1, leftHand, rightHand, false);
+                    GetRidOfItemsByName("Mouse", 1, leftHand, rightHand, false);
                     return true;
                 }else if(foundCat){
                     wrongOption = 1;
@@ -185,7 +189,7 @@ public static class HandleQuests
                 if(howManyApple == 3){
                     // Get rid of 3 apples
                     Debug.Log("Gets to here");
-                    GetRidOfItemsByName("Apple", 3, leftHand, rightHand);
+                    GetRidOfItemsByName("Apple", 3, leftHand, rightHand, true);
                     return true;
                 }else if(howManyApple == 1){
                     wrongOption = 1;
@@ -210,7 +214,7 @@ public static class HandleQuests
 
                 if(hotObject){
                     // Get rid of hot object
-                    GetRidOfItemsByTag(ItemIdentification.ListOfPossibleTags.Hot, 1, leftHand, rightHand);
+                    GetRidOfItemsByTag(ItemIdentification.ListOfPossibleTags.Hot, 1, leftHand, rightHand, true);
                     return true;
                 }else if(coldObject){
                     wrongOption = 1;

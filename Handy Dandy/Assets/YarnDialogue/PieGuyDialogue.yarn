@@ -7,8 +7,7 @@ Pie Guy: Well I'm warnin ya, I ain't born yesterday
 Pie Guy: I was born when we still had hands!
 Pie Guy: And if <b>YOU</b> think you can take <b>ME</b> IN A FIGHT 
 Pie Guy: YOU BETTER THINK TWI-
-Pie Guy: Oh you're the one who helped my roommate.
-Pie Guy: ...oops.
+Pie Guy: Oh you're the one who helped my roommate... oops.
 <<else>>
     <<jump Quest3Intro>>
 <<endif>>
