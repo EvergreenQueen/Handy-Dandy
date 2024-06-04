@@ -41,7 +41,7 @@ public class PlayerControls : MonoBehaviour
 
     public enum containerType { Hand, Basket };
     public enum whichContainer { Left, Right };
-    whichContainer controllingContainer = whichContainer.Left;
+    public whichContainer controllingContainer = whichContainer.Left;
     containerType[] containers = { containerType.Hand, containerType.Hand };
     // left container       right container
     GameObject leftHand, rightHand; // what either hand is carrying
@@ -60,7 +60,7 @@ public class PlayerControls : MonoBehaviour
     AudioSource audioSource;
     AudioManager audioManager;
     AudioSource NPCAudio;
-    string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
+    // string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
     bool rightMaxAdjust;
     bool leftMaxAdjust;
@@ -143,64 +143,6 @@ public class PlayerControls : MonoBehaviour
         // }
 
         visualUpdateContainers();
-        {
-            // if(leftHand == null) { ui.Idle(whichContainer.Left); ui.Drop(whichContainer.Left); }
-            // if(rightHand == null) { ui.Idle(whichContainer.Right); ui.Drop(whichContainer.Right); }
-            // if((controllingContainer == whichContainer.Left && leftHand == null) || (controllingContainer == whichContainer.Right && rightHand == null)) // long code lmfao
-            // {
-            //     // if the controlling hand is empty
-            //     if(lookingAtObject) {
-            //         ui.Point(controllingContainer);
-            //     }
-            //     else {
-            //         ui.Idle(controllingContainer);
-            //     }
-            // }
-            // else
-            // {
-            //     ItemIdentification item = null; // im gonna eat my hands
-            //     if(controllingContainer == whichContainer.Left)
-            //     {
-            //         item = leftHand.GetComponent<ItemIdentification>();
-            //     }
-            //     else if(controllingContainer == whichContainer.Right)
-            //     {
-            //         item = rightHand.GetComponent<ItemIdentification>();
-            //     }
-
-            //     if(item.containsTag(ItemIdentification.ListOfPossibleTags.Animal))
-            //     {
-            //         ui.Grip_Loose(controllingContainer);
-            //     }
-            //     else
-            //     {
-            //         ui.Hold(controllingContainer);
-            //     }
-
-            //     string itemName = "";
-            //     if(controllingContainer == whichContainer.Left)
-            //     {
-            //         itemName = leftHand.name;
-            //     }
-            //     else if(controllingContainer == whichContainer.Right)
-            //     {
-            //         itemName = rightHand.name;
-            //     }
-
-            //     if(Regex.Match(itemName, appleRegex).Success){
-            //         ui.HoldApple(controllingContainer);
-            //     }
-            //     else if(Regex.Match(itemName, ice_cubeRegex).Success) {
-            //         ui.HoldIce_Cube(controllingContainer);
-            //     }
-            //     else if(Regex.Match(itemName, mouseRegex).Success) {
-            //         ui.HoldMouse(controllingContainer);
-            //     }
-            //     else if(Regex.Match(itemName, catRegex).Success) {
-            //         ui.HoldCat(controllingContainer);
-            //     }
-            // } //
-        }
     }
 
     // VISUAL UPDATE ONLY. NO HOLDING/DROPPING LOGIC

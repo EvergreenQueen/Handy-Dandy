@@ -13,9 +13,9 @@ public class UIManager : MonoBehaviour
 
     [Header("SpriteLists")]
     [SerializeField] List<Sprite> baseHands; //#0 is Idle, #1 is point, #2 is hold;
+    [SerializeField] float activeHeight; // if hand is active, draw at this height. otherwise lower it a bit
+    float leftXPos, rightXPos;
 
-
-    // [Header("Objects")]
     [SerializeField] Image itemRendererLeft;
     [SerializeField] Image itemRendererRight;
 
@@ -26,16 +26,45 @@ public class UIManager : MonoBehaviour
     //Other vars
     public enum State{Idle, Point, Hold, Grip_Loose, Basket};
     public enum Item{None, Apple, Ice_Cube, Mouse, Cat, Basket, Hot_Sauce, Start, Pie};
-    // public enum Item{None, Apple, Ice_Cube, Mouse, Cat, Hot_Sauce, Start};
 
     State currStateLeft;
     State currStateRight;
-    // Item itemLeft;
-    // Item itemRight;
+
+    GameObject player;
+    PlayerControls controller;
+
+    //
+    RectTransform leftHandTransform, leftItemTransform, rightHandTransform, rightItemTransform;
 
     void Awake(){
         currStateLeft = currStateRight = State.Idle; //First one!
-        // itemLeft = itemRight = Item.None;
+        player = GameObject.FindWithTag("Player");
+        controller = player.GetComponent<PlayerControls>();
+        Debug.Log("player's name is " + player.name);
+
+        leftHandTransform = handsRendererLeft.GetComponent<RectTransform>();
+        rightHandTransform = handsRendererRight.GetComponent<RectTransform>();
+        leftItemTransform = itemRendererLeft.GetComponent<RectTransform>();
+        rightItemTransform = itemRendererRight.GetComponent<RectTransform>();
+
+        leftXPos = leftHandTransform.anchoredPosition.x;
+        rightXPos = rightHandTransform.anchoredPosition.x;
+        Debug.Log("left: " + leftXPos + " right: " + rightXPos);
+    }
+
+    void Update() {
+        // left hand being controlled
+        if(controller.controllingContainer == PlayerControls.whichContainer.Left)
+        {
+            // RectTransform.anchoredPosition
+            leftHandTransform.anchoredPosition = leftItemTransform.anchoredPosition = new Vector3(leftXPos, activeHeight, 0);
+            rightHandTransform.anchoredPosition = rightItemTransform.anchoredPosition = new Vector3(rightXPos, activeHeight - 30, 0);
+        }
+        else // right hand being controlled
+        {
+            leftHandTransform.anchoredPosition = leftItemTransform.anchoredPosition = new Vector3(leftXPos, activeHeight - 30, 0);
+            rightHandTransform.anchoredPosition = rightItemTransform.anchoredPosition = new Vector3(rightXPos, activeHeight, 0);
+        }
     }
 
     //public methods:
@@ -82,53 +111,6 @@ public class UIManager : MonoBehaviour
             if(renderer == handsRendererRight) itemRendererRight.sprite = baseItems[(int) Item.Basket];
         } else{
             renderer.sprite = baseHands[stateId]; 
-        }
-        
-
-
-
-
-
-        // brackets for collapsability
-        {
-        // if(h == PlayerControls.whichContainer.Left)
-        // {
-        //     switch(incoming){
-        //         case State.Idle:
-        //             handsRendererLeft.sprite = baseHands[0];
-        //             break;
-        //         case State.Point:
-        //             handsRendererLeft.sprite = baseHands[1];
-        //             break;
-        //         case State.Hold:
-        //             handsRendererLeft.sprite = baseHands[2];
-        //             break;
-        //         case State.Grip_Loose:
-        //             handsRendererLeft.sprite = baseHands[3];
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // }
-        // else if(h == PlayerControls.whichContainer.Right)
-        // {
-        //     switch(incoming){
-        //         case State.Idle:
-        //             handsRendererRight.sprite = baseHands[0];
-        //             break;
-        //         case State.Point:
-        //             handsRendererRight.sprite = baseHands[1];
-        //             break;
-        //         case State.Hold:
-        //             handsRendererRight.sprite = baseHands[2];
-        //             break;
-        //         case State.Grip_Loose:
-        //             handsRendererRight.sprite = baseHands[3];
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // }
         }
     }
 
