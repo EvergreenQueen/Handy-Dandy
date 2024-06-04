@@ -15,6 +15,7 @@ public class Free_Camera : MonoBehaviour
     [SerializeField] float default_speed = 5f;
     [SerializeField] float camera_sensitivity = 300f;
     [SerializeField] GameObject player;
+    [SerializeField] bool debugModeEnabled;
     float movement_speed;
     float vertical_Rotation;
     float horizontal_Rotation;
@@ -79,7 +80,7 @@ public class Free_Camera : MonoBehaviour
             vertical_Rotation = Mathf.Clamp(vertical_Rotation, -90f, 90f);
             transform.rotation = Quaternion.Euler(vertical_Rotation, horizontal_Rotation, 0);
         }
-        if (Input.GetKeyDown("left alt"))
+        if (Input.GetKeyDown("left alt") && debugModeEnabled)
         {
             cameraLock = !cameraLock;
             player.gameObject.SetActive(cameraLock);
