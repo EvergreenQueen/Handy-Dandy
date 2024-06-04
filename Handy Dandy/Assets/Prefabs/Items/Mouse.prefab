@@ -121,10 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba46325fc6ea97149a48264d29538c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Cat
+  name: Mouse
   id: 3
   tags: 0200000005000000
-  description: '[WIP]'
+  description: Not a rat.
+  containerMax: 0
 --- !u!136 &-26444527958734273
 CapsuleCollider:
   m_ObjectHideFlags: 0

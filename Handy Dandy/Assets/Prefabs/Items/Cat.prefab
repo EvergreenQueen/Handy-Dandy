@@ -124,7 +124,8 @@ MonoBehaviour:
   name: Cat
   id: 4
   tags: 0200000005000000
-  description: '[WIP]'
+  description: Meow, meow meow.
+  containerMax: 0
 --- !u!136 &-26444527958734273
 CapsuleCollider:
   m_ObjectHideFlags: 0

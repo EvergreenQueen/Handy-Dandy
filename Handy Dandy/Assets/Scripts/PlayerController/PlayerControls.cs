@@ -28,8 +28,8 @@ public class PlayerControls : MonoBehaviour
     Camera cam;
     [SerializeField] UIManager ui;
 
-    bool lookingAtObject = false;
-    RaycastHit hit;
+    public bool lookingAtObject = false;
+    public RaycastHit hit;
     int itemLayerMask = 1 << 7; // huh.
     int NPCLayerMask = 1 << 8; //npc npc npc
     Transform t;
@@ -189,45 +189,6 @@ public class PlayerControls : MonoBehaviour
             //     }
             // } //
         }
-
-        // if(lookingAtObject && leftHand == null) {
-        //     ui.Point();
-        // }
-        // else if(leftHand == null)
-        // {
-        //     // if the controlling hand is empty
-        //     if(lookingAtObject) {
-        //         ui.Point(controllingHand);
-        //     }
-        //     else {
-        //         ui.Idle(controllingHand);
-        //     }
-        // }
-        // else //Else if holding something
-        // {
-        //     ui.Hold(controllingHand); //Changes to holding.
-
-        //     if(controllingHand == hand.Left)
-        //     {
-        //         if(Regex.Match(leftHand.name, appleRegex).Success){
-        //             ui.HoldApple(controllingHand);
-        //         }
-        //         else if(Regex.Match(leftHand.name, ice_cubeRegex).Success) {
-        //             ui.HoldIce_Cube(controllingHand);
-        //         }
-        //     }
-        //     else if(controllingHand == hand.Right)
-        //     {
-        //         if(Regex.Match(rightHand.name, appleRegex).Success){
-        //             ui.HoldApple(controllingHand);
-        //         }
-        //         else if(Regex.Match(rightHand.name, ice_cubeRegex).Success) {
-        //             ui.HoldIce_Cube(controllingHand);
-        //         }
-        //     }
-        // }
-
-
     }
 
     // VISUAL UPDATE ONLY. NO HOLDING/DROPPING LOGIC
@@ -341,16 +302,6 @@ public class PlayerControls : MonoBehaviour
     private void changeGrav(float newGrav){
         grav = newGrav;
     }
-
-    //private void checkGroundDist(){
-    //    RaycastHit hit;
-
-    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, isGround))
-    //    {
-    //        transform.position += new Vector3(0.0f, floatingDistance - hit.distance, 0.0f);
-    //    }
-
-    //}
 
     private void moveCamera(){
         Vector2 rawInput = pc.Movement.LookAround.ReadValue<Vector2>(); //Moving up is pos, down is negative
