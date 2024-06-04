@@ -35,6 +35,8 @@ public class PlayerControls : MonoBehaviour
     Vector3 pos;
     Vector3 dir;
 
+    private float _timeSinceLastStepPlayed;
+
     public enum containerType { Hand, Basket };
     public enum whichContainer { Left, Right };
     whichContainer controllingContainer = whichContainer.Left;
@@ -55,10 +57,14 @@ public class PlayerControls : MonoBehaviour
     public int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     AudioSource audioSource;
     AudioManager audioManager;
+    AudioSource NPCAudio;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
     public DialogueRunner dialogueRunner;
     bool rightMaxAdjust;
     bool leftMaxAdjust;
+
+    public NPCSpeaking nPCSpeaking;
+   
 
     
     void Awake()
@@ -88,8 +94,12 @@ public class PlayerControls : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         playerheight = capsuleCollider.height;
         audioSource = GetComponentInChildren<AudioSource>();
+        //NPCAudio = HandleQuests.audioSource;
+        NPCAudio = GetComponentInChildren<AudioSource>();
+        NPCAudio.clip = audioManager.sounds[2];
         audioManager = GetComponentInChildren<AudioManager>();
         audioSource.clip = audioManager.sounds[0];
+        
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
         isGround = 1 << LayerMask.NameToLayer("Ground");
@@ -317,7 +327,16 @@ public class PlayerControls : MonoBehaviour
                 audioSource.Play();
                 soundIsPlaying = true;
             }
+            // Debug.Log(Time.deltaTime);
+            // _timeSinceLastStepPlayed += Time.deltaTime;
+            // if (_timeSinceLastStepPlayed >= .015) {
+            //     _timeSinceLastStepPlayed = 0;
+            //     audioSource.loop = true;
+            //     audioSource.Play();
+            // }
         }
+        // audioSource.loop = false;
+        // audioSource.Stop();
         else if (soundIsPlaying)
         {
             soundIsPlaying = false; audioSource.Stop();
@@ -691,7 +710,15 @@ public class PlayerControls : MonoBehaviour
             return;
         }else{
             Debug.Log(hit.collider.gameObject.name);
+            //AudioSource newAudio = GetComponent<hit.collider.gameObject.AudioSource>();
+            // if (hit.collider.gameObject.newAudio != null) {
+
+            // }
+            //audioSource.PlayOneShot(audioManager.sounds[2]);
+            // NPCAudio.Stop();
+            //nPCSpeaking.PlayNPCTalking(hit.collider.gameObject);
             dialogueRunner.StartDialogue(hit.collider.gameObject.name + "DialogueIntro");
+
         }
     }
     }

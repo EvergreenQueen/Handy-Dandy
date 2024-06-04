@@ -17,6 +17,8 @@ public static class HandleQuests
     public static List<string> introsPlayed = new List<string>();
     public static bool questUIToggle = false;
 
+    //public static AudioSource audioSource;
+
     [YarnCommand("switch_project")]
     public static void SwitchProject(){
         Debug.Log("Changed project to: "+charaDialogue); //this works
