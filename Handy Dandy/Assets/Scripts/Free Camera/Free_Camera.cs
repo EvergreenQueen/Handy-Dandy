@@ -79,7 +79,7 @@ public class Free_Camera : MonoBehaviour
             vertical_Rotation = Mathf.Clamp(vertical_Rotation, -90f, 90f);
             transform.rotation = Quaternion.Euler(vertical_Rotation, horizontal_Rotation, 0);
         }
-        if (Input.GetKeyDown("tab"))
+        if (Input.GetKeyDown("left alt"))
         {
             cameraLock = !cameraLock;
             player.gameObject.SetActive(cameraLock);

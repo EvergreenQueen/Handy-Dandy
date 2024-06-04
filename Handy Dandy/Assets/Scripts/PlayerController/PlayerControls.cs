@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 using Yarn.Unity;
 
@@ -52,7 +53,7 @@ public class PlayerControls : MonoBehaviour
     public Stack rightHandInventory = new Stack(inventorySize);
     public Stack leftHandInventory = new Stack(inventorySize);
     int currentInventoryCapacityLeft = 1, currentInventoryCapacityRight = 1;
-    int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
+    public int amountOfItemsHeldLeft = 0, amountOfItemsHeldRight = 0;
     AudioSource audioSource;
     AudioManager audioManager;
     string appleRegex = @"Apple.*", ice_cubeRegex = @"Ice_Cube.*", mouseRegex = @"Mouse.*", catRegex = @"Cat.*";
@@ -299,7 +300,6 @@ public class PlayerControls : MonoBehaviour
         //checkGroundDist();
         //Time.timeScale = timeScale;
 
-
         //Camera Looking with Mouse:
         moveCamera();
     }
@@ -311,7 +311,14 @@ public class PlayerControls : MonoBehaviour
             Vector3 input;
             Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, isGround);
             Vector2 rawInput = pc.Movement.WASD.ReadValue<Vector2>();
-            input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
+            if (isGrounded)
+            {
+                input = Vector3.ProjectOnPlane(transform.forward * rawInput.y + transform.right * rawInput.x, slopeHit.normal);
+            }
+            else
+            {
+                input = transform.forward * rawInput.y + transform.right * rawInput.x;
+            }
             rb.transform.position += input.normalized * speed;
             if (!input.Equals(Vector3.zero) && !soundIsPlaying)
             {
@@ -482,6 +489,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Drop()
     {
+        Rigidbody temp;
         if (controllingContainer == whichContainer.Left)
         {
             if (amountOfItemsHeldLeft > 0)

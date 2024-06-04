@@ -9,11 +9,13 @@ public static class HandleQuests
     public static DialogueRunner dialogueRunner;
     public static YarnProject charaDialogue;
     public static PlayerControls player;
+    public static GameObject PieGuy;
+    public static GameObject Oven;
     public static int currQuest = 0;
     public static int wrongOption = 0;
     public static List<int> completedQuests = new List<int>();
     public static List<string> introsPlayed = new List<string>();
-    public static bool alreadyCompleted = false;
+    public static bool questUIToggle = false;
 
     [YarnCommand("switch_project")]
     public static void SwitchProject(){
@@ -21,6 +23,43 @@ public static class HandleQuests
         dialogueRunner.SetProject(charaDialogue);
         dialogueRunner.Stop();
     }
+
+    // public static void GetRidOfItemsByName(string whatItem, int howMany, GameObject[] leftHand, GameObject[] rightHand){
+    //     for(int i=0; i<leftHand.length; ++i){
+    //         if(leftHand[i].GetComponent<ItemIdentification>().name == whatItem){
+    //             leftHandInventory.Pop();
+    //             if (amountOfItemsHeldLeft == 1)
+    //             {
+    //                 leftHand = null;
+    //                 ui.Idle(controllingContainer);
+    //             }
+    //             else if (amountOfItemsHeldLeft > 1)
+    //             {
+    //                 leftHand = (GameObject)leftHandInventory.Peek();
+    //             }
+    //             amountOfItemsHeldLeft--;
+    //             howMany -= 1;
+    //         }
+    //     }
+    //     if(howMany != 0){
+    //         foreach (GameObject item in rightHand){
+    //             if(rightHand[i].GetComponent<ItemIdentification>().name == whatItem){
+    //                 rightHandInventory.Pop();
+    //                 if (amountOfItemsHeldRight == 1)
+    //                 {
+    //                     rightHand = null;
+    //                     ui.Idle(controllingContainer);
+    //                 }
+    //                 else if (amountOfItemsHeldLeft > 1)
+    //                 {
+    //                     rightHand = (GameObject)rightHandInventory.Peek();
+    //                 }
+    //                 amountOfItemsHeldRight--;
+    //                 howMany -= 1;
+    //             }
+    //         }
+    //     }
+    // }
 
     public static bool CheckIfQuestComplete(int whatQuest){
         // loop through leftHandInventory and rightHandInventory to grab em all in one big stack
@@ -48,19 +87,16 @@ public static class HandleQuests
             BothHands[player.leftHandInventory.Count+j] = rightHand[j];
         }
 
-        List<UIManager.Item> allItems = new List<UIManager.Item>();
+        List<ItemIdentification> allItems = new List<ItemIdentification>();
 
         Debug.Log("maxSize is: "+maxSize);
 
         for(int i=0; i<maxSize; ++i){
-            ItemIdentification itemDesc = BothHands[i].GetComponent<ItemIdentification>();
-            int itemID = itemDesc.id;
-            UIManager.Item item = (UIManager.Item) itemID;
+            ItemIdentification item = BothHands[i].GetComponent<ItemIdentification>();
             allItems.Add(item);
-            Debug.Log("HELLO???");
         }
 
-        foreach (UIManager.Item item in allItems){
+        foreach (ItemIdentification item in allItems){
             Debug.Log(item);
         }
 
@@ -69,16 +105,17 @@ public static class HandleQuests
                 bool foundCat = false;
                 bool foundMouse = false;
 
-                foreach (UIManager.Item item in allItems){
-                    if(item == UIManager.Item.Cat){
+                foreach (ItemIdentification item in allItems){
+                    if(item.name == "Cat"){
                         foundCat = true;
                     }
-                    if(item == UIManager.Item.Mouse){
+                    if(item.name == "Mouse"){
                         foundMouse = true;
                     }
                 }
 
                 if(foundCat && foundMouse){
+                    // Get rid of cat and mouse
                     return true;
                 }else if(foundCat){
                     wrongOption = 1;
@@ -89,12 +126,10 @@ public static class HandleQuests
                 }
                 break;
             case 2:
-                bool oneApple = false;
-                bool twoApple = false;
                 int howManyApple = 0;
 
-                foreach (UIManager.Item item in allItems){
-                    if(item == UIManager.Item.Apple){
+                foreach (ItemIdentification item in allItems){
+                    if(item.name == "Apple"){
                         howManyApple++;
                     }
                 }
@@ -110,6 +145,25 @@ public static class HandleQuests
                 }
                 break;
             case 3:
+                bool coldObject = false;
+                bool hotObject = false;
+
+                foreach (ItemIdentification item in allItems){
+                    if(item.containsTag(ItemIdentification.ListOfPossibleTags.Hot)){
+                        hotObject = true;
+                    }
+                    if(item.containsTag(ItemIdentification.ListOfPossibleTags.Cold)){
+                        coldObject = true;
+                    }
+                }
+
+                if(hotObject){
+                    return true;
+                }else if(coldObject){
+                    wrongOption = 1;
+                }else{
+                    wrongOption = 2;
+                }
                 break;
             case 0:
                 break;
@@ -131,13 +185,14 @@ public static class HandleQuests
         currQuest = whatQuest;
     }
 
-    [YarnCommand("see_if_already_completed")]
-    public static void SeeIfAlreadyCompleted(int whatQuest){
+    [YarnFunction("see_if_already_completed")]
+    public static bool SeeIfAlreadyCompleted(int whatQuest){
         for(int i = 0; i < completedQuests.Count; ++i){
             if(completedQuests[i] == whatQuest){
-                alreadyCompleted = true;
+                return true;
             }
         }
+        return false;
     }
 
     [YarnCommand("set_intro_done")]
@@ -163,6 +218,27 @@ public static class HandleQuests
             }
         }
         return false;
+    }
+
+    [YarnCommand("turn_on_questui")]
+    public static void TurnOnQuestUI(){
+        questUIToggle = !questUIToggle;
+    }
+
+    [YarnCommand("set_certain_quest_people_and_things_active")]
+    public static void SetCertainQuestPeopleAndThingsActive(int whatQuest){
+        switch(whatQuest){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                PieGuy.SetActive(true);
+                Oven.SetActive(true);
+                break;
+        }
     }
 }
 
